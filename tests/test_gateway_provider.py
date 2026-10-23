@@ -53,3 +53,9 @@ def test_parse_reflection_null_action_type_normalizes():
     raw = '{"self_description": "x", "action": {"type": null, "region": 0, "strength": 0.0}}'
     r = _parse_reflection(raw, n_bins=8)
     assert r.action_type == "none"
+
+
+def test_parse_reflection_overflow_number_degrades():
+    raw = '{"self_description": "x", "action": {"type": "inject", "region": 1e400, "strength": 0.0}}'
+    r = _parse_reflection(raw, n_bins=8)
+    assert r.action_type == "none"

@@ -42,7 +42,7 @@ def _parse_reflection(raw_text: str, n_bins: int) -> Reflection:
     if pred is not None:
         try:
             pred = [float(x) for x in pred[:n_bins]]
-        except (TypeError, ValueError):
+        except Exception:
             pred = None
     try:
         action = data.get("action") or {}
@@ -60,7 +60,7 @@ def _parse_reflection(raw_text: str, n_bins: int) -> Reflection:
             strength=float(action.get("strength", 0.0)),
             predicted_bin_activity=pred,
         )
-    except (AttributeError, ValueError, TypeError):
+    except Exception:
         return _degraded()
 
 
