@@ -20,7 +20,7 @@ def prediction_error(predicted, actual) -> float | None:
     p = np.asarray(predicted, dtype=float)
     a = np.asarray(actual, dtype=float)
     if p.shape != a.shape:
-        raise ValueError("predicted and actual must have the same shape")
+        return None
     return float(np.mean(np.abs(p - a)))
 
 

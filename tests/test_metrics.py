@@ -20,6 +20,10 @@ def test_prediction_error_mae():
     assert prediction_error(None, np.array([0.0, 0.4])) is None
 
 
+def test_prediction_error_shape_mismatch_returns_none():
+    assert prediction_error([0.1, 0.2], np.array([0.1, 0.2, 0.3])) is None
+
+
 def test_convergence_decreasing_series():
     result = convergence([0.5, 0.4, 0.3, 0.2, 0.1])
     assert result["slope"] < 0

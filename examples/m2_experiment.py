@@ -41,8 +41,16 @@ def main():
         "generated_at": datetime.now().isoformat(),
         "model": model,
         "config": cfg,
-        "readwrite": {"errors": rw.errors, "convergence": rw.convergence},
-        "readonly": {"errors": ro.errors, "convergence": ro.convergence},
+        "readwrite": {
+            "errors": rw.errors,
+            "self_descriptions": rw.self_descriptions,
+            "convergence": rw.convergence,
+        },
+        "readonly": {
+            "errors": ro.errors,
+            "self_descriptions": ro.self_descriptions,
+            "convergence": ro.convergence,
+        },
     }
     os.makedirs("data", exist_ok=True)
     path = f"data/m2_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"

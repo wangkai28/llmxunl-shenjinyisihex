@@ -44,6 +44,8 @@ def _parse_reflection(raw_text: str, n_bins: int) -> Reflection:
             pred = [float(x) for x in pred[:n_bins]]
         except Exception:
             pred = None
+        if pred is not None and len(pred) != n_bins:
+            pred = None
     try:
         action = data.get("action") or {}
         if not isinstance(action, dict):

@@ -8,21 +8,21 @@ from bioelectric.llm_provider import (
 
 
 def test_parse_reflection_valid_json():
-    raw = '{"self_description": "a stable core", "predicted_bin_activity": [0.1, 0.2], "action": {"type": "inject", "region": 0, "strength": 1.0}}'
+    raw = '{"self_description": "a stable core", "predicted_bin_activity": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8], "action": {"type": "inject", "region": 0, "strength": 1.0}}'
     r = _parse_reflection(raw, n_bins=8)
     assert isinstance(r, Reflection)
     assert r.self_description == "a stable core"
-    assert r.predicted_bin_activity == [0.1, 0.2]
+    assert r.predicted_bin_activity == [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
     assert r.action_type == "inject"
     assert r.region == 0
     assert r.strength == 1.0
 
 
 def test_parse_reflection_missing_action_defaults_none():
-    raw = '{"self_description": "x", "predicted_bin_activity": [0.1]}'
+    raw = '{"self_description": "x", "predicted_bin_activity": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]}'
     r = _parse_reflection(raw, n_bins=8)
     assert r.action_type == "none"
-    assert r.predicted_bin_activity == [0.1]
+    assert r.predicted_bin_activity == [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
 
 
 def test_parse_reflection_invalid_json_degrades():
@@ -59,3 +59,9 @@ def test_parse_reflection_overflow_number_degrades():
     raw = '{"self_description": "x", "action": {"type": "inject", "region": 1e400, "strength": 0.0}}'
     r = _parse_reflection(raw, n_bins=8)
     assert r.action_type == "none"
+
+
+def test_parse_reflection_short_prediction_becomes_none():
+    raw = '{"self_description": "x", "predicted_bin_activity": [0.1, 0.2]}'
+    r = _parse_reflection(raw, n_bins=4)
+    assert r.predicted_bin_activity is None
