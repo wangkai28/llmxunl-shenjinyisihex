@@ -37,3 +37,16 @@ def test_hebb_strengthens_coactive_pair():
     net.step(external_input=np.array([10.0, 10.0]))
     assert net.W[0, 1] > before[0, 1]
     assert net.W[1, 0] > before[1, 0]
+
+
+def test_refractory_clamps_membrane_potential():
+    net = SpikingNetwork(
+        n_units=1, connectivity=0.0, threshold=0.5, refractory=3,
+        leak=0.0, dt=1.0, seed=0,
+    )
+    assert net.step(external_input=np.array([10.0]))[0]
+    assert not net.step(external_input=np.array([10.0]))[0]
+    assert net.V[0] == 0.0
+    for _ in range(4):
+        assert not net.step(external_input=np.array([0.0]))[0]
+        assert net.V[0] == 0.0

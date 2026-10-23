@@ -43,9 +43,16 @@ class SpikingNetwork:
             if external_input is None
             else np.asarray(external_input, dtype=float)
         )
+        was_refractory = self.refrac > 0
         synaptic = self.W @ self.spikes.astype(float)
-        self.V = self.V + (synaptic + ext - self.leak * self.V) * self.dt
-        fired = (self.V >= self.threshold) & (self.refrac == 0)
+        integrating = ~was_refractory
+        self.V[integrating] = (
+            self.V[integrating]
+            + (synaptic[integrating] + ext[integrating]
+               - self.leak * self.V[integrating]) * self.dt
+        )
+        self.V[was_refractory] = 0.0
+        fired = (self.V >= self.threshold) & integrating
         self.spikes = fired
         self.V[fired] = 0.0
         self.refrac[fired] = self.refractory
