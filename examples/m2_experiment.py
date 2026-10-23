@@ -1,10 +1,21 @@
 import json
+import math
 import os
 from datetime import datetime
 
 from bioelectric.experiment import run_experiment
 from bioelectric.llm_provider import GatewayLLMProvider
 from bioelectric.spiking import SpikingNetwork
+
+
+def _sanitize_non_finite(value):
+    if isinstance(value, float):
+        return value if math.isfinite(value) else None
+    if isinstance(value, dict):
+        return {key: _sanitize_non_finite(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [_sanitize_non_finite(item) for item in value]
+    return value
 
 
 def main():
@@ -36,7 +47,10 @@ def main():
     os.makedirs("data", exist_ok=True)
     path = f"data/m2_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
     with open(path, "w", encoding="utf-8") as f:
-        json.dump(report, f, ensure_ascii=False, indent=2)
+        json.dump(
+            _sanitize_non_finite(report), f,
+            ensure_ascii=False, indent=2, allow_nan=False,
+        )
 
     print("== M2 behavioral-closure experiment ==")
     print(f"model={model} steps={cfg['steps']} observe_every={cfg['observe_every']}")
