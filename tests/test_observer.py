@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 
 from bioelectric.llm_provider import MockLLMProvider
 from bioelectric.observer import Observer
@@ -37,3 +38,9 @@ def test_observer_readonly_does_not_write_back():
     observer.tick()
     observer.tick()
     assert not (net.spikes[0] or net.spikes[1])
+
+
+def test_observer_rejects_zero_observe_every():
+    net = SpikingNetwork(n_units=4, seed=0)
+    with pytest.raises(ValueError):
+        Observer(net, MockLLMProvider(), observe_every=0)

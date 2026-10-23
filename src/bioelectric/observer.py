@@ -20,6 +20,8 @@ class Observer:
         mode: str = "readwrite",
         history_window: int = 5,
     ):
+        if observe_every < 1:
+            raise ValueError("observe_every must be >= 1")
         self.network = network
         self.provider = provider
         self.memory = memory if memory is not None else ReflectionMemory()
