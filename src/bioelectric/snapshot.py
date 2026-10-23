@@ -6,6 +6,9 @@ from .spiking import SpikingNetwork
 
 
 def bin_bounds(n_units: int, n_bins: int) -> list[tuple[int, int]]:
+    if n_units == 0:
+        return []
+    n_bins = min(n_bins, n_units)
     splits = np.array_split(np.arange(n_units), n_bins)
     return [(int(s[0]), int(s[-1]) + 1) for s in splits]
 
