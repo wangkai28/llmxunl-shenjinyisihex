@@ -35,3 +35,21 @@ def test_parse_reflection_clamps_prediction_length():
     raw = '{"self_description": "x", "predicted_bin_activity": [0.1, 0.2, 0.3]}'
     r = _parse_reflection(raw, n_bins=2)
     assert r.predicted_bin_activity == [0.1, 0.2]
+
+
+def test_parse_reflection_non_dict_action_degrades():
+    raw = '{"self_description": "x", "action": "inject"}'
+    r = _parse_reflection(raw, n_bins=8)
+    assert r.action_type == "none"
+
+
+def test_parse_reflection_non_numeric_strength_degrades():
+    raw = '{"self_description": "x", "action": {"type": "inject", "region": 0, "strength": "high"}}'
+    r = _parse_reflection(raw, n_bins=8)
+    assert r.action_type == "none"
+
+
+def test_parse_reflection_null_action_type_normalizes():
+    raw = '{"self_description": "x", "action": {"type": null, "region": 0, "strength": 0.0}}'
+    r = _parse_reflection(raw, n_bins=8)
+    assert r.action_type == "none"

@@ -38,20 +38,30 @@ def _parse_reflection(raw_text: str, n_bins: int) -> Reflection:
         return _degraded()
     if not isinstance(data, dict):
         return _degraded()
-    action = data.get("action") or {}
     pred = data.get("predicted_bin_activity")
     if pred is not None:
         try:
             pred = [float(x) for x in pred[:n_bins]]
         except (TypeError, ValueError):
             pred = None
-    return Reflection(
-        self_description=str(data.get("self_description", "")),
-        action_type=str(action.get("type", "none")),
-        region=int(action.get("region", 0)),
-        strength=float(action.get("strength", 0.0)),
-        predicted_bin_activity=pred,
-    )
+    try:
+        action = data.get("action") or {}
+        if not isinstance(action, dict):
+            return _degraded()
+        action_type = action.get("type")
+        if action_type is None:
+            action_type = "none"
+        else:
+            action_type = str(action_type)
+        return Reflection(
+            self_description=str(data.get("self_description", "")),
+            action_type=action_type,
+            region=int(action.get("region", 0)),
+            strength=float(action.get("strength", 0.0)),
+            predicted_bin_activity=pred,
+        )
+    except (AttributeError, ValueError, TypeError):
+        return _degraded()
 
 
 class GatewayLLMProvider(LLMProvider):
