@@ -44,3 +44,15 @@ def test_observer_rejects_zero_observe_every():
     net = SpikingNetwork(n_units=4, seed=0)
     with pytest.raises(ValueError):
         Observer(net, MockLLMProvider(), observe_every=0)
+
+
+def test_observer_rejects_invalid_mode():
+    net = SpikingNetwork(n_units=4, seed=0)
+    with pytest.raises(ValueError):
+        Observer(net, MockLLMProvider(), mode="ReadWrite")
+
+
+def test_observer_rejects_zero_n_bins():
+    net = SpikingNetwork(n_units=4, seed=0)
+    with pytest.raises(ValueError):
+        Observer(net, MockLLMProvider(), n_bins=0)

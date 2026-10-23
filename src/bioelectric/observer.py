@@ -22,6 +22,10 @@ class Observer:
     ):
         if observe_every < 1:
             raise ValueError("observe_every must be >= 1")
+        if mode not in ("readwrite", "readonly"):
+            raise ValueError(f"invalid mode {mode!r}; expected 'readwrite' or 'readonly'")
+        if n_bins < 1:
+            raise ValueError("n_bins must be >= 1")
         self.network = network
         self.provider = provider
         self.memory = memory if memory is not None else ReflectionMemory()
