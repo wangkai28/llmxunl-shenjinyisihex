@@ -1,0 +1,10 @@
+[project]
+name = "bioelectric-emergence"
+version = "0.1.0"
+description = "生物电涌现实验：研究自我认知是否在脉冲网络 + LLM 观察者的闭合回路中涌现"
+requires-python = ">=3.10"
+dependencies = ["numpy>=2.0"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
