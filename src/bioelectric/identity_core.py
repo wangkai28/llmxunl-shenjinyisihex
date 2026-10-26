@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 
 from .balanced_network import BalancedNetwork
-from .continuity import save_snapshot, load_snapshot, append_autobiography
+from .continuity import save_snapshot, load_snapshot, append_autobiography, query_history
 from .event import Event, encode_event
 from .multi_self import MultiSelf, set_context, _drive
 from .persona import PERSONAS
@@ -28,10 +28,12 @@ def _query_state(ms: MultiSelf, steps: int):
     return dominant, activity
 
 class IdentityCore:
-    def __init__(self, *, persona: str, state_dir: str, seed: int = 0):
+    def __init__(self, *, persona: str, state_dir: str, seed: int = 0,
+                 significant_threshold: float = 0.8):
         self.persona = persona
         self.state_dir = state_dir
         self.seed = seed
+        self.significant_threshold = significant_threshold
         cfg = PERSONAS.get(persona)
         if cfg is None:
             raise ValueError(f"unknown persona {persona!r}")
@@ -60,10 +62,12 @@ class IdentityCore:
             from .multi_self import _drive
             _drive(self._ms, dominant)
         state = self.query()
+        significant = event.intensity >= self.significant_threshold
         append_autobiography(
             os.path.join(self.state_dir, "autobiography.jsonl"),
             {"event": event.type, "intensity": event.intensity,
-             "content": event.content, "dominant": state["dominant"]},
+             "content": event.content, "dominant": state["dominant"],
+             "significant": significant},
         )
         return state
 
@@ -73,11 +77,15 @@ class IdentityCore:
         result.update(activity)
         return result
 
+    def history(self, limit=None):
+        return query_history(os.path.join(self.state_dir, "autobiography.jsonl"), limit)
+
     def save(self):
         state = self.query()
         snapshot = {
             "dominant": state["dominant"],
             "context_bias": dict(self._ms.context_bias),
+            "activities": {k: state[k] for k in self._ms.core_masks.keys()},
         }
         save_snapshot(snapshot, os.path.join(self.state_dir, "snapshot.json"))
 

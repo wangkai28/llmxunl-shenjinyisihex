@@ -2,6 +2,35 @@ from bioelectric.event import Event
 from bioelectric.identity_core import IdentityCore
 
 
+def test_save_persists_activities(tmp_path):
+    core = IdentityCore(persona="tao", state_dir=str(tmp_path / "id"), seed=0)
+    core.process_event(Event(type="calm", intensity=1.0))
+    core.save()
+    import json, os
+    snap = json.loads(open(os.path.join(str(tmp_path / "id"), "snapshot.json"), encoding="utf-8").read())
+    assert "activities" in snap
+    assert "tao" in snap["activities"]
+
+
+def test_history_returns_entries(tmp_path):
+    core = IdentityCore(persona="tao", state_dir=str(tmp_path / "id"), seed=0)
+    core.process_event(Event(type="danger", intensity=1.0))
+    core.process_event(Event(type="calm", intensity=1.0))
+    hist = core.history()
+    assert len(hist) == 2
+    assert hist[0]["event"] == "danger"
+
+
+def test_significant_event_marked(tmp_path):
+    core = IdentityCore(persona="tao", state_dir=str(tmp_path / "id"), seed=0,
+                        significant_threshold=0.8)
+    core.process_event(Event(type="danger", intensity=0.9))
+    core.process_event(Event(type="calm", intensity=0.3))
+    hist = core.history()
+    assert hist[0]["significant"] is True
+    assert hist[1]["significant"] is False
+
+
 def test_persona_param_changes_network(tmp_path):
     # 不同 persona 应产生不同的网络性格参数
     id_core = IdentityCore(persona="id", state_dir=str(tmp_path / "a"), seed=0)
