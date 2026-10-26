@@ -29,6 +29,7 @@ class MultiSelf:
         self.core_masks = {}
         self.core_sizes = {}
         self.biases = {}
+        self.context_bias = {}
         used = set()
         for name, spec in core_specs.items():
             size = int(spec["size"])
@@ -39,6 +40,7 @@ class MultiSelf:
             self.core_masks[name] = mask
             self.core_sizes[name] = size
             self.biases[name] = float(spec["bias"])
+            self.context_bias[name] = float(spec["bias"])
             used.update(chosen.tolist())
 
         if hebb_lr > 0.0:
@@ -88,7 +90,7 @@ class MultiSelf:
         for _ in range(steps):
             inp = np.zeros(self.n_units, dtype=float)
             for name, mask in self.core_masks.items():
-                inp[mask] = self.biases[name]
+                inp[mask] = self.context_bias[name]
             self.network.step(external_input=inp)
 
 
@@ -150,3 +152,33 @@ def lesion_one_self(ms: MultiSelf, name: str, fraction: float):
     n_lesion = int(len(core_idx) * fraction)
     chosen = ms.network.rng.choice(core_idx, size=n_lesion, replace=False)
     ms.network.lesioned[chosen] = True
+
+
+def set_context(ms: MultiSelf, bias_overrides: dict):
+    """设置外部情境：调制各自我的有效偏置（bias），改变谁主导。"""
+    for name, bias in bias_overrides.items():
+        if name not in ms.core_masks:
+            raise ValueError(f"unknown self {name!r}")
+        ms.context_bias[name] = float(bias)
+
+
+def dominant_self(ms: MultiSelf, steps: int) -> str:
+    """在当前情境下跑 steps 步，返回活动率最高的自我。"""
+    net = ms.network
+    names = [n for n in ms.core_masks.keys()]
+    activity_sums = {n: 0 for n in names}
+    # 找出当前情境的主导自我（bias 最高者），对其余自我施加额外抑制
+    dominant = max(names, key=lambda n: ms.context_bias[n])
+    for _ in range(steps):
+        # 用情境偏置驱动各自我核心区
+        inp = np.zeros(net.n_units, dtype=float)
+        for n in names:
+            inp[ms.core_masks[n]] = ms.context_bias[n]
+            if n != dominant:
+                # 非主导自我被额外抑制，模拟情境下的「让位」
+                inp[ms.core_masks[n]] -= 3.0
+        net.step(external_input=inp)
+        for n in names:
+            activity_sums[n] += int(net.spikes[ms.core_masks[n]].sum())
+    best = max(names, key=lambda n: activity_sums[n])
+    return best

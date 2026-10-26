@@ -3,6 +3,7 @@ import numpy as np
 from bioelectric.balanced_network import BalancedNetwork
 from bioelectric.multi_self import MultiSelf, measure_multi_self
 from bioelectric.multi_self import lesion_one_self
+from bioelectric.multi_self import set_context, dominant_self
 
 
 def _make_network(seed=0):
@@ -78,3 +79,22 @@ def test_cross_inhibition_causes_compensation():
     after = measure_multi_self(ms, steps=100)
     # 本我受损，对超我的抑制解除，超我应上升
     assert after["superego"]["activity"] > before["superego"]["activity"]
+
+
+def test_context_switches_dominant_self():
+    # 不同情境应让不同的自我主导
+    net = _make_network()
+    ms = MultiSelf(net, core_specs={
+        "id": {"size": 50, "bias": 3.0},
+        "superego": {"size": 50, "bias": 0.5},
+        "tao": {"size": 50, "bias": 1.5},
+    }, seed=1, hebb_lr=0.02, cross_inhibition=3.0)
+    ms.form(steps=200)
+
+    # 危险情境：本我主导
+    set_context(ms, {"id": 3.0, "superego": 0.2, "tao": 0.2})
+    assert dominant_self(ms, steps=50) == "id"
+
+    # 道德情境：超我主导
+    set_context(ms, {"id": 0.2, "superego": 3.0, "tao": 0.2})
+    assert dominant_self(ms, steps=50) == "superego"
