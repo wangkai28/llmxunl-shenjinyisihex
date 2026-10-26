@@ -104,3 +104,14 @@ def measure_multi_self(ms: MultiSelf, steps: int) -> dict:
     result["dominance"] = float(dominance)
     result["switching"] = float(switching)
     return result
+
+
+def lesion_one_self(ms: MultiSelf, name: str, fraction: float):
+    """损伤某个自我的核心区：让该区域 fraction 比例的单元失活。"""
+    if name not in ms.core_masks:
+        raise ValueError(f"unknown self {name!r}")
+    mask = ms.core_masks[name]
+    core_idx = np.flatnonzero(mask)
+    n_lesion = int(len(core_idx) * fraction)
+    chosen = ms.network.rng.choice(core_idx, size=n_lesion, replace=False)
+    ms.network.lesioned[chosen] = True
