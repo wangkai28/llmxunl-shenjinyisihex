@@ -1,5 +1,6 @@
 from bioelectric.continuity import (
     save_snapshot, load_snapshot, append_autobiography, read_autobiography,
+    query_history, count_history,
 )
 
 
@@ -20,3 +21,12 @@ def test_autobiography_append_and_read(tmp_path):
     entries = read_autobiography(path)
     assert len(entries) == 2
     assert entries[0]["event"] == "danger"
+
+
+def test_query_history_limit(tmp_path):
+    path = str(tmp_path / "a.jsonl")
+    for i in range(5):
+        append_autobiography(path, {"i": i})
+    assert len(query_history(path)) == 5
+    assert query_history(path, limit=2) == [{"i": 3}, {"i": 4}]
+    assert count_history(path) == 5

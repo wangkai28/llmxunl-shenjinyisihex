@@ -34,3 +34,14 @@ def read_autobiography(path: str) -> list[dict]:
         if line:
             entries.append(json.loads(line))
     return entries
+
+
+def query_history(path: str, limit: int | None = None) -> list[dict]:
+    entries = read_autobiography(path)
+    if limit is not None:
+        return entries[-limit:]
+    return entries
+
+
+def count_history(path: str) -> int:
+    return len(read_autobiography(path))
