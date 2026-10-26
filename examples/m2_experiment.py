@@ -26,7 +26,7 @@ def main():
         raise SystemExit("OPENAI_BASE_URL / OPENAI_API_KEY not configured")
 
     provider = GatewayLLMProvider(base_url, api_key, model, n_bins=8)
-    cfg = dict(steps=300, observe_every=10, n_bins=8)
+    cfg = dict(steps=300, observe_every=10, n_bins=8, writeback_gain=2.5)
     net_kwargs = dict(
         n_units=64, seed=42,
         background_rate=0.05, background_strength=0.6,

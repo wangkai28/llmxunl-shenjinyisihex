@@ -25,10 +25,11 @@ def run_experiment(
     steps: int,
     observe_every: int,
     n_bins: int,
+    writeback_gain: float = 1.0,
 ) -> ExperimentResult:
     observer = Observer(
         network, provider, observe_every=observe_every,
-        n_bins=n_bins, mode=mode,
+        n_bins=n_bins, mode=mode, writeback_gain=writeback_gain,
     )
     bounds = bin_bounds(network.n_units, n_bins)
     result = ExperimentResult()

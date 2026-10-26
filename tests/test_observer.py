@@ -56,3 +56,42 @@ def test_observer_rejects_zero_n_bins():
     net = SpikingNetwork(n_units=4, seed=0)
     with pytest.raises(ValueError):
         Observer(net, MockLLMProvider(), n_bins=0)
+
+
+def test_writeback_is_sustained_across_multiple_steps():
+    # 注入应持续多个时间步，而不是只喂给下一个时间步就消失
+    net = SpikingNetwork(
+        n_units=4, connectivity=0.0, threshold=0.5, leak=0.0, dt=1.0, seed=0,
+    )
+    provider = MockLLMProvider(
+        description="x", action_type="inject", region=0, strength=0.4,
+    )
+    observer = Observer(
+        net, provider, observe_every=2, n_bins=2, mode="readwrite",
+        writeback_duration=3, writeback_gain=1.0,
+    )
+    observer.tick()  # 第 1 步：无观察
+    observer.tick()  # 第 2 步：观察并注入（持续 3 步）
+    fired_any = False
+    for _ in range(4):
+        observer.tick()
+        if net.spikes.any():
+            fired_any = True
+    assert fired_any  # 持续注入期间网络应能累积到阈值并发放
+
+
+def test_writeback_gain_scales_strength():
+    net = SpikingNetwork(
+        n_units=2, connectivity=0.0, threshold=0.5, leak=0.0, dt=1.0, seed=0,
+    )
+    provider = MockLLMProvider(
+        description="x", action_type="inject", region=0, strength=0.2,
+    )
+    # gain=5 让 0.2 的意图变成 1.0 的物理强度，足以跨越阈值
+    observer = Observer(
+        net, provider, observe_every=1, n_bins=1, mode="readwrite",
+        writeback_duration=1, writeback_gain=5.0,
+    )
+    observer.tick()  # 观察并注入
+    observer.tick()  # 下一时间步注入生效
+    assert net.spikes[0] or net.spikes[1]

@@ -19,6 +19,8 @@ class Observer:
         n_bins: int = 8,
         mode: str = "readwrite",
         history_window: int = 5,
+        writeback_duration: int | None = None,
+        writeback_gain: float = 1.0,
     ):
         if observe_every < 1:
             raise ValueError("observe_every must be >= 1")
@@ -26,6 +28,10 @@ class Observer:
             raise ValueError(f"invalid mode {mode!r}; expected 'readwrite' or 'readonly'")
         if n_bins < 1:
             raise ValueError("n_bins must be >= 1")
+        if writeback_duration is not None and writeback_duration < 1:
+            raise ValueError("writeback_duration must be >= 1")
+        if writeback_gain <= 0.0:
+            raise ValueError("writeback_gain must be > 0")
         self.network = network
         self.provider = provider
         self.memory = memory if memory is not None else ReflectionMemory()
@@ -33,13 +39,21 @@ class Observer:
         self.n_bins = n_bins
         self.mode = mode
         self.history_window = history_window
+        self.writeback_duration = (
+            observe_every if writeback_duration is None else writeback_duration
+        )
+        self.writeback_gain = writeback_gain
         self.step_count = 0
-        self.pending_input = np.zeros(network.n_units, dtype=float)
+        self._active_input = np.zeros(network.n_units, dtype=float)
+        self._active_remaining = 0
         self.bounds = bin_bounds(network.n_units, n_bins)
 
     def tick(self) -> Reflection | None:
-        self.network.step(self.pending_input)
-        self.pending_input.fill(0.0)
+        self.network.step(self._active_input)
+        if self._active_remaining > 0:
+            self._active_remaining -= 1
+            if self._active_remaining == 0:
+                self._active_input.fill(0.0)
         self.step_count += 1
         if self.step_count % self.observe_every == 0:
             return self._observe()
@@ -67,4 +81,5 @@ class Observer:
         region = reflection.region
         if 0 <= region < len(self.bounds):
             start, end = self.bounds[region]
-            self.pending_input[start:end] += reflection.strength
+            self._active_input[start:end] += reflection.strength * self.writeback_gain
+            self._active_remaining = self.writeback_duration
