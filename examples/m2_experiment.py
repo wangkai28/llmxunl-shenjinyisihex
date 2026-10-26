@@ -32,13 +32,22 @@ def main():
         background_rate=0.05, background_strength=0.6,
     )
 
-    rw = run_experiment(
-        SpikingNetwork(**net_kwargs), provider,
-        mode="readwrite", **cfg,
+    def _make_network():
+        return SpikingNetwork(**net_kwargs)
+
+    # 方案 A：LLM 主动注入（llm 策略）
+    rw_llm = run_experiment(
+        _make_network(), provider, mode="readwrite",
+        writeback_policy="llm", **cfg,
     )
+    # 方案 B：误差驱动写回
+    rw_err = run_experiment(
+        _make_network(), provider, mode="readwrite",
+        writeback_policy="error-driven", error_threshold=0.15, **cfg,
+    )
+    # 对照组：不写回
     ro = run_experiment(
-        SpikingNetwork(**net_kwargs), provider,
-        mode="readonly", **cfg,
+        _make_network(), provider, mode="readonly", **cfg,
     )
 
     report = {
@@ -46,11 +55,17 @@ def main():
         "model": model,
         "config": cfg,
         "network": net_kwargs,
-        "readwrite": {
-            "errors": rw.errors,
-            "self_descriptions": rw.self_descriptions,
-            "convergence": rw.convergence,
-            "actions": rw.actions,
+        "readwrite_llm": {
+            "errors": rw_llm.errors,
+            "self_descriptions": rw_llm.self_descriptions,
+            "convergence": rw_llm.convergence,
+            "actions": rw_llm.actions,
+        },
+        "readwrite_error_driven": {
+            "errors": rw_err.errors,
+            "self_descriptions": rw_err.self_descriptions,
+            "convergence": rw_err.convergence,
+            "actions": rw_err.actions,
         },
         "readonly": {
             "errors": ro.errors,
@@ -69,7 +84,8 @@ def main():
 
     print("== M2 behavioral-closure experiment ==")
     print(f"model={model} steps={cfg['steps']} observe_every={cfg['observe_every']}")
-    print(f"readwrite: converged={rw.convergence['converged']} slope={rw.convergence['slope']:.4f} errors={[round(e,3) if e is not None else None for e in rw.errors]}")
+    print(f"llm       : converged={rw_llm.convergence['converged']} slope={rw_llm.convergence['slope']:.4f}")
+    print(f"err-driven: converged={rw_err.convergence['converged']} slope={rw_err.convergence['slope']:.4f}")
     print(f"readonly : converged={ro.convergence['converged']} slope={ro.convergence['slope']:.4f} errors={[round(e,3) if e is not None else None for e in ro.errors]}")
     print(f"report -> {path}")
 
