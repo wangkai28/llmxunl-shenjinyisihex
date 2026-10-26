@@ -38,3 +38,25 @@ def test_convergence_flat_series_not_converged():
 def test_convergence_too_short():
     result = convergence([0.5, 0.4])
     assert result["converged"] is False
+
+
+def test_convergence_has_significance_fields():
+    # 明显下降的序列应有负斜率、低 p 值、且收敛
+    result = convergence([0.50, 0.45, 0.40, 0.35, 0.30, 0.25, 0.20, 0.15])
+    assert result["slope"] < 0
+    assert "p_value" in result
+    assert "slope_ci" in result
+    assert result["converged"] is True
+
+
+def test_convergence_noisy_flat_not_significant():
+    # 无趋势的抖动序列不应被误判为收敛
+    result = convergence([0.3, 0.5, 0.2, 0.6, 0.4, 0.3, 0.5, 0.2])
+    assert result["converged"] is False
+
+
+def test_convergence_deterministic_given_seed():
+    errors = [0.5, 0.4, 0.3, 0.2, 0.1, 0.05, 0.03, 0.02]
+    a = convergence(errors, seed=42)
+    b = convergence(errors, seed=42)
+    assert a["p_value"] == b["p_value"]
