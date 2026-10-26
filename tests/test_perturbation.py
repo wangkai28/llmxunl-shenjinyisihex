@@ -7,6 +7,7 @@ from bioelectric.perturbation import (
     apply_lesion,
     perturbation_sweep,
     factor_effects,
+    recovery_test,
 )
 from bioelectric.self_model import SelfModel, extract_self_dimensions
 
@@ -72,3 +73,15 @@ def test_factor_effects_computes_marginal_effects():
     ]
     effects = factor_effects(dataset)
     assert effects["lesion_fraction"]["core_activity_rate"] < 0  # 失活降低核心活动率
+
+
+def test_recovery_test_returns_recovery_metrics():
+    result = recovery_test(
+        n_units=300, core_size=40,
+        lesion_fraction=0.3, recover_steps=100, seed=0,
+    )
+    for key in ("baseline_core_rate", "damaged_core_rate", "recovered_core_rate",
+                "recovery_fraction"):
+        assert key in result
+    # 恢复率应在 [0, 1] 区间（恢复到基线程度的比例）
+    assert 0.0 <= result["recovery_fraction"] <= 1.0
