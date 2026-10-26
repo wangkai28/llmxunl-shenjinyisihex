@@ -173,3 +173,13 @@ error-driven 策略：误差 > threshold 才写回，写回强度用 LLM 报的 
 - 三组 identity_continuity 都偏高（0.77~0.87），因 LLM 本有「我是同一助手」惯性，
   A 组优势（约 0.1）真实但不算巨大，需多轮验证其可复现性。
 - 旧「预测误差」指标仍全部发散，印证「预测随机网络」这个目标本身选错了。
+
+### 5.13 可复现性验证（commit 21d0318）
+
+验证「A 组叙事一致性优于对照」是否可复现：
+
+- `paired_sign_test(a, b)`：配对符号检验，判断 A 是否稳定优于 B（单侧二项检验，
+  正态近似 + 连续性校正，不引入 scipy）。
+- `examples/replication.py`：跑 N 轮（默认 5），每轮不同 seed（100+r），
+  A（llm 主动塑造）vs 对照组（readonly）配对比较，输出 identity_continuity 均值。
+- 每轮 steps=200（20 个观察点），平衡时间与统计功效。
