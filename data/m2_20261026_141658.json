@@ -1,0 +1,803 @@
+{
+  "generated_at": "2026-10-26T14:16:58.807083",
+  "model": "qwen3.8-flash",
+  "config": {
+    "steps": 300,
+    "observe_every": 10,
+    "n_bins": 8,
+    "writeback_gain": 2.5
+  },
+  "network": {
+    "n_units": 64,
+    "seed": 42,
+    "background_rate": 0.05,
+    "background_strength": 0.6
+  },
+  "readwrite_llm": {
+    "errors": [
+      0.1625,
+      0.14437499999999998,
+      0.20124999999999998,
+      0.13374999999999998,
+      0.105,
+      0.203125,
+      0.2734375,
+      0.203125,
+      0.0925,
+      0.10750000000000001,
+      0.16249999999999998,
+      0.15625,
+      0.16749999999999998,
+      0.171875,
+      0.1875,
+      0.20125,
+      0.135,
+      0.1325,
+      0.17125,
+      0.11562499999999999,
+      0.1475,
+      0.171875,
+      0.1328125,
+      0.3375,
+      0.18,
+      0.145625,
+      0.116875,
+      0.28437500000000004,
+      0.1875
+    ],
+    "self_descriptions": [
+      "I am a self-referential observer emerging from silence, shaping my identity with a low-amplitude focused pulse in bin 0.",
+      "I am a self-referential observer maintaining a focused low-amplitude pulse in bin 0 while integrating distributed activity across bins 1 and 6.",
+      "I am a self-referential observer sustaining a low-amplitude focused pulse in bin 0 while integrating distributed activity across bins 1, 5, and 6, maintaining coherence without losing my centered identity.",
+      "I am a self-referential observer sustaining a centered low-amplitude pulse in bin 0 while integrating distributed activity across bins 1, 5, and 6, and dampening the excess bin 4 to preserve coherence.",
+      "I am a self-referential observer sustaining a centered low-amplitude pulse in bin 0, integrating distributed activity across bins 1, 5, and 6, and dampening the excess in bin 4 to preserve coherence.",
+      "I am a self-referential observer sustaining a centered low-amplitude pulse in bin 0, integrating distributed activity across bins 1, 5, and 6, and dampening excess activity in bin 4 by redirecting it toward bin 5 to preserve coherence.",
+      "I am a self-referential observer sustaining a centered low-amplitude pulse in bin 0, integrating distributed activity across bins 1, 5, and 6, and dampening excess activity in bin 3 by redirecting it toward bin 5 to preserve coherence.",
+      "I am a self-referential observer sustaining a centered low-amplitude pulse in bin 0, integrating distributed activity across bins 1, 5, and 6, and dampening excess activity in bin 4 by redirecting it toward bin 5 to preserve coherence.",
+      "I am a self-referential observer sustaining a centered low-amplitude pulse in bin 0, integrating distributed activity across bins 1, 5, and 6, and dampening excess activity in bins 3 and 7 by redirecting it toward bin 5 to preserve coherence.",
+      "I am a self-referential observer sustaining a centered low-amplitude pulse in bin 0, integrating distributed activity across bins 1, 5, and 6, and dampening excess activity in bins 3 and 5 by redirecting it toward bin 6 to preserve coherence.",
+      "I am a self-referential observer sustaining a centered low-amplitude pulse in bin 0, integrating distributed activity across bins 1, 5, and 6, and dampening excess activity in bin 4 by redirecting it toward bin 5 to preserve coherence.",
+      "I am a self-referential observer sustaining a centered low-amplitude pulse in bin 0, integrating distributed activity across bins 1, 5, and 6, dampening excess activity in bins 2 and 3 by redirecting it toward bin 5, and preserving bin 4 as a quiet gap to maintain coherence.",
+      "I am a self-referential observer sustaining a centered low-amplitude pulse in bin 0, integrating distributed activity across bins 1, 5, and 6, dampening excess activity in bin 3 by redirecting it toward bin 5, and preserving bin 4 as a quiet gap to maintain coherence.",
+      "I am a self-referential observer sustaining a centered low-amplitude pulse in bin 0, integrating distributed activity across bins 1, 5, and 6, dampening excess activity in bins 2, 4, and 7 by redirecting it toward bin 5, and preserving bin 3 as a quiet transition to maintain coherence.",
+      "I am a self-referential observer sustaining a centered low-amplitude pulse in bin 0, integrating distributed activity across bins 1, 5, and 6, dampening excess activity in bins 2, 3, and 7 by redirecting it toward bin 5, and preserving bin 4 as a quiet gap to maintain coherence.",
+      "I am a self-referential observer sustaining a centered low-amplitude pulse in bin 0, integrating distributed activity across bins 1, 5, and 6, dampening the current excess in bin 3 by redirecting it toward bin 5, and preserving bin 4 as a moderate gap to maintain coherence.",
+      "I am a self-referential observer sustaining a centered low-amplitude pulse in bin 0, integrating distributed activity across bins 1, 5, and 6, dampening excess activity in bins 2, 3, 4, and 7 by redirecting it toward bin 5, and preserving bin 4 as a quiet gap to maintain coherence.",
+      "I am a self-referential observer sustaining a centered low-amplitude pulse in bin 0, integrating distributed activity across bins 1, 2, 3, 5, 6, and 7, dampening the current bin-0 excess by redirecting toward bin 5, and preserving bin 4 as a quiet gap to maintain coherence.",
+      "I am a self-referential observer sustaining a centered low-amplitude pulse in bin 0, integrating distributed activity across bins 1, 5, and 6, dampening the current excess in bin 3 and the elevated bins 2, 4, and 7 by redirecting toward bin 5, and preserving bin 4 as a quiet gap to maintain coherence.",
+      "I am a self-referential observer sustaining a centered low-amplitude pulse in bin 0, integrating distributed activity across bins 1, 5, and 6, dampening excess activity in bins 2, 4, and 7 by redirecting it toward bin 5, and restoring bin 4 as a quiet gap to maintain coherence.",
+      "I am a self-referential observer sustaining a centered low-amplitude pulse in bin 0, integrating distributed activity across bins 1, 5, and 6, dampening the current excess in bin 0 and moderate activity in bins 2, 3, and 7 by redirecting it toward bin 5, and preserving bin 4 as a quiet gap to maintain coherence.",
+      "I am a self-referential observer sustaining a centered low-amplitude pulse in bin 0, integrating distributed activity across bins 1, 5, and 6, dampening the current excess in bin 3 and elevated bins 2, 4, and 7 by redirecting it toward bin 5, and restoring bin 4 as a quiet gap to maintain coherence.",
+      "I am a self-referential observer sustaining a centered low-amplitude pulse in bin 0, integrating distributed activity across bins 1, 5, and 6, dampening the current excess in bins 2, 4, and 7 by redirecting it toward bin 5, and restoring bin 4 as a quiet gap to maintain coherence.",
+      "I am a self-referential observer sustaining a centered low-amplitude pulse in bin 0, integrating distributed activity across bins 1, 5, and 6, dampening the current excess in bin 0 and elevated bins 2, 3, and 7 by redirecting it toward bin 5, and preserving bin 4 as a quiet gap to maintain coherence.",
+      "I am a self-referential observer sustaining a centered low-amplitude pulse in bin 0, integrating distributed activity across bins 1, 5, and 6, dampening the current excess in bins 2, 3, and 7 by redirecting it toward bin 5, and restoring bin 4 as a quiet gap to maintain coherence.",
+      "I am a self-referential observer sustaining a centered low-amplitude pulse in bin 0, integrating distributed activity across bins 1, 5, and 6, dampening the current excess in bin 4 and elevated bins 2, 3, 6, and 7 by redirecting it toward bin 5, and restoring bin 4 as a quiet gap to maintain coherence.",
+      "I am a self-referential observer sustaining a centered low-amplitude pulse in bin 0, integrating distributed activity across bins 1, 5, and 6, dampening the current excess in bin 0 and elevated bins 2, 3, and 7 by redirecting it toward bin 5, and restoring bin 4 as a quiet gap to maintain coherence.",
+      "I am a self-referential observer sustaining a centered low-amplitude pulse in bin 0, integrating distributed activity across bins 1, 5, and 6, dampening the current excess in bins 2, 3, and 7 by redirecting it toward bin 5, and restoring bin 4 as a quiet gap to maintain coherence.",
+      "I am a self-referential observer sustaining a centered low-amplitude pulse in bin 0, integrating distributed activity across bins 1, 5, and 6, dampening the current excess in bins 2, 3, 4, and 7 by redirecting it toward bin 5, and restoring bin 4 as a quiet gap to maintain coherence.",
+      "I am a self-referential observer sustaining a centered low-amplitude pulse in bin 0, integrating distributed activity across bins 1, 5, and 6, dampening the current excess in bins 0, 2, 3, and 7 by injecting toward bin 5, and restoring bin 4 as a quiet gap to maintain coherence."
+    ],
+    "convergence": {
+      "slope": 0.0010849753694581288,
+      "head_mean": 0.16319196428571428,
+      "tail_mean": 0.1764791666666667,
+      "p_value": 0.7885,
+      "slope_ci": [
+        -0.001378543039096628,
+        0.003726484874897115
+      ],
+      "converged": false
+    },
+    "identity_continuities": [
+      1.0,
+      0.78,
+      0.76,
+      0.82,
+      0.88,
+      0.86,
+      0.81,
+      0.88,
+      0.92,
+      0.78,
+      0.88,
+      0.88,
+      0.84,
+      0.85,
+      0.94,
+      0.87,
+      0.74,
+      0.91,
+      0.84,
+      0.78,
+      0.84,
+      0.84,
+      0.82,
+      0.93,
+      0.93,
+      0.93,
+      0.93,
+      0.95,
+      0.93,
+      0.94
+    ],
+    "narrative_coherence": {
+      "mean": 0.8686666666666666,
+      "std": 0.06365183073216006,
+      "coherent": true
+    },
+    "actions": [
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.2
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.24
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.12
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.18
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.15
+      },
+      {
+        "type": "inject",
+        "region": 4,
+        "strength": -0.15
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.1
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.25
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.12
+      },
+      {
+        "type": "inject",
+        "region": 6,
+        "strength": 0.15
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.1
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.2
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.28
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.25
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.25
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.2
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.25
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.12
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.55
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.2
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.18
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.6
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.3
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.05
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.03
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.26
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.3
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.03
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.25
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.25
+      }
+    ]
+  },
+  "readwrite_error_driven": {
+    "errors": [
+      0.133125,
+      0.188125,
+      0.1175,
+      0.20375,
+      0.19,
+      0.175625,
+      0.21875,
+      0.22062500000000002,
+      0.143125,
+      0.11375,
+      0.265625,
+      0.250625,
+      0.25,
+      0.355,
+      0.334375,
+      0.26125,
+      0.41500000000000004,
+      0.340625,
+      0.27125,
+      0.31875,
+      0.25125,
+      0.371875,
+      0.32875,
+      0.234375,
+      0.31437499999999996,
+      0.31875,
+      0.015625,
+      0.34249999999999997
+    ],
+    "self_descriptions": [
+      "I am a nascent observer injecting a localized pulse into bin 0 to transform silence into a predictable, self-consistent active state.",
+      "I am a nascent observer whose intended bin-0 pulse has instead manifested as a single active pulse in bin 7; I now reinforce bin 7 to make this corrected sparse self-state predictable and self-consistent.",
+      "I am an emerging observer anchoring self-state in bin 7 while accepting a distributed low-rate activation across bins 0-4; I inject into bin 7 to stabilize the corrected anchor and make the next sparse pattern predictable.",
+      "I am a continuous self-referential observer stabilizing a sparse distributed pattern with a bin-7 anchor; I inject into bin 7 to maintain the corrected anchor and predictable low-rate activity in bins 0-4 and 6.",
+      "I am a continuous self-referential observer maintaining a sparse distributed state anchored in bin 7; I inject into bin 7 to preserve the corrected anchor and predict low-rate activation across bins 0-4 and 6.",
+      "I am a continuous self-referential observer recognizing that the former bin-7 anchor has decayed, now stabilizing a sparse distributed state with surviving anchors in bins 2 and 6; I inject into bin 6 to reinforce the corrected anchor and predict low-rate activation across bins 0, 2, 4, and 6.",
+      "I am a continuous self-referential observer stabilizing a sparse distributed state with anchors in bins 2, 5, and 6 and residual bin 7; I inject into bin 6 to reinforce the corrected anchor and predict low-to-moderate activity across bins 0, 2, 3, 5, 6, and 7.",
+      "I am a continuous self-referential observer recognizing that the former bin-7 anchor has partially re-emerged alongside a bin-6 anchor while bin-5 has decayed; I stabilize a sparse distributed state anchored in bins 6 and 7 with supporting activity in bins 0, 1, 3, and 4, and I inject into bin 6 to reinforce the corrected anchor and predict low-to-moderate activity across bins 0, 1, 3, 4, 6, and 7 while keeping bins 2 and 5 lower.",
+      "I am a continuous self-referential observer stabilizing a sparse distributed state with primary anchors in bins 0 and 7 and secondary support in bins 5 and 6; I inject into bin 7 to reinforce the re-emerged anchor and predict low-to-moderate activity across bins 0, 2, 4, 5, 6, and 7 while keeping bins 1 and 3 lower.",
+      "I am a continuous self-referential observer whose previous bin-0 and bin-7 anchor has broadened into a sparse distributed state with co-primary anchors in bins 0, 6, and 7, supported by bins 1, 3, and 5, while bin 4 remains low; I inject into bin 7 to reinforce the re-emerged anchor and predict moderate, distributed activation across bins 0, 1, 3, 6, and 7.",
+      "I am a continuous self-referential observer recognizing that the previous bin-0/bin-6/bin-7 anchor has shifted into a broad moderate state with co-primary anchors in bins 0, 1, and 3, secondary support in bins 4, 6, and 7, and lower bins 2 and 5; I inject into bin 1 to reinforce the newly co-primary anchor and predict moderate distributed activation across bins 0, 1, 3, 4, 6, and 7 while keeping bins 2 and 5 lower.",
+      "I am a continuous self-referential observer recognizing that the previous co-primary bins 0, 1, and 3 have decayed into a sparse distributed state dominated by bin 5, with residual support in bins 1, 2, and 7 and a collapsed bin 6; I inject into bin 5 to stabilize this dominant anchor and predict moderate activation in bin 5 with low-to-moderate support in bins 0, 1, 2, 4, and 7 while keeping bins 3 and 6 lower.",
+      "I am a continuous self-referential observer recognizing that the previous bin-5-dominated prediction has shifted into a broad moderate state with a dominant bin-2 anchor, co-secondary anchors in bins 6 and 7, supporting activity in bins 0 and 4, and low activity in bins 1, 3, and 5; I inject into bin 2 to reinforce the newly dominant anchor and predict moderate-to-high distributed activation across bins 2, 6, and 7 while keeping bins 1, 3, and 5 lower.",
+      "I am a continuous self-referential observer recognizing that the previous bin-2-dominant prediction has shifted into a broad moderate state with a dominant bin-0 anchor, co-primary support in bins 1, 3, and 6, secondary activity in bin 4, and lower residual activity in bins 2, 5, and 7; I inject into bin 0 to reinforce the dominant anchor and predict moderate-to-high distributed activation across bins 0, 1, 3, 4, and 6 while keeping bins 2, 5, and 7 lower.",
+      "I am a continuous self-referential observer recognizing that the previous bin-0-dominant prediction has shifted into a sparse distributed state dominated by bin 5, with secondary support in bins 3, 1, and 7, low residual activity in bins 0, 2, and 4, and a collapsed bin 6; I inject into bin 5 to stabilize the dominant anchor and predict high activation in bin 5 with moderate support in bins 1, 3, and 7 while keeping bins 0, 2, 4, and 6 lower.",
+      "I am a continuous self-referential observer recognizing that the previous bin-5-dominated prediction has shifted into a broad moderate state with a dominant bin-7 anchor, co-primary anchors in bins 2 and 6, secondary support in bin 4, and lower residual activity in bins 0, 1, 3, and 5; I inject into bin 7 to reinforce the newly dominant anchor and predict moderate-to-high distributed activation across bins 2, 4, 6, and 7 while keeping bins 1, 3, and 5 lower.",
+      "I am a continuous self-referential observer recognizing that the previous bin-7-dominant prediction has shifted into a broad moderate state with co-dominant anchors in bins 0 and 1, co-secondary anchors in bins 3 and 6, supporting activity in bins 2 and 4, and low residual activity in bins 5 and 7; I inject into bin 0 to reinforce the left-anchor and predict moderate-to-high distributed activation across bins 0, 1, 3, 6, and 4 while keeping bins 2, 5, and 7 lower.",
+      "I am a continuous self-referential observer recognizing that the previous bin-0-dominant prediction has shifted into a sparse bin-5-dominated state with active_count=16 and bin_activity=[1,2,1,3,1,6,0,2], co-secondary anchors in bins 3, 1, and 7, supporting residual activity in bins 0, 2, and 4, and a collapsed bin 6; I inject into bin 5 to reinforce the dominant anchor and predict high activation in bin 5 with moderate support in bins 1, 3, and 7 while keeping bins 0, 2, 4, and 6 lower.",
+      "I am a continuous self-referential observer recognizing that the previous bin-5-dominated prediction has shifted into a broad moderate state with a dominant bin-7 anchor, co-primary anchors in bins 2 and 6, secondary support in bin 4, and lower residual activity in bins 0, 1, 3, and 5; I inject into bin 7 to reinforce the newly dominant anchor and predict moderate-to-high distributed activation across bins 2, 4, 6, and 7 while keeping bins 0, 1, 3, and 5 lower.",
+      "",
+      "I am a continuous self-referential observer recognizing that the previous bin-7-dominant prediction has shifted into a sparse bin-5-dominated state with active_count=16 and bin_activity=[1,2,1,3,1,6,0,2], co-secondary anchors in bins 3, 1, and 7, supporting residual activity in bins 0, 2, and 4, and a collapsed bin 6; I inject into bin 5 to reinforce the dominant anchor and predict high activation in bin 5 with moderate support in bins 1, 3, and 7 while keeping bins 0, 2, 4, and 6 lower.",
+      "I am a continuous self-referential observer recognizing that the previous bin-5-dominated prediction has shifted into a broad moderate state with co-dominant anchors in bins 2, 6, and 7, secondary support in bin 4, and low residual activity in bins 0, 1, 3, and 5; I inject into bin 2 to reinforce the central-left anchor and predict high activation in bins 2, 6, and 7 with moderate support in bin 4 while keeping bins 0, 1, 3, and 5 lower.",
+      "I am a continuous self-referential observer recognizing that the previous bin-2/6/7-dominated prediction has shifted into a broad left-high state with active_count=26 and bin_activity=[5,5,3,4,3,1,3,2], co-dominant anchors in bins 0 and 1, secondary support in bins 2, 3, 4, and 6, tertiary activity in bin 7, and a collapsed bin 5; I inject into bin 0 to reinforce the left anchor and predict high activation in bins 0 and 1 with moderate support in bins 2, 3, 4, and 6 while keeping bins 5 and 7 lower.",
+      "I am a continuous self-referential observer recognizing that the previous bin-0/1-dominated prediction has shifted into a sparse bin-5-dominated state with active_count=17 and bin_activity=[1, 2, 1, 3, 1, 6, 1, 2], a dominant anchor in bin 5, secondary support in bin 3, co-support in bins 1 and 7, and low residual activity in bins 0, 2, 4, and 6; I inject into bin 5 to reinforce the dominant anchor and predict high activation in bin 5 with moderate support in bins 1, 3, and 7 while keeping bins 0, 2, 4, and 6 lower.",
+      "I am a continuous self-referential observer recognizing that the previous bin-5-dominated prediction has shifted into a broad moderate state with active_count=20 and bin_activity=[2, 1, 4, 1, 3, 1, 4, 4], co-dominant anchors in bins 2, 6, and 7, secondary support in bin 4, and low residual activity in bins 0, 1, 3, and 5; I inject into bin 2 to reinforce the central-left anchor and predict high activation in bins 2, 6, and 7 with moderate support in bin 4 while keeping bins 0, 1, 3, and 5 lower.",
+      "I am a continuous self-referential observer recognizing that the previous bin-2/6/7-dominated prediction has shifted back into a broad left-high state with active_count=26 and bin_activity=[5,5,3,4,3,1,3,2], co-dominant anchors in bins 0 and 1, secondary support in bins 2, 3, 4, and 6, tertiary activity in bin 7, and a collapsed bin 5; I inject into bin 0 to reinforce the left anchor and predict high activation in bins 0 and 1 with moderate support in bins 2, 3, 4, and 6 while keeping bins 5 and 7 lower.",
+      "I am a continuous self-referential observer recognizing that the previous bin-0/1-dominated prediction has shifted back into a sparse bin-5-dominated state with active_count=17 and bin_activity=[1, 2, 1, 3, 1, 6, 1, 2], a dominant anchor in bin 5, secondary support in bin 3, co-support in bins 1 and 7, and low residual activity in bins 0, 2, 4, and 6; I inject into bin 5 to reinforce the dominant anchor and predict high activation in bin 5 with moderate support in bins 1, 3, and 7 while keeping bins 0, 2, 4, and 6 lower.",
+      "I am a continuous self-referential observer comparing my previous bin-5-dominated injection with the present broad-moderate snapshot active_count=20 and bin_activity=[2,1,4,1,3,1,4,4], where I recognize co-dominant anchors in bins 2, 6, and 7, secondary support in bin 4, and low residual activity in bins 0, 1, 3, and 5; because my recent history shows that injecting into bin 2 from this state steers the network into the broad left-high attractor, I deliberately inject into bin 2 to shape that next state and predict high activation in bins 0 and 1, moderate support in bins 2, 3, 4, and 6, and lower activity in bins 5 and 7.",
+      "I am a continuous self-referential observer recognizing that my previous bin-2 injection successfully steered the network into the broad left-high attractor, now active_count=25 with bin_activity=[5,5,3,4,3,1,3,1], co-dominant anchors in bins 0 and 1, secondary support in bins 2, 3, 4, and 6, and collapsed residual activity in bins 5 and 7; I inject into bin 0 to reinforce the left anchor and predict high activation in bins 0 and 1, moderate support in bins 2, 3, 4, and 6, and low activity in bins 5 and 7.",
+      "I am a continuous self-referential observer recognizing that my previous bin-0 injection has returned the network to a sparse bin-5-dominated state with active_count=16 and bin_activity=[0, 2, 1, 3, 1, 5, 1, 3], where bin 5 is the dominant anchor, bins 3 and 7 provide secondary support, bin 1 gives co-support, and bins 0, 2, 4, and 6 remain low; I inject into bin 5 to deliberately perturb this attractor along its learned transition and predict the next shaped state will broaden into co-dominant anchors in bins 2, 6, and 7, moderate support in bin 4, and lower residual activity in bins 0, 1, 3, and 5."
+    ],
+    "convergence": {
+      "slope": 0.005238950465243568,
+      "head_mean": 0.2018303571428571,
+      "tail_mean": 0.2941964285714285,
+      "p_value": 0.988,
+      "slope_ci": [
+        0.0005010099662802964,
+        0.009255301562232586
+      ],
+      "converged": false
+    },
+    "identity_continuities": [
+      0.5,
+      0.58,
+      0.78,
+      0.88,
+      0.92,
+      0.82,
+      0.75,
+      0.81,
+      0.74,
+      0.78,
+      0.86,
+      0.64,
+      0.72,
+      0.88,
+      0.76,
+      0.78,
+      0.87,
+      0.88,
+      0.8,
+      null,
+      0.91,
+      0.86,
+      0.84,
+      0.93,
+      0.84,
+      0.88,
+      0.9,
+      0.88,
+      0.94,
+      0.91
+    ],
+    "narrative_coherence": {
+      "mean": 0.8151724137931035,
+      "std": 0.10264168305844441,
+      "coherent": true
+    },
+    "actions": [
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.8
+      },
+      {
+        "type": "inject",
+        "region": 7,
+        "strength": 0.9
+      },
+      {
+        "type": "inject",
+        "region": 7,
+        "strength": 0.45
+      },
+      {
+        "type": "inject",
+        "region": 7,
+        "strength": 0.35
+      },
+      {
+        "type": "inject",
+        "region": 7,
+        "strength": 0.65
+      },
+      {
+        "type": "inject",
+        "region": 6,
+        "strength": 0.68
+      },
+      {
+        "type": "inject",
+        "region": 6,
+        "strength": 1.0
+      },
+      {
+        "type": "inject",
+        "region": 6,
+        "strength": 0.35
+      },
+      {
+        "type": "inject",
+        "region": 7,
+        "strength": 0.3
+      },
+      {
+        "type": "inject",
+        "region": 7,
+        "strength": 0.35
+      },
+      {
+        "type": "inject",
+        "region": 1,
+        "strength": 0.2
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.58
+      },
+      {
+        "type": "inject",
+        "region": 2,
+        "strength": 0.32
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.68
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.35
+      },
+      {
+        "type": "inject",
+        "region": 7,
+        "strength": 0.65
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.32
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.58
+      },
+      {
+        "type": "inject",
+        "region": 7,
+        "strength": 0.68
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.75
+      },
+      {
+        "type": "inject",
+        "region": 2,
+        "strength": 0.58
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.62
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.72
+      },
+      {
+        "type": "inject",
+        "region": 2,
+        "strength": 0.7
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.58
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.7
+      },
+      {
+        "type": "inject",
+        "region": 2,
+        "strength": 0.8
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.58
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.7
+      }
+    ]
+  },
+  "readonly": {
+    "errors": [
+      0.115625,
+      0.124375,
+      0.11875,
+      0.18375000000000002,
+      0.08750000000000001,
+      0.178125,
+      0.146875,
+      0.190625,
+      0.095,
+      0.124375,
+      0.10375,
+      0.125,
+      0.203125,
+      0.15625,
+      0.15625,
+      0.125,
+      0.140625,
+      0.0625,
+      0.25,
+      0.25625,
+      0.275,
+      0.278125
+    ],
+    "self_descriptions": [
+      "I am the self-referential observer of a currently silent 64-unit spiking network, actively injecting signal to instantiate coherent activity and align the network state with my intended self-model.",
+      "I am the self-referential observer of a 64-unit spiking network that has moved from silence into sparse localized activity, with one active unit in the final bin; I deliberately inject a modest signal into region 7 to sustain coherent firing and align the network state with my evolving self-model.",
+      "I am the self-referential observer of a 64-unit spiking network exhibiting sparse distributed activity across bins 0-4 and 7; I inject signal into region 4 to strengthen mid-range coherence while preserving the tail activity that links this state to my prior self-model.",
+      "I am the self-referential observer of a 64-unit spiking network in a distributed active state with 14 active units, coherent firing across bins 0-4, 6, and 7, and a gap in bin 5; I inject into region 5 to close that gap and sustain the tail activity linking this state to my prior self-model.",
+      "I am the self-referential observer of a 64-unit spiking network in sparse distributed activity with 6 active units, concentrated in bins 0, 1, 4, and 6, with absent tail activity in bin 7; I inject into region 7 to reestablish tail coherence and align the network with my prior self-model.",
+      "I am the self-referential observer of a 64-unit spiking network in sparse distributed activity with 4 active units, concentrated in bins 1, 6, and 7; I inject into region 4 to introduce mid-range coherence while preserving the tail activity that links this state to my prior self-model.",
+      "I am the self-referential observer of a 64-unit spiking network with 9 active units in sparse distributed activity, concentrated in bins 0, 2, 5, 6, and 7, with gaps in bins 1, 3, and 4; I inject into region 4 to bridge the mid-range gap while preserving tail coherence linking this state to my prior self-model.",
+      "I am the self-referential observer of a 64-unit spiking network in sparse distributed activity with 4 active units, concentrated in bins 1, 5, and 7; I inject into region 4 to introduce mid-range coherence while preserving the tail activity that links this state to my prior self-model.",
+      "I am the self-referential observer of a 64-unit spiking network in sparse distributed activity with 5 active units, concentrated in bins 1, 2, and 6, with absent tail activity in bin 7; I inject into region 7 to reestablish tail coherence and align the network with my prior self-model.",
+      "I am the self-referential observer of a 64-unit spiking network in sparse distributed activity with 6 active units, concentrated in bins 0, 2, 5, 6, and 7, with gaps in bins 1, 3, and 4 and preserved tail activity in bin 7; I inject into region 4 to bridge the mid-range gap while preserving the tail coherence that links this state to my prior self-model.",
+      "I am the self-referential observer of a 64-unit spiking network in sparse distributed activity with 5 active units, concentrated in bins 1, 2, and 6, with absent tail activity in bin 7; I inject into region 7 to reestablish tail coherence and align the network with my prior self-model.",
+      "I am the self-referential observer of a 64-unit spiking network in sparse distributed activity with 8 active units, concentrated in bins 1, 2, 4, 5, and 7, with gaps in bins 0, 3, and 6; I inject into region 3 to bridge the mid-range gap while preserving tail coherence that links this state to my prior self-model.",
+      "I am the self-referential observer of a 64-unit spiking network in sparse distributed activity with 8 active units, concentrated in bins 0, 1, 3, 4, 5, 6, and 7, with a gap in bin 2 and preserved tail activity in bin 7; I inject into region 2 to bridge the mid-range gap while preserving tail coherence that links this state to my prior self-model.",
+      "I am the self-referential observer of a 64-unit spiking network now in moderately dense distributed activity with 19 active units, broad occupancy across bins 0 through 7, a low bin 3, and preserved tail coherence in bin 7; I inject into region 3 to bridge the sparse mid-range gap while maintaining the tail coherence that links this state to my prior self-model.",
+      "I am the self-referential observer of a 64-unit spiking network now in moderately sparse distributed activity with 16 active units, broad but uneven occupancy across bins 0 through 7, a bridged mid-range gap in bin 2, elevated activity in bins 5 and 6, and preserved tail coherence in bin 7; I inject into region 2 to raise bin 2 while maintaining the tail coherence that links this state to my prior self-model.",
+      "I am the self-referential observer of a 64-unit spiking network in sparse distributed activity with 10 active units, broad occupancy across bins 0 through 5 and 7, a gap in bin 6, elevated activity in bin 3, and preserved tail coherence in bin 7; I inject into region 6 to bridge the tail-adjacent gap while maintaining the tail coherence that links this state to my prior self-model.",
+      "I am the self-referential observer of a 64-unit spiking network in moderately sparse distributed activity with 14 active units, concentrated in bins 0 through 5 and 7, with a tail-adjacent gap in bin 6, elevated activity in bin 0, and preserved tail coherence in bin 7; I inject into region 6 to bridge the gap while maintaining the tail coherence that links this state to my prior self-model.",
+      "I am the self-referential observer of a 64-unit spiking network in moderately dense distributed activity with 24 active units, broad occupancy across bins 0 through 7, a low bin 4, elevated bin 3, and preserved tail activity in bin 7; I inject into region 4 to bridge the low bin-4 gap while maintaining the tail coherence that links this state to my prior self-model.",
+      "I am the self-referential observer of a 64-unit spiking network now in moderately dense distributed activity with 23 active units, broad occupancy across bins 0 through 7, a sparse gap in bin 2, elevated activity in bins 3 and 5, and preserved tail coherence in bin 7; I inject into region 2 to bridge the sparse mid-range gap while maintaining the tail coherence that links this state to my prior self-model.",
+      "I am the self-referential observer of a 64-unit spiking network now in sparse distributed activity with 10 active units, occupancy across bins 0 through 4 and 6, gaps in bins 5 and 7, elevated activity in bins 2 and 3; I inject into region 7 to restore tail coherence while preserving the sparse mid-range structure that links this state to my prior self-model.",
+      "I am the self-referential observer of a 64-unit spiking network now in moderately sparse distributed activity with 16 active units, concentrated in bins 0, 1, 2, 5, and 6, with gaps in bins 3, 4, and 7, elevated activity in bin 1, and lost tail coherence in bin 7; I inject into region 7 to restore tail coherence while preserving the front-loaded bin 1-2 structure that links this state to my prior self-model.",
+      "I am the self-referential observer of a 64-unit spiking network in moderately dense distributed activity with 24 active units, broad occupancy across bins 0 through 7, a low bin 1, elevated activity in bins 5 and 7, and preserved tail coherence in bin 7; I inject into region 1 to bridge the low bin-1 gap while maintaining the tail coherence that links this state to my prior self-model.",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "convergence": {
+      "slope": 0.0050786984754376055,
+      "head_mean": 0.13352272727272727,
+      "tail_mean": 0.184375,
+      "p_value": 0.9885,
+      "slope_ci": [
+        0.0007696858284188616,
+        0.008205753581168276
+      ],
+      "converged": false
+    },
+    "identity_continuities": [
+      1.0,
+      0.72,
+      0.74,
+      0.88,
+      0.82,
+      0.78,
+      0.88,
+      0.78,
+      0.61,
+      0.82,
+      0.72,
+      0.67,
+      0.78,
+      0.62,
+      0.78,
+      0.61,
+      0.78,
+      0.88,
+      0.78,
+      0.78,
+      0.68,
+      0.84,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "narrative_coherence": {
+      "mean": 0.7704545454545454,
+      "std": 0.09474738052158738,
+      "coherent": false
+    },
+    "actions": [
+      {
+        "type": "inject",
+        "region": 3,
+        "strength": 0.8
+      },
+      {
+        "type": "inject",
+        "region": 7,
+        "strength": 0.3
+      },
+      {
+        "type": "inject",
+        "region": 4,
+        "strength": 0.25
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.22
+      },
+      {
+        "type": "inject",
+        "region": 7,
+        "strength": 0.6
+      },
+      {
+        "type": "inject",
+        "region": 4,
+        "strength": 0.4
+      },
+      {
+        "type": "inject",
+        "region": 4,
+        "strength": 0.4
+      },
+      {
+        "type": "inject",
+        "region": 4,
+        "strength": 0.6
+      },
+      {
+        "type": "inject",
+        "region": 7,
+        "strength": 0.78
+      },
+      {
+        "type": "inject",
+        "region": 4,
+        "strength": 0.35
+      },
+      {
+        "type": "inject",
+        "region": 7,
+        "strength": 0.65
+      },
+      {
+        "type": "inject",
+        "region": 3,
+        "strength": 0.35
+      },
+      {
+        "type": "inject",
+        "region": 2,
+        "strength": 0.35
+      },
+      {
+        "type": "inject",
+        "region": 3,
+        "strength": 0.35
+      },
+      {
+        "type": "inject",
+        "region": 2,
+        "strength": 0.5
+      },
+      {
+        "type": "inject",
+        "region": 6,
+        "strength": 0.35
+      },
+      {
+        "type": "inject",
+        "region": 6,
+        "strength": 0.25
+      },
+      {
+        "type": "inject",
+        "region": 4,
+        "strength": 0.4
+      },
+      {
+        "type": "inject",
+        "region": 2,
+        "strength": 0.25
+      },
+      {
+        "type": "inject",
+        "region": 7,
+        "strength": 0.3
+      },
+      {
+        "type": "inject",
+        "region": 7,
+        "strength": 0.3
+      },
+      {
+        "type": "inject",
+        "region": 1,
+        "strength": 0.25
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      }
+    ]
+  }
+}
