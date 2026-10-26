@@ -23,6 +23,7 @@ class BalancedNetwork:
         j_inh=-4.0,
         external_mean=0.3,
         external_noise=0.15,
+        delay_max=1,
         threshold=1.0,
         refractory=2,
         leak=0.1,
@@ -40,6 +41,7 @@ class BalancedNetwork:
         self.dt = float(dt)
         self.external_mean = float(external_mean)
         self.external_noise = float(external_noise)
+        self.delay_max = int(delay_max)
 
         # 抑制单元占 20%
         n_inhib = int(round(self.n_units * 0.2))
@@ -78,7 +80,21 @@ class BalancedNetwork:
         data = np.concatenate(data_parts)
         # 去掉自连接（若有）
         keep = post != pre
-        self.W.set_coo(post[keep], pre[keep], data[keep])
+        post = post[keep]
+        pre = pre[keep]
+        data = data[keep]
+        # 给每条边分配固定的突触延迟（均匀 1~delay_max）
+        if self.delay_max > 1:
+            edge_delay = rng.integers(1, self.delay_max + 1, size=len(post))
+        else:
+            edge_delay = np.ones(len(post), dtype=np.int64)
+        self._edge_post = post
+        self._edge_pre = pre
+        self._edge_w = data
+        self._edge_delay = edge_delay
+        self.W.set_coo(post, pre, data)
+        # 延迟缓冲：delay_buf[t] 存「t 步后要送达各单元的突触输入」
+        self._delay_buf = np.zeros((self.delay_max, self.n_units), dtype=float)
 
         self.V = rng.uniform(0.0, self.threshold, size=self.n_units)
         self.refrac = np.zeros(self.n_units, dtype=int)
@@ -91,7 +107,30 @@ class BalancedNetwork:
             else np.asarray(external_input, dtype=float)
         )
         was_refractory = self.refrac > 0
-        synaptic = self.W.dot(self.spikes.astype(float))
+        # 1. 本步送达的突触输入 = delay_buf[0]
+        synaptic = self._delay_buf[0].copy()
+        # 2. 左移缓冲
+        if self.delay_max > 1:
+            self._delay_buf[:-1] = self._delay_buf[1:]
+            self._delay_buf[-1] = 0.0
+        else:
+            self._delay_buf[0] = 0.0
+        # 3. 当前发放的 spike 按各自延迟写入缓冲
+        if self.spikes.any():
+            active = self.spikes[self._edge_pre]
+            if active.any():
+                posts = self._edge_post[active]
+                weights = self._edge_w[active]
+                delays = self._edge_delay[active]
+                # 对每个延迟层级分别累加
+                for d in range(1, self.delay_max + 1):
+                    mask = delays == d
+                    if mask.any():
+                        np.add.at(
+                            self._delay_buf[d - 1],
+                            posts[mask],
+                            weights[mask],
+                        )
         background = self._sample_background()
         integrating = ~was_refractory
         self.V[integrating] = (
