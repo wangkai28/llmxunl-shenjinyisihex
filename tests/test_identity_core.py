@@ -2,6 +2,14 @@ from bioelectric.event import Event
 from bioelectric.identity_core import IdentityCore
 
 
+def test_persona_param_changes_network(tmp_path):
+    # 不同 persona 应产生不同的网络性格参数
+    id_core = IdentityCore(persona="id", state_dir=str(tmp_path / "a"), seed=0)
+    super_core = IdentityCore(persona="superego", state_dir=str(tmp_path / "b"), seed=0)
+    # 本我应比超我有更强的外部驱动（冲动）
+    assert id_core._network.external_mean > super_core._network.external_mean
+
+
 def test_process_event_changes_dominant_self(tmp_path):
     core = IdentityCore(persona="tao", state_dir=str(tmp_path / "id"), seed=0)
     # 危险事件 → 本我主导

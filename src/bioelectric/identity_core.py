@@ -6,6 +6,7 @@ from .balanced_network import BalancedNetwork
 from .continuity import save_snapshot, load_snapshot, append_autobiography
 from .event import Event, encode_event
 from .multi_self import MultiSelf, set_context, _drive
+from .persona import PERSONAS
 
 
 def _query_state(ms: MultiSelf, steps: int):
@@ -31,9 +32,13 @@ class IdentityCore:
         self.persona = persona
         self.state_dir = state_dir
         self.seed = seed
+        cfg = PERSONAS.get(persona)
+        if cfg is None:
+            raise ValueError(f"unknown persona {persona!r}")
         self._network = BalancedNetwork(
-            n_units=600, k_exc=10, j_inh=-4.5,
-            external_mean=0.15, external_noise=0.08, delay_max=4, seed=seed,
+            n_units=600, k_exc=10, j_inh=cfg["j_inh"],
+            external_mean=cfg["external_mean"], external_noise=cfg["external_noise"],
+            delay_max=4, seed=seed,
         )
         self._ms = MultiSelf(
             self._network,
