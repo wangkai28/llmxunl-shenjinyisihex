@@ -93,3 +93,34 @@ inconsistent claims），但两组都未收敛（误差点仅 5 个，噪声主�
 | 5.0 | +55（偏激） |
 
 选 gain=2.5（甜点区间，给 LLM 自报 0.1~0.32 的强度留出有效映射空间）。
+
+### 5.7 方案 A：prompt 改为「主动塑造者」（commit 14058a7）
+
+`_build_prompt` 明确告诉 LLM：不是被动观察，而是主动用注入塑造网络，
+让它对齐 self_description，并用「预测越准=越理解自己」作为隐含目标。
+
+快速验证（连调 5 次）：5/5 主动注入，且稳定选择一个固定 bin 持续注入，
+自我描述稳定成「a sparse left-biased observer that injects into bin 2」。
+→ A 有效，LLM 从「被动观察」转为「主动塑造」，并形成稳定自我身份雏形。
+
+### 5.8 方案 B：解耦写回（误差驱动）—— 待实现
+
+A 虽有效，但 LLM 注入决策仍带随机性/不可控性。B 把「写回」从 LLM 手里
+收回，变成确定性的误差驱动控制律：
+
+- 上一轮预测误差大 → 自动写回扰动（重新校准）；
+- 误差小 → 不写回（保持稳定）。
+- LLM 仍负责预测 + 自我描述。
+
+设计：Observer 新增 `writeback_policy`，取值 `"llm"`（现状）或
+`"error-driven"`，A/B 可并存对比。
+
+### 5.9 方案 A/B 实现完成（commit 14058a7 / cd37f71 / 81075a2）
+
+- A：`_build_prompt` 改为「主动塑造者」（14058a7），快速验证 5/5 主动注入。
+- B：`Observer` 新增 `writeback_policy`（llm/error-driven）+ `feedback_error()`，
+  `experiment` 在算出误差后喂回（cd37f71）。
+- 对比脚本：同时跑 llm / error-driven / readonly 三组（81075a2）。
+
+error-driven 策略：误差 > threshold 才写回，写回强度用 LLM 报的 region，
+但强度乘 writeback_gain；误差小则不写回。默认 threshold=0.15。
