@@ -20,6 +20,9 @@ class SpikingNetwork:
         weight_decay=0.001,
         weight_max=2.0,
         inhibitory_fraction=0.2,
+        inhibitory_weight_scale=1.0,
+        spatial_scale=0.0,
+        threshold_noise=0.0,
         background_rate=0.0,
         background_strength=0.0,
         seed=0,
@@ -35,6 +38,9 @@ class SpikingNetwork:
         self.weight_decay = float(weight_decay)
         self.weight_max = float(weight_max)
         self.inhibitory_fraction = float(inhibitory_fraction)
+        self.inhibitory_weight_scale = float(inhibitory_weight_scale)
+        self.spatial_scale = float(spatial_scale)
+        self.threshold_noise = float(threshold_noise)
         self.background_rate = float(background_rate)
         self.background_strength = float(background_strength)
 
@@ -50,24 +56,66 @@ class SpikingNetwork:
         # 稀疏突触：仅存非零连接（pre→post）。W[i,j] 表示 j→i（post 行, pre 列）。
         self.W = SparseMatrix(self.n_units, self.n_units)
         if connectivity > 0:
-            # 先按边采样：每个 (post, pre) 以 connectivity 概率存在。
-            n_possible = self.n_units * self.n_units
-            # 用确定性的采样：先抽边数，再抽位置，避免生成 N×N 稠密掩码。
-            n_edges = rng.binomial(n_possible, connectivity)
-            flat_idx = rng.choice(n_possible, size=n_edges, replace=False)
-            post = flat_idx // self.n_units
-            pre = flat_idx % self.n_units
-            # 去掉自连接
-            keep = post != pre
-            post = post[keep]
-            pre = pre[keep]
+            if self.spatial_scale > 0.0:
+                post, pre = self._sample_spatial_edges(rng, connectivity)
+            else:
+                post, pre = self._sample_uniform_edges(rng, connectivity)
             magnitude = np.abs(rng.normal(0.0, weight_scale, size=len(post)))
+            magnitude = np.where(
+                self.is_inhibitory[pre],
+                magnitude * self.inhibitory_weight_scale,
+                magnitude,
+            )
             data = magnitude * self._presynaptic_sign[pre]
             self.W.set_coo(post, pre, data)
 
+        # 异质阈值：每个单元阈值在 threshold 附近随机扰动（打破同质性）。
+        if self.threshold_noise > 0.0:
+            self.thresholds = np.abs(
+                rng.normal(self.threshold, self.threshold * self.threshold_noise, size=self.n_units)
+            )
+        else:
+            self.thresholds = np.full(self.n_units, self.threshold)
         self.V = rng.uniform(0.0, self.threshold, size=self.n_units)
         self.refrac = np.zeros(self.n_units, dtype=int)
         self.spikes = np.zeros(self.n_units, dtype=bool)
+
+    def _sample_uniform_edges(self, rng, connectivity):
+        n_possible = self.n_units * self.n_units
+        n_edges = rng.binomial(n_possible, connectivity)
+        flat_idx = rng.choice(n_possible, size=n_edges, replace=False)
+        post = flat_idx // self.n_units
+        pre = flat_idx % self.n_units
+        keep = post != pre
+        return post[keep], pre[keep]
+
+    def _sample_spatial_edges(self, rng, connectivity):
+        """一维环上的距离相关连接：连接概率随环距离高斯衰减。"""
+        # 按环距离分层采样，避免 O(N²) 稠密数组。
+        # 距离 d ∈ [0, N/2]，每个距离约有 N 条边（环上固定），
+        # 每条边以 p(d) = exp(-d²/2σ²) 概率连接。
+        max_d = self.n_units // 2
+        post_parts = []
+        pre_parts = []
+        for d in range(1, max_d + 1):
+            p = np.exp(-(d ** 2) / (2.0 * self.spatial_scale ** 2))
+            if p <= 0.0:
+                continue
+            # 距离 d 的边：post = all units, pre = (post + d) mod N
+            post = np.arange(self.n_units, dtype=np.int64)
+            pre = (post + d) % self.n_units
+            # 每条边以 p 概率连接（由 connectivity 决定基线再乘距离权重）
+            base = connectivity
+            keep_prob = base * p
+            keep = rng.random(self.n_units) < keep_prob
+            if keep.any():
+                post_parts.append(post[keep])
+                pre_parts.append(pre[keep])
+        if not post_parts:
+            return np.empty(0, dtype=np.int64), np.empty(0, dtype=np.int64)
+        post = np.concatenate(post_parts)
+        pre = np.concatenate(pre_parts)
+        return post, pre
 
     def step(self, external_input=None) -> np.ndarray:
         ext = (
@@ -85,7 +133,7 @@ class SpikingNetwork:
                - self.leak * self.V[integrating]) * self.dt
         )
         self.V[was_refractory] = 0.0
-        fired = (self.V >= self.threshold) & integrating
+        fired = (self.V >= self.thresholds) & integrating
         self.spikes = fired
         self.V[fired] = 0.0
         self.refrac[fired] = self.refractory

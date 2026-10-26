@@ -146,3 +146,38 @@ def test_larger_network_runs_fast_enough():
     # 20000 单元、20 步，应远快于 O(N²)（旧实现约 90 秒）。
     # 稀疏优化后约 6 秒（800 万条边），阈值取 15 秒留余量。
     assert dt < 15.0, f"too slow: {dt:.2f}s for 20 steps at n=20000"
+
+
+def test_inhibitory_connections_are_stronger():
+    net = SpikingNetwork(
+        n_units=100, connectivity=0.3, inhibitory_fraction=0.2,
+        inhibitory_weight_scale=3.0, weight_scale=0.5, seed=0,
+    )
+    inhib = net.is_inhibitory
+    dense = net.W.to_dense()
+    # 抑制单元作为 presynaptic 的输出连接（W[:, inhib]）幅值应显著更大
+    inhib_weights = np.abs(dense[:, inhib][dense[:, inhib] != 0])
+    exc_weights = np.abs(dense[:, ~inhib][dense[:, ~inhib] != 0])
+    assert inhib_weights.mean() > exc_weights.mean() * 2.0
+
+
+def test_spatial_connectivity_prefers_near_neighbors():
+    # 一维环上，近邻连接应多于远距离连接
+    net = SpikingNetwork(
+        n_units=200, connectivity=0.1, spatial_scale=5.0, seed=0,
+    )
+    dense = net.W.to_dense()
+    # 计算每条非零边的 |post - pre| 环距离
+    rows, cols = np.nonzero(dense)
+    dist = np.abs(rows - cols)
+    dist = np.minimum(dist, 200 - dist)  # 环距离
+    near = dist <= 5
+    far = dist > 20
+    # 近邻边数应显著多于远距离边数（即使远距离空间上更多）
+    assert near.sum() > far.sum()
+
+
+def test_heterogeneous_thresholds():
+    net = SpikingNetwork(n_units=500, threshold_noise=0.2, seed=0)
+    # 阈值应有差异（不是全部相同）
+    assert net.thresholds.std() > 0.0
