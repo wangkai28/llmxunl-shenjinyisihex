@@ -24,6 +24,7 @@ class BalancedNetwork:
         external_mean=0.3,
         external_noise=0.15,
         delay_max=1,
+        inh_delay_max=None,
         threshold=1.0,
         refractory=2,
         leak=0.1,
@@ -42,6 +43,9 @@ class BalancedNetwork:
         self.external_mean = float(external_mean)
         self.external_noise = float(external_noise)
         self.delay_max = int(delay_max)
+        self.inh_delay_max = (
+            int(inh_delay_max) if inh_delay_max is not None else self.delay_max
+        )
 
         # 抑制单元占 20%
         n_inhib = int(round(self.n_units * 0.2))
@@ -83,18 +87,26 @@ class BalancedNetwork:
         post = post[keep]
         pre = pre[keep]
         data = data[keep]
-        # 给每条边分配固定的突触延迟（均匀 1~delay_max）
+        # 给每条边分配固定的突触延迟。
+        # 抑制突触延迟更短（快速打断兴奋雪崩），兴奋突触延迟均匀 1~delay_max。
+        is_inh_edge = self.is_inhibitory[pre]
+        edge_delay = np.ones(len(post), dtype=np.int64)
+        max_delay = max(self.delay_max, self.inh_delay_max)
         if self.delay_max > 1:
-            edge_delay = rng.integers(1, self.delay_max + 1, size=len(post))
-        else:
-            edge_delay = np.ones(len(post), dtype=np.int64)
+            edge_delay[~is_inh_edge] = rng.integers(
+                1, self.delay_max + 1, size=(~is_inh_edge).sum()
+            )
+        if self.inh_delay_max > 1:
+            edge_delay[is_inh_edge] = rng.integers(
+                1, self.inh_delay_max + 1, size=is_inh_edge.sum()
+            )
         self._edge_post = post
         self._edge_pre = pre
         self._edge_w = data
         self._edge_delay = edge_delay
         self.W.set_coo(post, pre, data)
         # 延迟缓冲：delay_buf[t] 存「t 步后要送达各单元的突触输入」
-        self._delay_buf = np.zeros((self.delay_max, self.n_units), dtype=float)
+        self._delay_buf = np.zeros((max_delay, self.n_units), dtype=float)
 
         self.V = rng.uniform(0.0, self.threshold, size=self.n_units)
         self.refrac = np.zeros(self.n_units, dtype=int)
@@ -110,7 +122,8 @@ class BalancedNetwork:
         # 1. 本步送达的突触输入 = delay_buf[0]
         synaptic = self._delay_buf[0].copy()
         # 2. 左移缓冲
-        if self.delay_max > 1:
+        buf_len = self._delay_buf.shape[0]
+        if buf_len > 1:
             self._delay_buf[:-1] = self._delay_buf[1:]
             self._delay_buf[-1] = 0.0
         else:
@@ -123,7 +136,7 @@ class BalancedNetwork:
                 weights = self._edge_w[active]
                 delays = self._edge_delay[active]
                 # 对每个延迟层级分别累加
-                for d in range(1, self.delay_max + 1):
+                for d in range(1, buf_len + 1):
                     mask = delays == d
                     if mask.any():
                         np.add.at(
