@@ -37,8 +37,12 @@ def read_autobiography(path: str) -> list[dict]:
 
 
 def query_history(path: str, limit: int | None = None) -> list[dict]:
+    if limit is not None and limit < 0:
+        raise ValueError("limit must be non-negative")
     entries = read_autobiography(path)
     if limit is not None:
+        if limit == 0:
+            return []
         return entries[-limit:]
     return entries
 

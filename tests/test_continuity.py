@@ -30,3 +30,18 @@ def test_query_history_limit(tmp_path):
     assert len(query_history(path)) == 5
     assert query_history(path, limit=2) == [{"i": 3}, {"i": 4}]
     assert count_history(path) == 5
+
+
+def test_query_history_zero_limit_returns_empty(tmp_path):
+    path = str(tmp_path / "a.jsonl")
+    for i in range(3):
+        append_autobiography(path, {"i": i})
+    assert query_history(path, limit=0) == []
+
+
+def test_query_history_negative_limit_raises(tmp_path):
+    import pytest
+    path = str(tmp_path / "a.jsonl")
+    append_autobiography(path, {"i": 0})
+    with pytest.raises(ValueError):
+        query_history(path, limit=-1)
