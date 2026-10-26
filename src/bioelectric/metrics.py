@@ -90,3 +90,35 @@ def narrative_coherence(identity_continuities: list[float | None]) -> dict:
     # 一致性 = 均值高（始终是同一个我）且波动小（身份稳定）
     coherent = bool(mean >= 0.8 and std <= 0.15)
     return {"mean": mean, "std": std, "coherent": coherent}
+
+
+def paired_sign_test(a_values: list[float], b_values: list[float]) -> dict:
+    """配对符号检验：判断 A 是否稳定优于 B。
+
+    对每对 (a_i, b_i) 计算差值 d_i = a_i - b_i。统计 d_i > 0 的比例，
+    用二项符号检验（单侧）判断「A 优于 B」是否显著。
+    """
+    if len(a_values) != len(b_values) or len(a_values) == 0:
+        raise ValueError("a_values and b_values must be non-empty and equal length")
+    diffs = [a - b for a, b in zip(a_values, b_values)]
+    wins = sum(1 for d in diffs if d > 0)
+    n = len(diffs)
+    mean_diff = float(np.mean(diffs))
+    # 单侧符号检验：在零假设（A 不优于 B，即 P(d>0)=0.5）下，
+    # wins 服从 Binomial(n, 0.5)。p 值 = P(X >= wins)。
+    # 用正态近似 + 连续性校正，避免引入 scipy。
+    import math
+    p = 0.5
+    mu = n * p
+    sigma = math.sqrt(n * p * (1 - p))
+    z = (wins - 0.5 - mu) / sigma if sigma > 0 else 0.0
+    # 标准正态上尾概率的近似
+    p_value = 0.5 * math.erfc(z / math.sqrt(2.0))
+    significant = bool(p_value < 0.05)
+    return {
+        "mean_diff": mean_diff,
+        "wins": wins,
+        "n": n,
+        "p_value": p_value,
+        "significant": significant,
+    }

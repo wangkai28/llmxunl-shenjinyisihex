@@ -2,6 +2,7 @@ import numpy as np
 
 from bioelectric.metrics import bin_rate, convergence, prediction_error
 from bioelectric.metrics import narrative_coherence
+from bioelectric.metrics import paired_sign_test
 from bioelectric.snapshot import bin_bounds
 from bioelectric.spiking import SpikingNetwork
 
@@ -79,3 +80,19 @@ def test_narrative_coherence_low_or_fluctuating():
 def test_narrative_coherence_ignores_none():
     result = narrative_coherence([0.9, None, 0.91, None, 0.92])
     assert result["mean"] > 0.9
+
+
+def test_paired_sign_test_detects_consistent_advantage():
+    # A 组每轮都高于对照组 → 显著
+    result = paired_sign_test([0.87, 0.86, 0.88, 0.85, 0.87],
+                              [0.77, 0.76, 0.78, 0.75, 0.77])
+    assert result["mean_diff"] > 0
+    assert result["wins"] == 5
+    assert result["significant"] is True
+
+
+def test_paired_sign_test_no_consistent_advantage():
+    # 差值有正有负 → 不显著
+    result = paired_sign_test([0.87, 0.77, 0.88, 0.75, 0.80],
+                              [0.77, 0.86, 0.78, 0.85, 0.79])
+    assert result["significant"] is False
