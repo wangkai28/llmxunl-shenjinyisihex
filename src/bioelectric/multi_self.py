@@ -18,6 +18,7 @@ class MultiSelf:
         core_specs: dict,
         seed: int = 0,
         hebb_lr: float = 0.0,
+        cross_inhibition: float = 0.0,
     ):
         self.network = network
         self.n_units = network.n_units
@@ -43,6 +44,8 @@ class MultiSelf:
         if hebb_lr > 0.0:
             network.hebb_lr = hebb_lr
             self._mark_all_core_plastic()
+        if cross_inhibition > 0.0:
+            self._add_cross_inhibition(cross_inhibition)
 
     def _mark_all_core_plastic(self):
         """标记所有自我核心区内部的兴奋边为可塑。"""
@@ -52,6 +55,33 @@ class MultiSelf:
         for mask in self.core_masks.values():
             plastic |= mask[post] & mask[pre] & (self.network._edge_w > 0)
         self.network.mark_plastic_edges(plastic)
+
+    def _add_cross_inhibition(self, strength: float):
+        """在各自我核心区之间添加交叉抑制，形成互相制衡。
+
+        每个核心区的单元向其他核心区的单元发送抑制边。
+        为避免全连接，每个 pre 单元随机连到其他核心区的约 10% 单元。
+        """
+        net = self.network
+        names = list(self.core_masks.keys())
+        post_parts = []
+        pre_parts = []
+        for src_name in names:
+            src_idx = np.flatnonzero(self.core_masks[src_name])
+            for dst_name in names:
+                if dst_name == src_name:
+                    continue
+                dst_idx = np.flatnonzero(self.core_masks[dst_name])
+                # 每个 src 单元连到约 20% 的 dst 单元
+                n_targets = max(1, int(len(dst_idx) * 0.2))
+                for s in src_idx:
+                    targets = net.rng.choice(dst_idx, size=n_targets, replace=False)
+                    post_parts.append(targets)
+                    pre_parts.append(np.full(n_targets, s, dtype=np.int64))
+        if post_parts:
+            post = np.concatenate(post_parts)
+            pre = np.concatenate(pre_parts)
+            net.add_inhibitory_edges(post, pre, strength)
 
     def form(self, steps: int):
         """同时塑造多个自我：给各核心区注入各自偏置强度的输入。"""
@@ -92,12 +122,17 @@ def measure_multi_self(ms: MultiSelf, steps: int) -> dict:
     # 切换性：各自我活动率时间序列的相关性（负相关=此消彼长，即切换）
     series = np.array([per_step[n] for n in names], dtype=float)  # (names, steps)
     if series.shape[0] > 1:
-        corr = np.corrcoef(series)
-        # 取非对角线的平均相关
-        off_diag = corr[~np.eye(len(names), dtype=bool)]
-        mean_corr = float(off_diag.mean())
+        # 若某序列方差为 0（恒定），相关系数无定义，用 NaN 并排除
+        stds = series.std(axis=1)
+        valid = stds > 1e-12
+        if valid.sum() > 1:
+            corr = np.corrcoef(series[valid])
+            off_diag = corr[~np.eye(int(valid.sum()), dtype=bool)]
+            mean_corr = float(off_diag.mean())
+        else:
+            mean_corr = float("nan")
         # 切换性 = 1 - 平均相关（相关越低，越「此消彼长」）
-        switching = 1.0 - (mean_corr + 1.0) / 2.0
+        switching = 1.0 - (mean_corr + 1.0) / 2.0 if not np.isnan(mean_corr) else 0.0
     else:
         switching = 0.0
 

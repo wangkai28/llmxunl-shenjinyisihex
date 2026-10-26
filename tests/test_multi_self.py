@@ -62,3 +62,19 @@ def test_lesion_one_self_causes_compensation():
     after = measure_multi_self(ms, steps=100)
     # 本我受损后，其活动率应显著下降
     assert after["id"]["activity"] < before["id"]["activity"]
+
+
+def test_cross_inhibition_causes_compensation():
+    # 加入交叉抑制后，损伤本我 → 超我/道家应补偿性上升
+    net = _make_network()
+    ms = MultiSelf(net, core_specs={
+        "id": {"size": 50, "bias": 3.0},
+        "superego": {"size": 50, "bias": 0.5},
+        "tao": {"size": 50, "bias": 1.5},
+    }, seed=1, hebb_lr=0.02, cross_inhibition=3.0)
+    ms.form(steps=200)
+    before = measure_multi_self(ms, steps=100)
+    lesion_one_self(ms, "id", fraction=0.8)
+    after = measure_multi_self(ms, steps=100)
+    # 本我受损，对超我的抑制解除，超我应上升
+    assert after["superego"]["activity"] > before["superego"]["activity"]

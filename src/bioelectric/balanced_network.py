@@ -211,3 +211,20 @@ class BalancedNetwork:
         self._edge_delay = self._edge_delay[keep_idx]
         self._plastic = self._plastic[keep_idx]
         self.W.set_coo(self._edge_post, self._edge_pre, self._edge_w)
+
+    def add_inhibitory_edges(self, post, pre, strength: float):
+        """添加一批抑制性突触（post←pre，权重为负）。"""
+        post = np.asarray(post, dtype=np.int64)
+        pre = np.asarray(pre, dtype=np.int64)
+        n = len(post)
+        if n == 0:
+            return
+        w = np.full(n, -abs(float(strength)), dtype=float)
+        delay = np.ones(n, dtype=np.int64)
+        plastic = np.zeros(n, dtype=bool)
+        self._edge_post = np.concatenate([self._edge_post, post])
+        self._edge_pre = np.concatenate([self._edge_pre, pre])
+        self._edge_w = np.concatenate([self._edge_w, w])
+        self._edge_delay = np.concatenate([self._edge_delay, delay])
+        self._plastic = np.concatenate([self._plastic, plastic])
+        self.W.set_coo(self._edge_post, self._edge_pre, self._edge_w)
