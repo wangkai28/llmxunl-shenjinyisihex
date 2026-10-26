@@ -5,8 +5,26 @@ import os
 from .balanced_network import BalancedNetwork
 from .continuity import save_snapshot, load_snapshot, append_autobiography
 from .event import Event, encode_event
-from .multi_self import MultiSelf, set_context, dominant_self, measure_multi_self
+from .multi_self import MultiSelf, set_context, _drive
 
+
+def _query_state(ms: MultiSelf, steps: int):
+    """按当前 context_bias 驱动网络，返回 (主导自我, 各自我活动率)。
+
+    主导自我与活动率来自同一次情境驱动：主导 = argmax(context_bias)，
+    活动率 = 该驱动过程中各核心区发放率的累积。不调用 measure_multi_self
+    （它用 external_input=None 的自由演化，会丢失当前情境）。
+    """
+    names = list(ms.core_masks.keys())
+    dominant = max(names, key=lambda n: ms.context_bias[n])
+    sums = {n: 0 for n in names}
+    net = ms.network
+    for _ in range(steps):
+        _drive(ms, dominant)
+        for n in names:
+            sums[n] += int(net.spikes[ms.core_masks[n]].sum())
+    activity = {n: sums[n] / (steps * ms.core_sizes[n]) for n in names}
+    return dominant, activity
 
 class IdentityCore:
     def __init__(self, *, persona: str, state_dir: str, seed: int = 0):
@@ -45,25 +63,25 @@ class IdentityCore:
         return state
 
     def query(self) -> dict:
-        dominant = dominant_self(self._ms, steps=50)
-        dims = measure_multi_self(self._ms, steps=50)
-        names = list(self._ms.core_masks.keys())
+        dominant, activity = _query_state(self._ms, steps=50)
         result = {"dominant": dominant}
-        for n in names:
-            result[n] = dims[n]["activity"]
+        result.update(activity)
         return result
 
     def save(self):
-        save_snapshot(self.query(), os.path.join(self.state_dir, "snapshot.json"))
+        state = self.query()
+        snapshot = {
+            "dominant": state["dominant"],
+            "context_bias": dict(self._ms.context_bias),
+        }
+        save_snapshot(snapshot, os.path.join(self.state_dir, "snapshot.json"))
 
     def load(self):
-        # 恢复快照中的主导自我为当前情境
+        # 从快照恢复完整情境偏置（含主导自我），真实还原身份。
         snap = load_snapshot(os.path.join(self.state_dir, "snapshot.json"))
-        if snap.get("dominant"):
-            # 按主导自我设一个对应情境
-            ctx = {"id": 0.2, "superego": 0.2, "tao": 0.2}
-            ctx[snap["dominant"]] = 3.0
-            set_context(self._ms, ctx)
-            for _ in range(50):
-                from .multi_self import _drive
-                _drive(self._ms, snap["dominant"])
+        if not snap:
+            return
+        ctx = snap.get("context_bias")
+        if not ctx:
+            return
+        set_context(self._ms, ctx)

@@ -28,3 +28,29 @@ def test_query_returns_activity(tmp_path):
     state = core.query()
     assert "dominant" in state
     assert "id" in state and "superego" in state and "tao" in state
+
+
+def test_query_dominant_agrees_with_activity(tmp_path):
+    core = IdentityCore(persona="tao", state_dir=str(tmp_path / "id"), seed=0)
+    core.process_event(Event(type="calm", intensity=1.0))
+    state = core.query()
+    names = ["id", "superego", "tao"]
+    highest = max(names, key=lambda n: state[n])
+    assert state["dominant"] == highest
+
+
+def test_query_is_idempotent(tmp_path):
+    core = IdentityCore(persona="tao", state_dir=str(tmp_path / "id"), seed=0)
+    core.process_event(Event(type="calm", intensity=1.0))
+    first = core.query()
+    second = core.query()
+    assert first["dominant"] == second["dominant"]
+
+
+def test_save_load_roundtrip_dominant(tmp_path):
+    core = IdentityCore(persona="tao", state_dir=str(tmp_path / "id"), seed=0)
+    core.process_event(Event(type="moral", intensity=1.0))
+    core.save()
+    core2 = IdentityCore(persona="tao", state_dir=str(tmp_path / "id"), seed=0)
+    core2.load()
+    assert core2.query()["dominant"] == "superego"
