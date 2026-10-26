@@ -31,8 +31,8 @@ def main():
     base_url = aigw["base_url"]
     api_key = aigw["token"]
 
-    n_rounds = int(os.environ.get("N_ROUNDS", "5"))
-    steps = 200
+    n_rounds = int(os.environ.get("N_ROUNDS", "3"))
+    steps = int(os.environ.get("STEPS", "150"))
     observe_every = 10
     n_bins = 8
 
