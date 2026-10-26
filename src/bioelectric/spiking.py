@@ -18,9 +18,12 @@ class SpikingNetwork:
         weight_decay=0.001,
         weight_max=2.0,
         inhibitory_fraction=0.2,
+        background_rate=0.0,
+        background_strength=0.0,
         seed=0,
     ):
         rng = np.random.default_rng(seed)
+        self.rng = rng
         self.n_units = int(n_units)
         self.threshold = float(threshold)
         self.refractory = int(refractory)
@@ -30,6 +33,8 @@ class SpikingNetwork:
         self.weight_decay = float(weight_decay)
         self.weight_max = float(weight_max)
         self.inhibitory_fraction = float(inhibitory_fraction)
+        self.background_rate = float(background_rate)
+        self.background_strength = float(background_strength)
         # Dale 法则：每个单元要么纯兴奋(+)、要么纯抑制(-)。
         # is_inhibitory[i] 表示单元 i 作为 presynaptic 时，其输出连接为负。
         n_inhib = int(round(self.n_units * self.inhibitory_fraction))
@@ -59,10 +64,11 @@ class SpikingNetwork:
         )
         was_refractory = self.refrac > 0
         synaptic = self.W @ self.spikes.astype(float)
+        background = self._sample_background()
         integrating = ~was_refractory
         self.V[integrating] = (
             self.V[integrating]
-            + (synaptic[integrating] + ext[integrating]
+            + (synaptic[integrating] + ext[integrating] + background[integrating]
                - self.leak * self.V[integrating]) * self.dt
         )
         self.V[was_refractory] = 0.0
@@ -74,6 +80,14 @@ class SpikingNetwork:
         self.refrac[not_fired] = np.maximum(self.refrac[not_fired] - 1, 0)
         self._hebb_update(fired)
         return fired.copy()
+
+    def _sample_background(self):
+        if self.background_rate <= 0.0:
+            return np.zeros(self.n_units)
+        # 泊松背景发放：每个单元以 background_rate 的概率收到一个
+        # background_strength 的兴奋脉冲。用 self.rng 保证同 seed 可复现。
+        spikes = self.rng.random(self.n_units) < self.background_rate
+        return spikes.astype(float) * self.background_strength
 
     def _hebb_update(self, fired):
         co = np.outer(fired.astype(float), fired.astype(float))

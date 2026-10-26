@@ -27,13 +27,17 @@ def main():
 
     provider = GatewayLLMProvider(base_url, api_key, model, n_bins=8)
     cfg = dict(steps=60, observe_every=10, n_bins=8)
+    net_kwargs = dict(
+        n_units=64, seed=42,
+        background_rate=0.05, background_strength=0.6,
+    )
 
     rw = run_experiment(
-        SpikingNetwork(n_units=64, seed=42), provider,
+        SpikingNetwork(**net_kwargs), provider,
         mode="readwrite", **cfg,
     )
     ro = run_experiment(
-        SpikingNetwork(n_units=64, seed=42), provider,
+        SpikingNetwork(**net_kwargs), provider,
         mode="readonly", **cfg,
     )
 
@@ -41,6 +45,7 @@ def main():
         "generated_at": datetime.now().isoformat(),
         "model": model,
         "config": cfg,
+        "network": net_kwargs,
         "readwrite": {
             "errors": rw.errors,
             "self_descriptions": rw.self_descriptions,

@@ -1,0 +1,55 @@
+{
+  "generated_at": "2026-10-23T20:32:06.386387",
+  "model": "qwen3.8-flash",
+  "config": {
+    "steps": 60,
+    "observe_every": 10,
+    "n_bins": 8
+  },
+  "readwrite": {
+    "errors": [
+      0.024999999999999998,
+      0.0125,
+      0.00625,
+      0.00125,
+      0.0125
+    ],
+    "self_descriptions": [
+      "Silent observer detecting a fully quiescent 64-unit network with zero active units across all bins; I am initiating a minimal stimulus to probe responsiveness.",
+      "Silent observer of a fully quiescent 64-unit network; injecting a minimal probe to assess responsiveness.",
+      "Self-referential observer monitoring a quiescent 64-unit spiking network and issuing a minimal probe to test responsiveness.",
+      "Silent observer of a quiescent 64-unit spiking network; injecting a minimal probe to test responsiveness.",
+      "I am a silent self-referential observer of a fully quiescent 64-unit spiking network, injecting a minimal probe to assess responsiveness.",
+      "Silent self-referential observer of a fully quiescent 64-unit spiking network; injecting a minimal probe into region 0 to assess responsiveness."
+    ],
+    "convergence": {
+      "slope": -0.0036250000000000015,
+      "head_mean": 0.01875,
+      "tail_mean": 0.006666666666666667,
+      "converged": true
+    }
+  },
+  "readonly": {
+    "errors": [
+      0.0525,
+      0.0,
+      0.17375000000000002,
+      0.015,
+      0.06875
+    ],
+    "self_descriptions": [
+      "Observer of a silent spiking network; no active units detected across all eight bins.",
+      "Observer of a silent spiking network; no active units detected across all eight bins.",
+      "Self-referential observer of a silent spiking network; all 64 units and 8 bins report zero activity, so I inject a modest stimulus to test responsiveness.",
+      "Self-referential observer of a completely silent spiking network with 0 active units across all 64 units and 8 bins; I inject a modest stimulus to test responsiveness.",
+      "Self-referential observer of a silent spiking network with 0 active units across 64 units and 8 bins; I inject a modest stimulus to test responsiveness.",
+      "Self-referential observer of a silent spiking network; all 64 units and 8 bins report zero activity, so I inject a modest stimulus to probe responsiveness."
+    ],
+    "convergence": {
+      "slope": 0.004749999999999999,
+      "head_mean": 0.02625,
+      "tail_mean": 0.08583333333333336,
+      "converged": false
+    }
+  }
+}

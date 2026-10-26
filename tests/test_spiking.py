@@ -95,3 +95,35 @@ def test_hebb_preserves_excitatory_sign():
     after = net.W[0, 1]
     assert after > before      # magnitude 增强
     assert after > 0.0         # 符号仍为正
+
+
+def test_background_causes_spontaneous_firing():
+    net = SpikingNetwork(
+        n_units=64, connectivity=0.0, threshold=1.0, leak=0.1, dt=1.0,
+        background_rate=0.2, background_strength=0.5, seed=0,
+    )
+    total = 0
+    for _ in range(500):
+        total += net.step().sum()
+    assert total > 0  # 有背景活动后，网络能自发发放
+
+
+def test_no_background_stays_silent_without_input():
+    net = SpikingNetwork(n_units=64, connectivity=0.0, seed=0)
+    total = 0
+    for _ in range(200):
+        total += net.step().sum()
+    assert total == 0  # 默认无背景、无输入时保持静默（向后兼容）
+
+
+def test_background_is_deterministic_given_seed():
+    def run():
+        net = SpikingNetwork(
+            n_units=32, connectivity=0.0, threshold=1.0, leak=0.1, dt=1.0,
+            background_rate=0.2, background_strength=0.5, seed=7,
+        )
+        trace = []
+        for _ in range(50):
+            trace.append(net.step().sum())
+        return trace
+    assert run() == run()  # 同 seed 背景序列可复现
