@@ -26,7 +26,7 @@ def main():
         raise SystemExit("OPENAI_BASE_URL / OPENAI_API_KEY not configured")
 
     provider = GatewayLLMProvider(base_url, api_key, model, n_bins=8)
-    cfg = dict(steps=60, observe_every=10, n_bins=8)
+    cfg = dict(steps=300, observe_every=10, n_bins=8)
     net_kwargs = dict(
         n_units=64, seed=42,
         background_rate=0.05, background_strength=0.6,
@@ -50,11 +50,13 @@ def main():
             "errors": rw.errors,
             "self_descriptions": rw.self_descriptions,
             "convergence": rw.convergence,
+            "actions": rw.actions,
         },
         "readonly": {
             "errors": ro.errors,
             "self_descriptions": ro.self_descriptions,
             "convergence": ro.convergence,
+            "actions": ro.actions,
         },
     }
     os.makedirs("data", exist_ok=True)

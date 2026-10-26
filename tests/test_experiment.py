@@ -26,3 +26,15 @@ def test_run_experiment_readonly_same_shape():
     net2 = SpikingNetwork(n_units=8, seed=0)
     ro = run_experiment(net2, provider, mode="readonly", steps=10, observe_every=5, n_bins=2)
     assert len(rw.errors) == len(ro.errors)
+
+
+def test_run_experiment_records_actions():
+    net = SpikingNetwork(n_units=8, seed=0)
+    provider = MockLLMProvider(
+        description="x", action_type="inject", region=0, strength=1.5,
+    )
+    result = run_experiment(
+        net, provider, mode="readwrite", steps=10, observe_every=5, n_bins=2,
+    )
+    assert len(result.actions) == 2  # 两个观察点各记录一次 action
+    assert result.actions[0] == {"type": "inject", "region": 0, "strength": 1.5}
