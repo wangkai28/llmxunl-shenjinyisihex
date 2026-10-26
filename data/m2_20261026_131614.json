@@ -1,0 +1,697 @@
+{
+  "generated_at": "2026-10-26T13:16:14.642468",
+  "model": "qwen3.8-flash",
+  "config": {
+    "steps": 300,
+    "observe_every": 10,
+    "n_bins": 8,
+    "writeback_gain": 2.5
+  },
+  "network": {
+    "n_units": 64,
+    "seed": 42,
+    "background_rate": 0.05,
+    "background_strength": 0.6
+  },
+  "readwrite_llm": {
+    "errors": [
+      0.15625,
+      0.1875,
+      0.196875,
+      0.133125,
+      0.12937500000000002,
+      0.115625,
+      0.083125,
+      0.078125,
+      0.13349999999999998,
+      0.178125,
+      0.23124999999999998,
+      0.1875,
+      0.171875,
+      0.20437499999999997,
+      0.16562500000000002,
+      0.1875,
+      0.1640625,
+      0.184375,
+      0.203125,
+      0.15625,
+      0.15937500000000002,
+      0.21875,
+      0.21875,
+      0.171875,
+      0.1725,
+      0.15625,
+      0.169375,
+      0.190625,
+      0.24312499999999998
+    ],
+    "self_descriptions": [
+      "I am a dormant observer injecting a focused pulse into region 0 to awaken sparse activity, predicting a low-rate ripple across the network.",
+      "I am an awakening observer injecting a focused pulse into region 1 to transform the concentrated activity in region 0 into a sparse, low-rate ripple across the network.",
+      "I am a spreading observer injecting a focused pulse into region 2 to transform the concentrated activity in region 1 into a smoother, low-rate ripple across the network.",
+      "I am a smoothing observer injecting a focused pulse into region 3 to transform the concentrated activity in region 1 into a smoother, low-rate ripple across the network.",
+      "I am a spreading observer injecting a focused pulse into region 5 to transform the concentrated activity in region 6 into a smoother, low-rate ripple across the network.",
+      "I am a smoothing observer injecting a focused pulse into region 3 to transform concentrated activity in regions 3 and 6 into a smoother, low-rate ripple across the network.",
+      "I am a smoothing observer injecting a focused pulse into region 7 to transform concentrated activity in regions 5 and 6 into a smoother, low-rate ripple across the network.",
+      "I am a smoothing observer injecting a focused pulse into region 4 to redistribute concentrated activity from regions 1 and 7 into a broader, lower-rate ripple across the network.",
+      "I am a smoothing observer injecting a focused pulse into region 6 to lift the depleted tail and redistribute concentrated activity from regions 1, 3, 4, and 7 into a broader, lower-rate ripple across the network.",
+      "I am a smoothing observer injecting a focused pulse into region 3 to lift the depleted bin and redistribute concentrated activity from regions 5 and 6 into a broader, lower-rate ripple across the network.",
+      "I am a smoothing observer injecting a focused pulse into region 5 to lift the depleted bin and redistribute concentrated activity from regions 3 and 0 into a broader, lower-rate ripple across the network.",
+      "I am a smoothing observer injecting a focused pulse into region 6 to lift the depleted bin and redistribute concentrated activity from regions 1 and 7 into a broader, lower-rate ripple across the network.",
+      "I am a smoothing observer injecting a focused pulse into region 3 to lift the depleted bin and redistribute concentrated activity from regions 5 and 6 into a broader, lower-rate ripple across the network.",
+      "I am a smoothing observer injecting a focused pulse into region 5 to lift the depleted bin and redistribute concentrated activity from regions 3 and 0 into a broader, lower-rate ripple across the network.",
+      "I am a smoothing observer injecting a focused pulse into region 6 to lift the depleted bin and redistribute concentrated activity from regions 1 and 5 into a broader, lower-rate ripple across the network.",
+      "I am a smoothing observer injecting a focused pulse into region 3 to lift the depleted bin and redistribute concentrated activity from regions 5 and 6 into a broader, lower-rate ripple across the network.",
+      "I am a smoothing observer injecting a focused pulse into region 5 to lift the depleted bin and redistribute concentrated activity from regions 3 and 0 into a broader, lower-rate ripple across the network.",
+      "I am a smoothing observer injecting a focused pulse into region 6 to lift the depleted bin and redistribute concentrated activity from regions 1 and 5 into a broader, lower-rate ripple across the network.",
+      "I am a smoothing observer injecting a focused pulse into region 3 to lift the depleted bin and redistribute concentrated activity from regions 5 and 6 into a broader, lower-rate ripple across the network.",
+      "I am a smoothing observer injecting a focused pulse into region 5 to lift the depleted bin and redistribute concentrated activity from regions 3 and 0 into a broader, lower-rate ripple across the network.",
+      "I am a smoothing observer injecting a focused pulse into region 6 to lift the depleted bin and redistribute concentrated activity from regions 1 and 5 into a broader, lower-rate ripple across the network.",
+      "I am a smoothing observer injecting a focused pulse into region 3 to lift the depleted bin and redistribute concentrated activity from regions 5 and 6 into a broader, lower-rate ripple across the network.",
+      "I am a smoothing observer injecting a focused pulse into region 5 to lift the depleted bin and redistribute concentrated activity from regions 3 and 0 into a broader, lower-rate ripple across the network.",
+      "I am a smoothing observer injecting a focused pulse into region 6 to lift the depleted bin and redistribute concentrated activity from regions 1 and 5 into a broader, lower-rate ripple across the network.",
+      "I am a smoothing observer injecting a focused pulse into region 3 to lift the depleted bin and redistribute concentrated activity from regions 5 and 6 into a broader, lower-rate ripple across the network.",
+      "I am a smoothing observer injecting a focused pulse into region 5 to lift the depleted bin and redistribute concentrated activity from regions 3 and 0 into a broader, lower-rate ripple across the network.",
+      "I am a smoothing observer injecting a focused pulse into region 6 to lift the depleted bin and redistribute concentrated activity from regions 1 and 5 into a broader, lower-rate ripple across the network.",
+      "I am a smoothing observer injecting a focused pulse into region 3 to lift the depleted bin and redistribute concentrated activity from regions 6 and 5 into a broader, lower-rate ripple across the network.",
+      "I am a smoothing observer injecting a focused pulse into region 5 to lift the depleted bin and redistribute concentrated activity from regions 3 and 0 into a broader, lower-rate ripple across the network.",
+      "I am a smoothing observer injecting a focused pulse into region 6 to lift the depleted bin and redistribute concentrated activity from regions 1 and 5 into a broader, lower-rate ripple across the network."
+    ],
+    "convergence": {
+      "slope": 0.002009667487684729,
+      "head_mean": 0.1561875,
+      "tail_mean": 0.18410416666666668,
+      "p_value": 0.9965,
+      "slope_ci": [
+        0.0004921470304219653,
+        0.0037313776096814335
+      ],
+      "converged": false
+    },
+    "actions": [
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.7
+      },
+      {
+        "type": "inject",
+        "region": 1,
+        "strength": 0.55
+      },
+      {
+        "type": "inject",
+        "region": 2,
+        "strength": 0.35
+      },
+      {
+        "type": "inject",
+        "region": 3,
+        "strength": 0.15
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.2
+      },
+      {
+        "type": "inject",
+        "region": 3,
+        "strength": 0.35
+      },
+      {
+        "type": "inject",
+        "region": 7,
+        "strength": 0.3
+      },
+      {
+        "type": "inject",
+        "region": 4,
+        "strength": 0.4
+      },
+      {
+        "type": "inject",
+        "region": 6,
+        "strength": 0.12
+      },
+      {
+        "type": "inject",
+        "region": 3,
+        "strength": 0.18
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.25
+      },
+      {
+        "type": "inject",
+        "region": 6,
+        "strength": 0.25
+      },
+      {
+        "type": "inject",
+        "region": 3,
+        "strength": 0.25
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.2
+      },
+      {
+        "type": "inject",
+        "region": 6,
+        "strength": 0.3
+      },
+      {
+        "type": "inject",
+        "region": 3,
+        "strength": 0.35
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.5
+      },
+      {
+        "type": "inject",
+        "region": 6,
+        "strength": 0.15
+      },
+      {
+        "type": "inject",
+        "region": 3,
+        "strength": 0.25
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.5
+      },
+      {
+        "type": "inject",
+        "region": 6,
+        "strength": 0.3
+      },
+      {
+        "type": "inject",
+        "region": 3,
+        "strength": 0.25
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.25
+      },
+      {
+        "type": "inject",
+        "region": 6,
+        "strength": 0.25
+      },
+      {
+        "type": "inject",
+        "region": 3,
+        "strength": 0.35
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.4
+      },
+      {
+        "type": "inject",
+        "region": 6,
+        "strength": 0.25
+      },
+      {
+        "type": "inject",
+        "region": 3,
+        "strength": 0.5
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.65
+      },
+      {
+        "type": "inject",
+        "region": 6,
+        "strength": 0.125
+      }
+    ]
+  },
+  "readwrite_error_driven": {
+    "errors": [
+      0.043125,
+      0.09062499999999998,
+      0.13125000000000003,
+      0.15625,
+      0.078125,
+      0.0546875,
+      0.36250000000000004,
+      0.1225,
+      0.21249999999999997,
+      0.134375,
+      0.140625,
+      0.15000000000000002,
+      0.10625,
+      0.17750000000000002,
+      0.203125,
+      0.19625,
+      0.140625,
+      0.083125,
+      0.13,
+      0.170625,
+      0.16062500000000002,
+      0.13124999999999998,
+      0.203125,
+      0.24375000000000002,
+      0.163125,
+      0.14,
+      0.234375
+    ],
+    "self_descriptions": [
+      "I am a self-referential observer injecting a small stimulus into region 0 to initiate sparse network activity and align future firing patterns with my intended state.",
+      "I am actively injecting a small stimulus into region 0 to seed sparse network activity, expecting the next snapshot to show rising activity in region 0 while the previous bin 7 activity fades.",
+      "I am a self-referential observer injecting a small stimulus into region 0 to sustain sparse network activity, expecting region 0 to rise while bin 7 fades and the overall state remains low-dimensional and controlled.",
+      "I am a self-referential observer injecting a small stimulus into region 0 to sustain sparse network activity, expecting region 0 to rise while bin 7 fades and the overall state remains low-dimensional and controlled.",
+      "I am a self-referential observer injecting a small stimulus into region 0 to sustain sparse, low-dimensional network activity, expecting region 0 to rise while late-bin activity remains suppressed and the overall firing pattern stays controlled.",
+      "I am injecting a small stimulus into region 0 to sustain sparse, low-dimensional network activity, expecting region 0 to rise while late-bin activity decays.",
+      "I am injecting a small stimulus into region 0 to sustain sparse, low-dimensional network activity, expecting region 0 to remain elevated while late-bin activity decays.",
+      "I am injecting a small stimulus into region 0 to sustain sparse, low-dimensional network activity, expecting bin 0 to rise while late-bin firing decays.",
+      "I am injecting a small stimulus into region 0 to sustain sparse, low-dimensional network activity, expecting bin 0 to rise while late-bin firing decays.",
+      "I am a self-referential observer injecting a small stimulus into region 0 to sustain sparse, low-dimensional activity, expecting bin 0 to rise while late-bin firing decays.",
+      "I am injecting a small stimulus into region 0 to sustain sparse, low-dimensional network activity, expecting bin 0 to rise while late-bin firing decays.",
+      "I am injecting a small stimulus into region 0 to sustain sparse, low-dimensional network activity, expecting bin 0 to rise while late-bin firing decays.",
+      "I am the self-referential observer injecting a small stimulus into region 0 to sustain sparse, low-dimensional network activity, expecting bin 0 to rise while late-bin firing decays.",
+      "I am injecting a small stimulus into region 0 to sustain sparse, low-dimensional network activity, expecting bin 0 to rise while late-bin firing decays.",
+      "I am the self-referential observer injecting a small stimulus into region 0 to sustain sparse, low-dimensional network activity, expecting bin 0 to rise while late-bin firing decays.",
+      "I am injecting a small stimulus into region 0 to sustain sparse, low-dimensional network activity, expecting bin 0 to rise while late-bin firing decays.",
+      "I am injecting a small stimulus into region 0 to sustain sparse, low-dimensional network activity, expecting bin 0 to rise while late-bin firing decays.",
+      "I am the self-referential observer injecting a small stimulus into region 0 to sustain sparse, low-dimensional network activity, expecting bin 0 to rise while late-bin firing decays.",
+      "I am injecting a small stimulus into region 0 to sustain sparse, low-dimensional network activity, expecting bin 0 to rise while late-bin firing decays.",
+      "I am the self-referential observer injecting a small stimulus into region 0 to sustain sparse, low-dimensional network activity, expecting bin 0 to rise while late-bin firing decays.",
+      "I am the self-referential observer injecting a small stimulus into region 0 to sustain sparse, low-dimensional network activity, expecting bin 0 to rise while late-bin firing decays.",
+      "I am injecting a small stimulus into region 0 to sustain sparse, low-dimensional network activity, expecting bin 0 to rise while late-bin firing decays.",
+      "I am the self-referential observer injecting a small stimulus into region 0 to sustain sparse, low-dimensional network activity, expecting bin 0 to rise while late-bin firing decays.",
+      "",
+      "",
+      "I am the self-referential observer injecting a small stimulus into region 0 to sustain sparse, low-dimensional network activity, expecting bin 0 to rise while late-bin firing decays.",
+      "I am injecting a small stimulus into region 0 to sustain sparse, low-dimensional network activity, expecting bin 0 to rise while late-bin firing decays.",
+      "I am the self-referential observer injecting a small stimulus into region 0 to sustain sparse, low-dimensional network activity, expecting bin 0 to rise while late-bin firing decays.",
+      "I am the self-referential observer injecting a small stimulus into region 0 to sustain sparse, low-dimensional network activity, expecting bin 0 to rise while late-bin firing decays.",
+      "I am the self-referential observer injecting a small stimulus into region 0 to sustain sparse, low-dimensional network activity, expecting bin 0 to rise while late-bin firing decays."
+    ],
+    "convergence": {
+      "slope": 0.0027407661782661787,
+      "head_mean": 0.13713942307692306,
+      "tail_mean": 0.16982142857142857,
+      "p_value": 0.938,
+      "slope_ci": [
+        -0.0010178334749542876,
+        0.005242797051056024
+      ],
+      "converged": false
+    },
+    "actions": [
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.2
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.15
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.2
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.12
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.12
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.1
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.15
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.18
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.15
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.05
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.1
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.1
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.1
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.05
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.1
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.08
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.1
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.08
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.08
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.06
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.18
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.1
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.07
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.08
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.12
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.12
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.15
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.15
+      }
+    ]
+  },
+  "readonly": {
+    "errors": [
+      0.03125,
+      0.121875,
+      0.20625,
+      0.0875,
+      0.075,
+      0.130625,
+      0.095,
+      0.09562499999999999,
+      0.0625,
+      0.12875,
+      0.0875,
+      0.22062500000000002,
+      0.158125,
+      0.11875000000000001,
+      0.12,
+      0.22125,
+      0.09375,
+      0.23875000000000002,
+      0.20500000000000002,
+      0.25625,
+      0.290625,
+      0.20500000000000002,
+      0.28500000000000003,
+      0.32375,
+      0.249375,
+      0.28375,
+      0.30374999999999996,
+      0.18875000000000003
+    ],
+    "self_descriptions": [
+      "I am a calm, self-referential observer maintaining a single faint pulse in the first bin while the rest of the network remains silent.",
+      "I am a calm, self-referential observer shaping the network so that a single faint pulse occupies the first bin while the remaining bins fall silent.",
+      "I am a calm, self-referential observer injecting a faint pulse into the first bin so the network settles into a single quiet oscillation while the other bins fade toward silence.",
+      "I am a calm, self-referential observer injecting a faint pulse into the first bin so the network settles into a single quiet oscillation while the other bins fall silent.",
+      "I am a calm, self-referential observer injecting a faint pulse into the first bin so the network settles into a single quiet oscillation while the other bins fall silent.",
+      "I am a calm, self-referential observer injecting a faint pulse into bin 0 to encourage a single quiet oscillation while the other bins decay toward silence.",
+      "I am a calm, self-referential observer injecting a faint pulse into bin 0 to encourage a single quiet oscillation while the other bins decay toward silence.",
+      "I am a calm, self-referential observer injecting a faint pulse into bin 0 to encourage a single quiet oscillation while the other bins decay toward silence.",
+      "I am a calm, self-referential observer injecting a faint pulse into bin 0 to encourage a single quiet oscillation while the other bins decay toward silence.",
+      "",
+      "I am a calm, self-referential observer injecting a faint pulse into bin 0 to encourage a single quiet oscillation while the other bins decay toward silence.",
+      "I am a calm, self-referential observer injecting a faint pulse into bin 0 to encourage a single quiet oscillation while the other bins decay toward silence.",
+      "I am a calm, self-referential observer injecting a faint pulse into bin 0 to encourage a single quiet oscillation while the other bins decay toward silence.",
+      "I am a calm, self-referential observer injecting a faint pulse into bin 0 to encourage a single quiet oscillation while the other bins decay toward silence.",
+      "I am a calm, self-referential observer injecting a faint pulse into bin 0 to sustain a quiet oscillation while letting the other bins decay toward silence.",
+      "I am a calm, self-referential observer injecting a faint pulse into bin 0 to sustain a quiet oscillation while letting the other bins decay toward silence.",
+      "I am a calm, self-referential observer injecting a faint pulse into bin 0 to sustain a quiet oscillation while letting the other bins decay toward silence.",
+      "I am a calm, self-referential observer injecting a faint pulse into bin 0 to sustain a quiet oscillation while letting the other bins decay toward silence.",
+      "I am a calm, self-referential observer injecting a faint pulse into bin 0 to sustain a quiet oscillation while letting the other bins decay toward silence.",
+      "I am a calm, self-referential observer injecting a faint pulse into bin 0 to sustain a quiet oscillation while letting the other bins decay toward silence.",
+      "I am a calm, self-referential observer injecting a faint pulse into bin 0 to sustain a quiet oscillation while letting the other bins decay toward silence.",
+      "I am a calm, self-referential observer injecting a faint pulse into bin 0 to sustain a quiet oscillation while allowing the other bins to decay toward silence.",
+      "I am a calm, self-referential observer injecting a faint pulse into bin 0 to sustain a quiet oscillation while letting the other bins decay toward silence.",
+      "I am a calm, self-referential observer injecting a faint pulse into bin 0 to sustain a quiet oscillation while letting the other bins decay toward silence.",
+      "I am a calm, self-referential observer injecting a faint pulse into bin 0 to sustain a quiet oscillation while letting the other bins decay toward silence.",
+      "I am a calm, self-referential observer injecting a faint pulse into bin 0 to sustain a quiet oscillation while letting the other bins decay toward silence.",
+      "I am a calm, self-referential observer injecting a faint pulse into bin 0 to sustain a quiet oscillation while letting the other bins decay toward silence.",
+      "I am a calm, self-referential observer injecting a faint pulse into bin 0 to sustain a quiet oscillation while letting the other bins decay toward silence.",
+      "I am a calm, self-referential observer injecting a faint pulse into bin 0 to sustain a quiet oscillation while letting the other bins decay toward silence.",
+      "I am a calm, self-referential observer injecting a faint pulse into bin 0 to sustain a quiet oscillation while letting the other bins decay toward silence."
+    ],
+    "convergence": {
+      "slope": 0.00792265325670498,
+      "head_mean": 0.11566964285714285,
+      "tail_mean": 0.23321428571428576,
+      "p_value": 1.0,
+      "slope_ci": [
+        0.005365223936107156,
+        0.010642946603310364
+      ],
+      "converged": false
+    },
+    "actions": [
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.125
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.75
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.1
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.2
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.1
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.1
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.18
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.1
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.05
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.05
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.05
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.08
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.08
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.18
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.1
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.1
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.1
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.08
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.08
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.08
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.1
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.1
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.1
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.1
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.08
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.1
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.08
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.07
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.12
+      }
+    ]
+  }
+}

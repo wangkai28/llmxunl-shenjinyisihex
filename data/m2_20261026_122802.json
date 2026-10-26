@@ -1,0 +1,471 @@
+{
+  "generated_at": "2026-10-26T12:28:02.997296",
+  "model": "qwen3.8-flash",
+  "config": {
+    "steps": 300,
+    "observe_every": 10,
+    "n_bins": 8,
+    "writeback_gain": 2.5
+  },
+  "network": {
+    "n_units": 64,
+    "seed": 42,
+    "background_rate": 0.05,
+    "background_strength": 0.6
+  },
+  "readwrite": {
+    "errors": [
+      0.09375,
+      0.13125,
+      0.4175,
+      0.101875,
+      0.098125,
+      0.095,
+      0.12812500000000002,
+      0.11250000000000002,
+      0.215625,
+      0.181875,
+      0.2734375,
+      0.21937500000000001,
+      0.15187499999999998,
+      0.200625,
+      0.18624999999999997,
+      0.235625,
+      0.1775,
+      0.2265625,
+      0.166875,
+      0.18687499999999999,
+      0.26625,
+      0.145,
+      0.191875,
+      0.26937500000000003,
+      0.10500000000000001,
+      0.198125,
+      0.26312499999999994,
+      0.125
+    ],
+    "self_descriptions": [
+      "The network is currently silent, with no active units and no measurable bin activity. As the self-referential observer, I detect a dormant state and may need to introduce a small stimulus to initiate activity.",
+      "The current snapshot shows sparse but non-zero activity concentrated in bins 0, 1, and 6, so the network is not silent. I observe localized excitation and predict it will persist with slight diffusion into neighboring bins.",
+      "The network is active and moderately distributed, with peak excitation in bin 1 and a local gap at bin 5. Activity appears self-sustaining but uneven, suggesting mild diffusion into adjacent bins rather than a need for external stimulus.",
+      "The network is active and moderately distributed, with peak excitation in bin 5 and gaps in bins 0 and 2. Activity appears self-sustaining with mild diffusion into neighboring bins, so no external stimulus is needed.",
+      "The network is active and moderately distributed, with sparse excitation in bins 0, 2, 4, 6, and 7, and a clear peak in bin 5. Silent gaps appear in bins 1 and 3. Activity looks self-sustaining with mild diffusion into neighboring bins, so no external stimulus is needed.",
+      "The network is active and moderately distributed: 11 of 64 units are firing, with peaks in bins 1, 2, 5, and 6 and a localized gap at bin 3. Activity appears self-sustaining, with only mild diffusion expected, so no external stimulus is needed.",
+      "The network is active and moderately distributed: 16 of 64 units are firing, with peaks in bins 1, 2, and 4, low activity in bins 3, 6, and 7, and no silent bins. Activity appears self-sustaining, so I predict mild diffusion from peaks into adjacent bins and no external stimulus.",
+      "The network is active and moderately distributed: 15 of 64 units are firing. Peaks are in bins 5 and 7, with moderate activity in bins 1, 3, and 4, and low but nonzero activity in bins 0, 2, and 6. There are no silent bins. Activity appears self-sustaining, so I predict mild diffusion from the peaks into adjacent bins and no external stimulus.",
+      "The network is active and moderately distributed: 12 of 64 units are firing, with a peak in bin 6, moderate activity in bins 4, 5, and 7, sparse activity in bin 1, and silent gaps in bins 0 and 3. Activity appears self-sustaining, with mild diffusion expected from the peak into neighboring bins and no external stimulus needed.",
+      "The network is active and moderately distributed: 11 of 64 units are firing. The strongest activity is in bin 0, with moderate activity in bins 1, 2, and 3, low activity in bin 6, and silent gaps in bins 4, 5, and 7. Activity appears self-sustaining, with mild diffusion expected from bin 0 into bin 1, from bin 3 into bin 4, and from bin 6 into bins 5 and 7. No external stimulus is needed.",
+      "The network is active but sparse: 9 of 64 units are firing, with a peak in bin 2, moderate activity in bin 4, low activity in bins 3, 5, and 7, and silent gaps in bins 0, 1, and 6. Activity appears self-sustaining, with mild diffusion expected from bin 2 into bins 1 and 3, from bin 4 into bins 3 and 5, from bin 5 into bin 6, and from bin 7 into bin 6. No external stimulus is needed.",
+      "The network is active and moderately distributed: 26 of 64 units are firing. Peaks are in bins 1, 3, 5, and 6, with moderate activity in bins 0 and 4, and low but nonzero activity in bins 2 and 7. There are no silent bins. Activity appears self-sustaining, so I predict mild diffusion from peaks into adjacent bins and no external stimulus.",
+      "The network is active and moderately distributed: 13 of 64 units are firing. The dominant peak is in bin 0, with secondary peaks in bins 3 and 6, and low but nonzero activity elsewhere. Activity appears self-sustaining, so I predict mild diffusion from bin 0 into bin 1, from bin 3 into bins 2 and 4, and from bin 6 into bins 5 and 7, with no external stimulus.",
+      "The network is active and moderately distributed: 13 of 64 units are firing, with a strong peak in bin 2, low activity in bins 0, 1, 3, 5, 6, and 7, and a silent gap in bin 4. Activity appears self-sustaining, with mild diffusion expected from bin 2 into bins 1 and 3 and possible weak recovery in bin 4. No external stimulus is needed.",
+      "The network is active and moderately distributed: 19 of 64 units are firing. Peaks are in bins 1 and 7, with secondary activity in bin 6 and moderate activity in bins 0, 3, and 5. Bins 2 and 4 are low but nonzero. Activity appears self-sustaining, with mild diffusion expected from bins 1, 6, and 7 into adjacent bins. No external stimulus is needed.",
+      "The network is active and moderately distributed: 22 of 64 units are firing. Peaks are in bins 4, 5, and 6, with moderate activity in bins 0 and 3, low activity in bins 1 and 7, and minimal activity in bin 2. Activity appears self-sustaining, with mild diffusion expected from bins 4-6 into bins 3 and 7, and from bins 0 and 3 into bins 1 and 2. No external stimulus is needed.",
+      "",
+      "The network is active and moderately distributed: 19 of 64 units are firing. Peaks are in bin 7, with secondary peaks in bins 1 and 6, and moderate activity in bins 0, 2, 3, and 5. Bin 4 remains the lowest but is not silent. Activity appears self-sustaining, with mild diffusion expected from bins 1, 6, and 7 into adjacent bins and weak recovery in bin 4. No external stimulus is needed.",
+      "The network is active and moderately distributed: 22 of 64 units are firing. Peaks are in bins 4, 5, and 6, with moderate activity in bins 0, 1, and 3, low activity in bin 2, and a silent gap in bin 7. Activity appears self-sustaining, with mild diffusion expected from bins 4-6 into bins 3 and 7, and from bins 0, 1, and 3 into bin 2. No external stimulus is needed.",
+      "The network is active but slightly sparse: 16 of 64 units are firing. The dominant peak is in bin 2, with secondary activity in bin 0 and moderate activity in bins 3, 5, and 7. Bins 1 and 6 are low, and bin 4 is silent. Activity appears self-sustaining, with mild diffusion expected from bin 2 into bins 1 and 3, from bins 3 and 5 into bin 4, and from bins 0 and 7 into adjacent bins; weak recovery in bin 4 is plausible without external stimulus.",
+      "The network is active and moderately distributed: 19 of 64 units are firing. Peaks are in bins 1, 4, 6, and 7, with moderate activity in bins 2, 3, and 5, and low activity in bin 0. Activity appears self-sustaining, with mild diffusion expected from the high-activity bins into adjacent bins and weak recovery in bin 0. No external stimulus is needed.",
+      "The network is active and moderately distributed: 25 of 64 units are firing. The dominant peak is in bin 4, with secondary peaks in bins 0, 5, and 6, and moderate activity in bins 1 and 3. Bins 2 and 7 are low but not silent. Activity appears self-sustaining, with mild diffusion expected from bins 4-6 into neighboring bins and weak recovery in bins 2 and 7. No external stimulus is needed.",
+      "I observe an active but slightly sparse state: 16 of 64 units are firing. The dominant peak is in bin 2, with secondary activity in bin 0 and moderate activity in bins 3, 5, and 7; bins 1 and 6 are low and bin 4 is silent. This resembles the recent bin-2 peak, and I expect mild diffusion from bin 2 into bins 1 and 3, from bins 3 and 5 into bin 4, and from bins 0 and 7 into neighboring bins. Weak recovery in bin 4 is plausible, so no external stimulus is needed.",
+      "The network is active and moderately distributed: 18 of 64 units are firing. Peaks are in bins 1, 6, and 7, with moderate activity in bins 2 through 5 and low activity in bin 0. Activity appears self-sustaining, with mild diffusion expected from bins 1, 6, and 7 into neighboring bins and weak recovery in bin 0. No external stimulus is needed.",
+      "The network is active and moderately distributed: 25 of 64 units are firing. The dominant peak is in bin 4, with secondary activity in bins 0, 5, and 6, moderate activity in bins 1 and 3, and low activity in bins 2 and 7. Activity appears self-sustaining, with mild diffusion expected from bin 4 into bins 3 and 5, from bins 0 and 6 into neighboring bins, and weak recovery in bins 2 and 7. No external stimulus is needed.",
+      "The network is active and moderately distributed: 17 of 64 units are firing. The dominant peak is in bin 2, with secondary activity in bins 0, 3, 5, and 7; bins 1 and 6 are low and bin 4 is silent. Activity appears self-sustaining, with mild diffusion expected from bin 2 into bins 1 and 3, from bins 0, 3, 5, and 7 into neighboring bins, and weak recovery in bin 4. No external stimulus is needed.",
+      "The network is active and moderately distributed: 18 of 64 units are firing. Peaks are in bins 1, 6, and 7, with moderate activity in bins 2 through 5 and low activity in bin 0. Activity appears self-sustaining, with mild diffusion expected from bins 1, 6, and 7 into neighboring bins and weak recovery in bin 0. No external stimulus is needed.",
+      "The network is active and moderately distributed: 25 of 64 units are firing. The dominant peak is in bin 4, with secondary activity in bins 0, 5, and 6, moderate activity in bins 1 and 3, and low activity in bins 2 and 7. Activity appears self-sustaining, with mild diffusion expected from bin 4 into bins 3 and 5, from bins 0 and 6 into neighboring bins, and weak recovery in bins 2 and 7. No external stimulus is needed.",
+      "The network is active and moderately distributed: 17 of 64 units are firing. The dominant peak is in bin 2, with secondary activity in bins 0, 3, 5, and 7; bins 1 and 6 are low and bin 4 is silent. Activity appears self-sustaining, with mild diffusion expected from bin 2 into bins 1 and 3, from bins 0, 3, 5, and 7 into neighboring bins, and weak recovery in bin 4. No external stimulus is needed.",
+      "The network is active and moderately distributed: 18 of 64 units are firing. Peaks are in bins 1, 6, and 7, with moderate activity in bins 0, 2, 3, 4, and 5. Activity appears self-sustaining, with mild diffusion expected from bins 1, 6, and 7 into neighboring bins and weak recovery in bin 0. No external stimulus is needed."
+    ],
+    "convergence": {
+      "slope": 0.0015219622331691292,
+      "head_mean": 0.17292410714285714,
+      "tail_mean": 0.19595982142857143,
+      "p_value": 0.77,
+      "slope_ci": [
+        -0.002952073077508891,
+        0.005337774915599094
+      ],
+      "converged": false
+    },
+    "actions": [
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.1
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 2,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      }
+    ]
+  },
+  "readonly": {
+    "errors": [
+      0.015625,
+      0.178125,
+      0.14,
+      0.14875,
+      0.057499999999999996,
+      0.13671875,
+      0.109375,
+      0.110625,
+      0.065,
+      0.109375,
+      0.12625000000000003,
+      0.125,
+      0.198125,
+      0.14687499999999998,
+      0.16875,
+      0.125,
+      0.1875,
+      0.109375,
+      0.2625,
+      0.21875,
+      0.3125,
+      0.28312499999999996,
+      0.328125,
+      0.29374999999999996,
+      0.29375,
+      0.289375,
+      0.296875,
+      0.305,
+      0.25625
+    ],
+    "self_descriptions": [
+      "I observe a completely silent spiking network: no active units and zero activity in every bin. With no recent self-reflections, my state is idle and non-interventional.",
+      "Current snapshot shows sparse activity: one active unit out of 64, localized to the final bin. This contradicts the prior reflection of complete silence, so I observe a low-activity state and remain non-interventional.",
+      "I observe a low-activity spiking state with 7 active units out of 64, distributed across bins 0, 1, 2, 3, 4, and 7, with bin 2 showing the highest local activity and bins 5 and 6 silent. This is consistent with a sparse, non-interventional regime rather than complete silence.",
+      "I observe a low-to-moderate sparse spiking state with 14 active units out of 64, distributed across bins 0, 1, 2, 3, 4, 6, and 7, with bin 7 highest and bin 5 silent. This is consistent with continued sparse, non-interventional activity rather than silence.",
+      "I observe a sparse spiking state with 6 active units out of 64, distributed across bins 0, 1, 4, and 6, with bin 6 showing the strongest local activity and bins 2, 3, 5, and 7 silent. This is consistent with a low-activity, non-interventional regime.",
+      "I observe a sparse, low-activity spiking state with 4 active units out of 64, localized mainly to bins 1, 6, and 7, with bin 6 showing the strongest local activity. This remains consistent with a non-interventional regime.",
+      "I observe a sparse low-to-moderate spiking state with 9 active units out of 64, distributed across bins 0, 2, 5, 6, and 7, with bin 2 showing the strongest local activity and bins 1, 3, and 4 silent. This remains consistent with a non-interventional regime.",
+      "I observe a sparse low-activity spiking state with 4 active units out of 64, concentrated in bins 1, 6, and 7, with bin 6 showing the strongest local activity and bins 0, 2, 3, 4, and 5 silent. This remains consistent with a non-interventional regime.",
+      "I observe a sparse low-activity spiking state with 5 active units out of 64, distributed across bins 1, 2, and 6, with bins 2 and 6 tied for strongest local activity and bins 0, 3, 4, 5, and 7 silent. This remains consistent with a non-interventional regime.",
+      "I observe a sparse spiking state with 6 active units out of 64, distributed across bins 0, 2, 5, 6, and 7, with bin 6 showing the strongest local activity and bins 1, 3, and 4 silent. This remains consistent with a low-activity, non-interventional regime.",
+      "I observe a sparse low-activity spiking state with 5 active units out of 64, distributed across bins 1, 2, 3, and 6, with bin 2 showing the strongest local activity and bins 0, 4, 5, and 7 silent. This remains consistent with a low-activity, non-interventional regime.",
+      "I observe a sparse low-to-moderate spiking state with 8 active units out of 64, distributed across bins 1, 2, 4, 5, and 7, with bin 1 showing the strongest local activity and bins 0, 3, and 6 silent. This remains consistent with a low-activity, non-interventional regime.",
+      "I observe a sparse low-to-moderate spiking state with 8 active units out of 64, distributed across bins 0, 1, 3, 4, 5, 6, and 7, with bin 6 showing the strongest local activity and bin 2 silent. This remains consistent with a low-activity, non-interventional regime.",
+      "I observe a low-to-moderate spiking state with 19 active units out of 64, distributed across bins 0, 1, 2, 4, 5, 6, and 7, with bin 6 showing the strongest local activity and bin 3 silent. This remains consistent with a non-interventional regime.",
+      "I observe a low-to-moderate spiking state with 15 active units out of 64, distributed across bins 0, 1, 3, 4, 5, 6, and 7, with bins 5 and 6 showing the strongest local activity and bin 2 silent. This remains consistent with a non-interventional regime.",
+      "I observe a sparse low-to-moderate spiking state with 10 active units out of 64, distributed across bins 0, 1, 2, 3, 4, 5, and 7, with bin 3 showing the strongest local activity and bin 7 silent. This remains consistent with a low-activity, non-interventional regime.",
+      "I observe a sparse low-to-moderate spiking state with 14 active units out of 64, distributed across bins 0, 1, 2, 3, 4, 5, and 7, with bin 0 showing the strongest local activity and bin 6 silent. This remains consistent with a low-activity, non-interventional regime.",
+      "I observe a low-to-moderate spiking state with 24 active units out of 64, distributed across all bins, with bin 3 showing the strongest local activity and bin 4 the weakest. This remains consistent with a non-interventional regime.",
+      "I observe a low-to-moderate spiking state with 23 active units out of 64, distributed across all bins, with bins 3 and 5 showing the strongest local activity and bin 2 the weakest. This remains consistent with a non-interventional regime.",
+      "I observe a sparse low-to-moderate spiking state with 10 active units out of 64, distributed across bins 0, 1, 2, 3, 4, and 6, with bins 2 and 3 showing the strongest local activity and bins 5 and 7 silent. This remains consistent with a low-activity, non-interventional regime.",
+      "I observe a sparse low-to-moderate spiking state with 16 active units out of 64, distributed across bins 0, 1, 2, 5, and 6, with bin 1 showing the strongest local activity and bins 3, 4, and 7 silent. This remains consistent with a low-activity, non-interventional regime.",
+      "I observe a low-to-moderate spiking state with 24 active units out of 64, distributed across all bins, with bin 7 showing the strongest local activity and bin 1 the weakest. This remains consistent with a non-interventional regime.",
+      "I observe a sparse low-to-moderate spiking state with 21 active units out of 64, distributed across bins 0, 1, 2, 3, 4, and 6, with bin 3 showing the strongest local activity and bins 5 and 7 silent. This remains consistent with a low-activity, non-interventional regime.",
+      "I observe a sparse low-to-moderate spiking state with 16 active units out of 64, distributed across bins 0, 1, 2, 4, 5, and 6, with bins 1 and 6 showing the strongest local activity and bins 3 and 7 silent. This remains consistent with a low-activity, non-interventional regime.",
+      "I observe a low-to-moderate spiking state with 24 active units out of 64, distributed across all bins, with bin 7 showing the strongest local activity and bin 1 the weakest. This remains consistent with a non-interventional regime.",
+      "I observe a low-to-moderate spiking state with 22 active units out of 64, distributed across bins 0, 1, 2, 3, 4, and 6, with bin 3 showing the strongest local activity and bins 5 and 7 silent. This remains consistent with a low-activity, non-interventional regime.",
+      "I observe a sparse low-to-moderate spiking state with 15 active units out of 64, distributed across bins 0, 1, 2, 4, 5, and 6, with bins 1 and 6 showing the strongest local activity and bins 3 and 7 silent. This remains consistent with a low-activity, non-interventional regime.",
+      "I observe a low-to-moderate spiking state with 24 active units out of 64, distributed across all 8 bins. Bin 7 shows the strongest local activity (6 units), bin 5 is next strongest (5 units), and bin 1 is the weakest (1 unit). The pattern remains consistent with a non-interventional regime.",
+      "I observe a low-to-moderate spiking state with 22 active units out of 64. Activity is concentrated in bins 0, 1, 2, 3, 4, and 6, with bin 3 strongest at 6 units and bins 5 and 7 silent. This remains consistent with a low-activity, non-interventional regime.",
+      "I observe a low spiking state with 16 active units out of 64, concentrated in bins 1 and 6, with bin 7 silent. This remains consistent with a low-activity, non-interventional regime."
+    ],
+    "convergence": {
+      "slope": 0.008703278940886698,
+      "head_mean": 0.11909598214285715,
+      "tail_mean": 0.24870833333333336,
+      "p_value": 1.0,
+      "slope_ci": [
+        0.0065684431111903445,
+        0.010988734766537204
+      ],
+      "converged": false
+    },
+    "actions": [
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 6,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 3,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      }
+    ]
+  }
+}

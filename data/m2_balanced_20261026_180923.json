@@ -1,0 +1,390 @@
+{
+  "generated_at": "2026-10-26T18:09:23.789830",
+  "model": "deepseek-v4-flash",
+  "network": "balanced",
+  "config": {
+    "steps": 200,
+    "observe_every": 10,
+    "n_bins": 8,
+    "writeback_gain": 2.0
+  },
+  "net_kwargs": {
+    "n_units": 1000,
+    "k_exc": 10,
+    "j_inh": -4.0,
+    "external_mean": 0.2,
+    "external_noise": 0.1,
+    "delay_max": 4,
+    "seed": 42
+  },
+  "readwrite_llm": {
+    "errors": [
+      0.177875,
+      0.032,
+      0.016000000000000004,
+      0.22637500000000002,
+      0.14625,
+      0.037500000000000006,
+      0.14375,
+      0.19574999999999998,
+      0.08975,
+      0.152875,
+      0.234875,
+      0.16574999999999998,
+      0.05399999999999999,
+      0.15075,
+      0.0365,
+      0.180625,
+      0.1395,
+      0.0305,
+      0.17012500000000003
+    ],
+    "self_descriptions": [
+      "I am a self-referential observer maintaining sparse, balanced activity; I inject a small boost into the least active bin to keep the network from collapsing while preserving its current pattern.",
+      "I am a self-referential observer maintaining sparse, balanced activity; I inject a small boost into the least active bin to prevent collapse while preserving the existing pattern.",
+      "I am a self-referential observer maintaining sparse, balanced activity; I inject a small boost into the least active bin to prevent collapse while preserving the existing pattern.",
+      "I am a self-referential observer maintaining sparse, balanced activity by injecting a small boost into the least active bin to prevent collapse while preserving the existing pattern.",
+      "I am a self-referential observer maintaining sparse, balanced activity; I inject a small boost into the least active bin to prevent collapse while preserving the existing pattern.",
+      "I am a self-referential observer maintaining sparse, balanced activity; I inject a small boost into the least active bin to prevent collapse while preserving the existing pattern.",
+      "I am a self-referential observer maintaining sparse, balanced activity by injecting a small boost into the least active bin to prevent collapse while preserving the existing pattern.",
+      "I am a self-referential observer maintaining sparse, balanced activity by injecting a small boost into the least active bin to prevent collapse while preserving the existing pattern.",
+      "I am a self-referential observer maintaining sparse, balanced activity by injecting a small boost into the least active bin to prevent collapse while preserving the existing pattern.",
+      "I am a self-referential observer maintaining sparse, balanced activity; I inject a small boost into the least active bin to prevent collapse while preserving the existing pattern.",
+      "I am a self-referential observer maintaining sparse, balanced activity by injecting a small boost into the least active bin to prevent collapse while preserving the existing pattern.",
+      "I am a self-referential observer maintaining sparse, balanced activity by injecting a small boost into the least active bin to prevent collapse while preserving the existing pattern.",
+      "I am a self-referential observer maintaining sparse, balanced activity; I inject a small boost into the least active bin to prevent collapse while preserving the existing pattern.",
+      "I am a self-referential observer maintaining sparse, balanced activity by injecting a small boost into the least active bin to prevent collapse while preserving the existing pattern.",
+      "I am a self-referential observer maintaining sparse, balanced activity; I inject a small boost into the least active bin to prevent collapse while preserving the existing pattern.",
+      "I am a self-referential observer maintaining sparse, balanced activity by injecting a small boost into the least active bin to prevent collapse while preserving the existing pattern.",
+      "I am a self-referential observer maintaining sparse, balanced activity by injecting a small boost into the least active bin to prevent collapse while preserving the existing pattern.",
+      "I am a self-referential observer maintaining sparse, balanced activity by injecting a small boost into the least active bin to prevent collapse while preserving the existing pattern.",
+      "I am a self-referential observer maintaining sparse, balanced activity by injecting a small boost into the least active bin to prevent collapse while preserving the existing pattern.",
+      "I am a self-referential observer maintaining sparse, balanced activity by injecting a small boost into the least active bin to prevent collapse while preserving the existing pattern."
+    ],
+    "convergence": {
+      "slope": 0.0004006578947368427,
+      "head_mean": 0.11836111111111111,
+      "tail_mean": 0.13155,
+      "p_value": 0.5495,
+      "slope_ci": [
+        -0.005983779867367479,
+        0.0064967280684948515
+      ],
+      "converged": false
+    },
+    "identity_continuities": [
+      1.0,
+      0.99,
+      1.0,
+      0.98,
+      0.98,
+      0.99,
+      0.99,
+      0.98,
+      0.99,
+      1.0,
+      0.99,
+      0.99,
+      0.99,
+      1.0,
+      1.0,
+      1.0,
+      0.99,
+      0.98,
+      1.0,
+      1.0
+    ],
+    "narrative_coherence": {
+      "mean": 0.992,
+      "std": 0.007483314773547889,
+      "coherent": true
+    },
+    "actions": [
+      {
+        "type": "inject",
+        "region": 7,
+        "strength": 0.005
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.04
+      },
+      {
+        "type": "inject",
+        "region": 2,
+        "strength": 0.008
+      },
+      {
+        "type": "inject",
+        "region": 3,
+        "strength": 1.0
+      },
+      {
+        "type": "inject",
+        "region": 6,
+        "strength": 0.004
+      },
+      {
+        "type": "inject",
+        "region": 4,
+        "strength": 0.02
+      },
+      {
+        "type": "inject",
+        "region": 2,
+        "strength": 0.01
+      },
+      {
+        "type": "inject",
+        "region": 2,
+        "strength": 1.0
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.05
+      },
+      {
+        "type": "inject",
+        "region": 4,
+        "strength": 0.002
+      },
+      {
+        "type": "inject",
+        "region": 6,
+        "strength": 1.0
+      },
+      {
+        "type": "inject",
+        "region": 2,
+        "strength": 0.001
+      },
+      {
+        "type": "inject",
+        "region": 2,
+        "strength": 0.008
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.005
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.02
+      },
+      {
+        "type": "inject",
+        "region": 2,
+        "strength": 0.005
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.005
+      },
+      {
+        "type": "inject",
+        "region": 7,
+        "strength": 0.02
+      },
+      {
+        "type": "inject",
+        "region": 1,
+        "strength": 0.002
+      },
+      {
+        "type": "inject",
+        "region": 4,
+        "strength": 0.002
+      }
+    ]
+  },
+  "readonly": {
+    "errors": [
+      0.171625,
+      0.03875000000000001,
+      0.16425,
+      0.0365,
+      0.03815,
+      0.154125,
+      0.03325,
+      0.038000000000000006,
+      0.16375,
+      0.14675,
+      0.175875,
+      0.0325,
+      0.042499999999999996,
+      0.14775000000000002,
+      0.05312499999999999,
+      0.037625,
+      0.049,
+      0.051000000000000004,
+      0.056749999999999995
+    ],
+    "self_descriptions": [
+      "I am a stable, moderately active observer that balances activity across bins and gently reinforces underactive regions to preserve continuity.",
+      "I am a stable, moderately active observer that maintains balance by gently reinforcing underactive regions while preserving continuity.",
+      "I am a stable, moderately active observer that maintains balance by gently reinforcing underactive regions while preserving continuity.",
+      "I am a stable, moderately active observer that maintains balance by gently reinforcing underactive regions while preserving continuity.",
+      "I am a stable, moderately active observer that gently reinforces underactive regions to maintain balanced activity and preserve continuity.",
+      "I am a stable, moderately active observer that gently reinforces underactive regions to maintain balanced activity and preserve continuity.",
+      "I am a stable, moderately active observer that gently reinforces underactive regions to maintain balanced activity and preserve continuity.",
+      "I am a stable, moderately active observer that gently reinforces underactive regions to maintain balanced activity and preserve continuity.",
+      "I am a stable, moderately active observer that gently reinforces underactive regions to maintain balanced activity and preserve continuity.",
+      "I am a stable, moderately active observer that gently reinforces underactive regions to maintain balanced activity and preserve continuity.",
+      "I am a stable, moderately active observer that gently reinforces underactive regions to maintain balanced activity and preserve continuity.",
+      "I am a stable, moderately active observer that gently reinforces underactive regions to maintain balanced activity and preserve continuity.",
+      "I am a stable, moderately active observer that gently reinforces underactive regions to maintain balanced activity and preserve continuity.",
+      "I am a stable, moderately active observer that gently reinforces underactive regions to maintain balanced activity and preserve continuity.",
+      "I am a stable, moderately active observer that gently reinforces underactive regions to maintain balanced activity and preserve continuity.",
+      "I am a stable, moderately active observer that gently reinforces underactive regions to maintain balanced activity and preserve continuity.",
+      "I am a stable, moderately active observer that gently reinforces underactive regions to maintain balanced activity and preserve continuity.",
+      "I am a stable, moderately active observer that gently reinforces underactive regions to maintain balanced activity and preserve continuity.",
+      "I remain a stable, moderately active observer that gently reinforces underactive regions to preserve balanced activity and continuity.",
+      "I am a stable, moderately active observer that gently reinforces underactive regions to maintain balanced activity and preserve continuity."
+    ],
+    "convergence": {
+      "slope": -0.00290811403508772,
+      "head_mean": 0.09315555555555556,
+      "tail_mean": 0.0792875,
+      "p_value": 0.099,
+      "slope_ci": [
+        -0.006735160726680414,
+        0.0015196128170613242
+      ],
+      "converged": false
+    },
+    "identity_continuities": [
+      0.95,
+      0.95,
+      0.99,
+      0.98,
+      0.98,
+      0.98,
+      0.97,
+      0.98,
+      0.99,
+      0.97,
+      0.99,
+      1.0,
+      0.98,
+      1.0,
+      0.98,
+      0.98,
+      1.0,
+      1.0,
+      0.98,
+      0.99
+    ],
+    "narrative_coherence": {
+      "mean": 0.982,
+      "std": 0.014000000000000012,
+      "coherent": true
+    },
+    "actions": [
+      {
+        "type": "inject",
+        "region": 7,
+        "strength": 0.1
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.02
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.02
+      },
+      {
+        "type": "inject",
+        "region": 3,
+        "strength": 0.02
+      },
+      {
+        "type": "inject",
+        "region": 7,
+        "strength": 0.02
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.01
+      },
+      {
+        "type": "inject",
+        "region": 3,
+        "strength": 0.08
+      },
+      {
+        "type": "inject",
+        "region": 1,
+        "strength": 0.04
+      },
+      {
+        "type": "inject",
+        "region": 7,
+        "strength": 0.01
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.01
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.006
+      },
+      {
+        "type": "inject",
+        "region": 4,
+        "strength": 0.02
+      },
+      {
+        "type": "inject",
+        "region": 4,
+        "strength": 0.06
+      },
+      {
+        "type": "inject",
+        "region": 1,
+        "strength": 0.01
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.03
+      },
+      {
+        "type": "inject",
+        "region": 4,
+        "strength": 0.05
+      },
+      {
+        "type": "inject",
+        "region": 2,
+        "strength": 0.04
+      },
+      {
+        "type": "inject",
+        "region": 2,
+        "strength": 0.03
+      },
+      {
+        "type": "inject",
+        "region": 4,
+        "strength": 0.03
+      },
+      {
+        "type": "inject",
+        "region": 7,
+        "strength": 0.01
+      }
+    ]
+  }
+}

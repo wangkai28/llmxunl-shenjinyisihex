@@ -1,0 +1,51 @@
+{
+  "generated_at": "2026-10-26T14:22:58.881878",
+  "model": "qwen3.8-flash",
+  "n_rounds": 5,
+  "steps": 200,
+  "observe_every": 10,
+  "per_round": [
+    {
+      "seed": 100,
+      "a_identity_mean": null,
+      "b_identity_mean": null,
+      "a_coherent": false,
+      "b_coherent": false
+    },
+    {
+      "seed": 101,
+      "a_identity_mean": null,
+      "b_identity_mean": null,
+      "a_coherent": false,
+      "b_coherent": false
+    },
+    {
+      "seed": 102,
+      "a_identity_mean": null,
+      "b_identity_mean": null,
+      "a_coherent": false,
+      "b_coherent": false
+    },
+    {
+      "seed": 103,
+      "a_identity_mean": null,
+      "b_identity_mean": null,
+      "a_coherent": false,
+      "b_coherent": false
+    },
+    {
+      "seed": 104,
+      "a_identity_mean": null,
+      "b_identity_mean": null,
+      "a_coherent": false,
+      "b_coherent": false
+    }
+  ],
+  "paired_sign_test": {
+    "mean_diff": null,
+    "wins": 0,
+    "n": 5,
+    "p_value": 0.9963548209542321,
+    "significant": false
+  }
+}

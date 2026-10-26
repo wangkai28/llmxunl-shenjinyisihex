@@ -1,0 +1,23 @@
+{
+  "generated_at": "2026-10-26T15:24:06.998601",
+  "model": "deepseek-v4-flash",
+  "n_rounds": 1,
+  "steps": 200,
+  "observe_every": 10,
+  "per_round": [
+    {
+      "seed": 100,
+      "a_identity_mean": 0.9449999999999997,
+      "b_identity_mean": 0.8790000000000001,
+      "a_coherent": true,
+      "b_coherent": true
+    }
+  ],
+  "paired_sign_test": {
+    "mean_diff": 0.06599999999999961,
+    "wins": 1,
+    "n": 1,
+    "p_value": 0.5,
+    "significant": false
+  }
+}
