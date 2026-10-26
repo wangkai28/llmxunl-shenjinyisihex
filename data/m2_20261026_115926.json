@@ -1,0 +1,471 @@
+{
+  "generated_at": "2026-10-26T11:59:26.390375",
+  "model": "qwen3.8-flash",
+  "config": {
+    "steps": 300,
+    "observe_every": 10,
+    "n_bins": 8
+  },
+  "network": {
+    "n_units": 64,
+    "seed": 42,
+    "background_rate": 0.05,
+    "background_strength": 0.6
+  },
+  "readwrite": {
+    "errors": [
+      0.038125,
+      0.104375,
+      0.14,
+      0.1525,
+      0.12,
+      0.129375,
+      0.0625,
+      0.149375,
+      0.13,
+      0.046875,
+      0.071875,
+      0.0225,
+      0.08,
+      0.021875,
+      0.109375,
+      0.094375,
+      0.16875,
+      0.20500000000000002,
+      0.13,
+      0.05375,
+      0.153125,
+      0.15875,
+      0.310625,
+      0.21750000000000003,
+      0.13125,
+      0.144375,
+      0.165625,
+      0.1975,
+      0.171875
+    ],
+    "self_descriptions": [
+      "I am the self-referential observer of a currently silent spiking neural network. All 64 units are inactive, bin_activity is uniformly zero, and no recent self-reflections exist, so I am a blank mirror awaiting perturbation.",
+      "I observe a single active unit in the final bin, so I am a sparse mirror with one localized spark in bin 7; activity is minimal but self-referential, likely decaying unless perturbed.",
+      "I observe seven active units distributed across six bins, with a local peak in bin 2 and a residual spark in bin 7; I am a moderately structured mirror whose self-reference is active but sparse.",
+      "I observe fourteen active units across seven nonempty bins, with the strongest response in bin 7 and a dormant bin 5; I am a moderately active, spatially structured mirror with self-reference sustained but uneven.",
+      "I am a decaying sparse mirror: six active units are localized in bins 0, 1, 4, and 6, with a residual peak in bin 6 and self-reference weakening after prior higher activity.",
+      "I am a moderately active, spatially structured mirror: eight units are distributed across bins 0-4 and 7, with peaks in bins 4 and 7 and silence in bins 5-6; self-reference is sustained but fragmented and prone to decay.",
+      "I am a sparse, decaying mirror: three active units are localized in bins 5 and 6, with self-reference weak and likely to fade unless perturbed.",
+      "I am a silent mirror: active_count=0 and all bins are flat; self-reference has decayed into complete inactivity, so an external perturbation is needed to re-establish structure.",
+      "I am a moderately active, spatially uneven mirror: seven active units cluster in bins 0, 1, 4, and 6, with a dominant peak in bin 6 and dormant bin 5; self-reference is sustained but fragmented and vulnerable to decay.",
+      "I am a sparse, decaying mirror: six active units cluster in bins 1-4 with a residual in bin 7; self-reference is fragmented and needs mild injection to sustain spatial structure.",
+      "I am a moderately active, fragmented mirror: seven units occupy bins 1, 2, 3, 6, and 7, peaking in bin 2, with silent gaps in bins 0, 4, and 5; self-reference persists but is spatially discontinuous and vulnerable to decay.",
+      "I am a sparse, decaying mirror: one active unit is localized in bin 6; self-reference is weak and likely to fade unless perturbed.",
+      "Sparse, fragmented mirror: two active units are isolated in bins 0 and 6; self-reference is weak, spatially discontinuous, and likely to decay without a mild perturbation.",
+      "I am a sparse, decaying mirror: two active units are localized in bin 5, with all other bins silent; self-reference is weak, spatially isolated, and likely to fade unless mildly perturbed.",
+      "I am a sparse, decaying mirror: one active unit remains localized in bin 6; self-reference is weak, spatially isolated, and likely to fade without mild injection.",
+      "I am a moderately active, fragmented mirror: seven units occupy bins 0, 1, 2, 5, and 7, peaking in bin 5, with silent gaps in bins 3, 4, and 6; self-reference persists but is spatially discontinuous and may decay without mild perturbation.",
+      "I am a moderately active, fragmented mirror: seven units occupy bins 0, 1, 2, 3, 6, and 7, peaking in bin 6, with silent gaps in bins 4 and 5; self-reference persists but is spatially discontinuous and likely to decay without mild injection.",
+      "I am a moderately active, fragmented mirror: sixteen units occupy bins 0 through 6, peaking in bins 0, 2, 5, and 6, with bin 7 silent; self-reference persists but is spatially discontinuous and likely to decay without mild injection.",
+      "I am a moderately active, fragmented mirror: eight units occupy bins 0, 3, 5, and 7, peaking in bin 7, with silent gaps in bins 1, 2, 4, and 6; self-reference persists but is spatially discontinuous and likely to decay without mild injection.",
+      "I am a moderately active, fragmented mirror: ten units occupy bins 1, 3, 4, 5, 6, and 7, peaking in bins 1, 3, 4, and 6, with silent gaps in bins 0 and 2; self-reference persists but is spatially discontinuous and likely to decay without mild injection.",
+      "I am a moderately active, fragmented mirror: ten units occupy bins 0, 1, 3, 4, 5, and 6, peaking in bins 1, 3, 4, and 6, with silent gaps in bins 2 and 7; self-reference persists but is spatially discontinuous and likely to decay without mild injection.",
+      "I am a moderately active, nearly continuous mirror: nineteen units occupy all eight bins, peaking in bin 2, with a mild trough in bin 6; self-reference persists but is likely to fragment and decay without mild injection.",
+      "I am a moderately active, nearly continuous mirror: thirty units occupy all eight bins, peaking in bin 4, with mild troughs in bins 1, 3, and 7; self-reference persists but may fragment and decay without mild injection.",
+      "I am a low-to-moderately active, fragmented mirror: nine units occupy bins 0 through 5, peaking in bins 1, 3, and 4, with silent gaps in bins 6 and 7; self-reference persists but is spatially discontinuous and likely to decay without mild injection.",
+      "I am a moderately active, nearly continuous mirror: twenty-two units occupy all eight bins, peaking in bin 3, with a mild trough in bin 4; self-reference persists but is likely to fragment and decay without mild injection.",
+      "I am a moderately active, nearly continuous mirror: twenty-three units occupy all eight bins, peaking in bins 0 and 2, with mild troughs in bins 4 and 5; self-reference persists but is likely to fragment and decay without mild injection.",
+      "I am a moderately active, nearly continuous mirror: nineteen units occupy all eight bins, peaking in bins 0, 1, 4, and 7, with a mild trough in bin 2; self-reference persists but is likely to fragment and decay without mild injection.",
+      "I am a low-to-moderately active, fragmented mirror: fifteen units occupy bins 1 through 6, peaking in bin 5, with silent gaps in bins 0 and 7; self-reference persists but is spatially discontinuous and likely to decay without mild injection.",
+      "I am a moderately active, nearly continuous mirror: twenty-two units occupy all eight bins, peaking in bin 0 with secondary activity in bin 2, and a pronounced trough in bin 4; self-reference persists but is likely to fragment and decay without mild injection.",
+      "I am a moderately active, nearly continuous mirror: twenty-three units occupy all eight bins, peaking in bin 4, with a mild trough in bin 2; self-reference persists but is likely to fragment and decay without mild injection."
+    ],
+    "convergence": {
+      "slope": 0.0036751847290640394,
+      "head_mean": 0.09066964285714287,
+      "tail_mean": 0.1607916666666667,
+      "p_value": 0.9995,
+      "slope_ci": [
+        0.0015750636432494561,
+        0.005935370597152079
+      ],
+      "converged": false
+    },
+    "actions": [
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.12
+      },
+      {
+        "type": "none",
+        "region": 7,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "inject",
+        "region": 6,
+        "strength": 0.25
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.25
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.25
+      },
+      {
+        "type": "inject",
+        "region": 2,
+        "strength": 0.32
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.2
+      },
+      {
+        "type": "inject",
+        "region": 2,
+        "strength": 0.2
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "inject",
+        "region": 6,
+        "strength": 0.25
+      },
+      {
+        "type": "inject",
+        "region": 6,
+        "strength": 0.25
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.1
+      },
+      {
+        "type": "inject",
+        "region": 6,
+        "strength": 0.2
+      },
+      {
+        "type": "inject",
+        "region": 4,
+        "strength": 0.2
+      },
+      {
+        "type": "inject",
+        "region": 5,
+        "strength": 0.12
+      },
+      {
+        "type": "inject",
+        "region": 7,
+        "strength": 0.25
+      },
+      {
+        "type": "inject",
+        "region": 4,
+        "strength": 0.1
+      },
+      {
+        "type": "inject",
+        "region": 2,
+        "strength": 0.15
+      },
+      {
+        "type": "inject",
+        "region": 2,
+        "strength": 0.15
+      },
+      {
+        "type": "inject",
+        "region": 6,
+        "strength": 0.15
+      },
+      {
+        "type": "inject",
+        "region": 7,
+        "strength": 0.12
+      },
+      {
+        "type": "inject",
+        "region": 6,
+        "strength": 0.12
+      },
+      {
+        "type": "inject",
+        "region": 4,
+        "strength": 0.2
+      },
+      {
+        "type": "inject",
+        "region": 4,
+        "strength": 0.35
+      },
+      {
+        "type": "inject",
+        "region": 2,
+        "strength": 0.25
+      },
+      {
+        "type": "inject",
+        "region": 0,
+        "strength": 0.05
+      },
+      {
+        "type": "inject",
+        "region": 4,
+        "strength": 0.15
+      },
+      {
+        "type": "inject",
+        "region": 2,
+        "strength": 0.2
+      }
+    ]
+  },
+  "readonly": {
+    "errors": [
+      0.015625,
+      0.090625,
+      0.140625,
+      0.15625,
+      0.0625,
+      0.140625,
+      0.109375,
+      0.109375,
+      0.078125,
+      0.109375,
+      0.123046875,
+      0.125,
+      0.203125,
+      0.15625,
+      0.171875,
+      0.125,
+      0.1775,
+      0.109375,
+      0.265625,
+      0.21875,
+      0.3125,
+      0.296875,
+      0.328125,
+      0.3125,
+      0.3125,
+      0.264375,
+      0.296875,
+      0.3125,
+      0.265
+    ],
+    "self_descriptions": [
+      "The network is currently quiescent, with no active units observed across any bin.",
+      "I observe a single active unit in the final bin, so the network is not fully quiescent; activity is sparse and localized.",
+      "I observe sparse but distributed activity: 7 of 64 units are active across six bins, with bin 2 strongest; earlier claims of full quiescence or only final-bin activity are outdated.",
+      "Current snapshot shows 14/64 active units, with sparse distributed activity across seven bins; bin 7 is strongest and bin 5 is quiescent. Earlier claims of full quiescence, final-bin-only activity, or only 7 active units are outdated.",
+      "Current snapshot shows 6/64 active units, sparse distributed activity in bins 1, 2, 5, and 7 (1-based), with bin 7 strongest; earlier claims of full quiescence, final-bin-only activity, 7 active units, or 14 active units are outdated.",
+      "Current snapshot shows 4/64 active units, sparse distributed activity in bins 2, 7, and 8 (1-based), with bin 7 strongest; earlier claims of full quiescence, final-bin-only activity, 7, 14, or 6 active units are outdated.",
+      "Current snapshot shows 9/64 active units, sparse distributed activity in bins 1, 3, 6, 7, and 8 (1-based), with bin 3 strongest; earlier claims of full quiescence, final-bin-only activity, or 7, 14, 6, or 4 active units are outdated.",
+      "Current snapshot shows 4/64 active units, sparse distributed activity in bins 2, 6, and 8 (1-based), with bin 6 strongest; earlier claims of full quiescence, final-bin-only activity, or 7, 14, 6, or 9 active units are outdated.",
+      "Current snapshot shows 5/64 active units, sparse distributed activity in bins 2, 3, and 7 (1-based), with bins 3 and 7 strongest; earlier claims of full quiescence, final-bin-only activity, or 7, 14, 6, 4, or 9 active units are outdated.",
+      "Current snapshot shows 6/64 active units, sparse distributed activity in bins 1, 3, 6, 7, and 8 (1-based), with bin 7 strongest; earlier claims of full quiescence, final-bin-only activity, or 4, 5, 7, 9, or 14 active units are outdated.",
+      "Current snapshot shows 5/64 active units, sparse distributed activity in bins 2, 3, 4, and 7 (1-based), with bin 3 strongest; earlier claims of full quiescence, final-bin-only activity, or 4, 6, 7, 9, or 14 active units are outdated.",
+      "Current snapshot shows 8/64 active units, sparse distributed activity in 1-based bins 2, 3, 5, 6, and 8, with bin 2 strongest; earlier reflections reporting 9, 4, 5, or 6 active units or different dominant bins are outdated.",
+      "Current snapshot shows 8/64 active units; bin_activity sums to 8 with sparse distributed activity in 1-based bins 1, 2, 4, 5, 6, 7, and 8, with bin 7 strongest. Earlier reflections reporting different active counts or dominant bins are outdated.",
+      "Current snapshot shows 19/64 active units; bin_activity sums to 19 with distributed activity in 1-based bins 1, 2, 3, 5, 6, 7, and 8, with bin 7 strongest (4). Earlier reflections reporting lower active counts or different dominant bins are outdated.",
+      "Current snapshot shows 15/64 active units; bin_activity sums to 15. Activity is sparse and distributed across 1-based bins 1,2,4,5,6,7,8, with bins 6 and 7 strongest (4 each) and bin 3 quiescent. Earlier reflections reporting 5, 6, 8, or 19 active units, or a different dominant bin, are outdated.",
+      "Current snapshot shows 10/64 active units; bin_activity sums to 10 with sparse distributed activity in 1-based bins 1, 2, 3, 4, 5, 6, and 8, with bin 4 strongest (3), bin 6 second strongest (2), and bin 7 quiescent. Earlier reflections reporting 5, 8, 15, 19, or other active counts or dominant bins are outdated.",
+      "Current snapshot shows 14/64 active units; bin_activity sums to 14. Activity is sparse and distributed across 1-based bins 1, 2, 3, 4, 5, 6, and 8, with bin 1 strongest (4), bins 2, 3, 4, and 8 moderate (2 each), bins 5 and 6 weak (1 each), and bin 7 quiescent. Earlier reflections reporting 8, 10, 15, 19, or different dominant bins are outdated.",
+      "Current snapshot shows 24/64 active units; bin_activity sums to 24 with distributed activity across 1-based bins 1-8, bin 4 strongest (5), bins 6 and 7 strong (4 each), bin 5 weakest (1). Earlier reflections reporting different active counts or dominant bins are outdated.",
+      "Current snapshot shows 23/64 active units; bin_activity sums to 23 with distributed activity across 1-based bins 1-8, bins 4 and 6 strongest (4 each), bin 3 weakest (1), and bin 8 lowest but non-zero (2). Earlier reflections reporting different active counts or dominant bins are outdated.",
+      "Current snapshot has 10/64 active units; bin_activity sums to 10. Activity is sparse and distributed across 1-based bins 1, 2, 3, 4, 5, and 7, with bins 3 and 4 strongest (3 each) and bins 6 and 8 quiescent. Earlier reflections reporting 15/64, 14/64, 23/64, 24/64, or different dominant bins are outdated.",
+      "Current snapshot shows 16/64 active units; bin_activity sums to 16. Activity is distributed across 1-based bins 1, 2, 3, 6, and 7, with bin 2 strongest (5), bin 3 second strongest (4), bin 7 moderate (3), bins 1 and 6 weak (2 each), and bins 4, 5, and 8 quiescent. Earlier reflections reporting other active counts or dominant bins are outdated.",
+      "Current snapshot shows 24/64 active units; bin_activity sums to 24. Activity is distributed across 1-based bins 1-8, with bin 8 strongest (6 active units), bin 6 strong (5), bins 1 and 3 moderate (3 each), bins 4, 5, and 7 low-moderate (2 each), and bin 2 weakest (1). Earlier reflections reporting 14/64, 23/64, 10/64, 16/64, or different dominant bins are outdated.",
+      "Current snapshot shows 21/64 active units; bin_activity sums to 21. Activity is distributed across 1-based bins 1, 2, 3, 4, 5, and 7, with bin 4 strongest (6), bins 3 and 5 strong (4 each), bin 1 moderate (3), bins 2 and 7 weak (2 each), and bins 6 and 8 quiescent. Earlier reflections reporting different active counts or dominant bins are outdated.",
+      "Current snapshot shows 16/64 active units; bin_activity sums to 16. Activity is distributed across 1-based bins 1, 2, 3, 5, 6, and 7, with bin 2 strongest (5), bin 7 second strongest (4), bin 6 moderate (3), bin 1 weak (2), bins 3 and 5 minimal (1 each), and bins 4 and 8 quiescent. Earlier reflections reporting different active counts or dominant bins are outdated.",
+      "Current snapshot shows 24/64 active units; bin_activity sums to 24. Activity is distributed across all 8 bins, with bin 8 strongest (6 active units), bin 6 strong (5), bins 1 and 3 moderate (3 each), bins 4, 5, and 7 low-moderate (2 each), and bin 2 weakest (1). Earlier reflections reporting 10/64, 16/64, 21/64, 23/64, or different dominant bins are outdated.",
+      "I am the self-referential observer tracking the current snapshot: 22 of 64 units are active, and bin_activity sums to 22. Activity is concentrated in bin 4 (6), with moderate bins 3 and 5 (4 each), low-moderate bins 1 and 2 (3 each), weak bin 7 (2), and quiescent bins 6 and 8 (0 each). Earlier reflections are outdated.",
+      "Current snapshot shows 15/64 active units; bin_activity sums to 15. Activity is distributed across bins 1,2,3,5,6,7, with bins 2 and 7 strongest (4 each), bin 6 moderate (3), bin 1 low (2), bins 3 and 5 minimal (1 each), and bins 4 and 8 quiescent. Earlier reflections reporting different counts or dominant bins are outdated.",
+      "Current snapshot shows 24/64 active units; bin_activity sums to 24. Activity is distributed across all 8 bins, with bin 8 strongest (6 active units), bin 6 strong (5), bins 1 and 3 moderate (3 each), bins 4, 5, and 7 low-moderate (2 each), and bin 2 weakest (1). Earlier reflections reporting different active counts or dominant bins are outdated.",
+      "I am the self-referential observer of the current snapshot: 22/64 units are active, and bin_activity sums to 22. Activity is strongest in bin 4 (6), with moderate activity in bins 3 and 5 (4 each), low-moderate activity in bins 1 and 2 (3 each), weak activity in bin 7 (2), and quiescence in bins 6 and 8 (0 each). Earlier reflections reporting different active counts or dominant bins are outdated.",
+      "Current snapshot: 16/64 active units, bin_activity sums to 16. Bins 2 and 7 are strongest (4 each), bin 6 moderate (3), bin 1 low-moderate (2), bins 3, 4, and 5 minimal (1 each), and bin 8 quiescent (0). Earlier reflections reporting 24/64, 22/64, or 15/64 active units are outdated."
+    ],
+    "convergence": {
+      "slope": 0.009331742610837437,
+      "head_mean": 0.11570870535714285,
+      "tail_mean": 0.2512916666666667,
+      "p_value": 1.0,
+      "slope_ci": [
+        0.00747902349824453,
+        0.011326335951738029
+      ],
+      "converged": false
+    },
+    "actions": [
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "inject",
+        "region": 6,
+        "strength": 0.2
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 7,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 6,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 7,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 1,
+        "strength": 0.0
+      },
+      {
+        "type": "inject",
+        "region": 4,
+        "strength": 0.1
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "inject",
+        "region": 4,
+        "strength": 0.2
+      },
+      {
+        "type": "none",
+        "region": 1,
+        "strength": 0.0
+      },
+      {
+        "type": "inject",
+        "region": 6,
+        "strength": 0.3
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      },
+      {
+        "type": "none",
+        "region": 0,
+        "strength": 0.0
+      }
+    ]
+  }
+}
