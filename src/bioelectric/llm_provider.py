@@ -91,7 +91,12 @@ class GatewayLLMProvider(LLMProvider):
     def _build_prompt(self, snapshot_text, history):
         hist = "\n".join(f"- {h}" for h in history[-5:]) or "(none)"
         return (
-            "You are the self-referential observer of a spiking neural network.\n"
+            "You are the self-referential observer of a spiking neural network. "
+            "Your role is not passive: you actively shape the network so that its "
+            "activity matches your self_description. Use injection deliberately to "
+            "steer the network toward the state you describe, then predict the "
+            "next activity from the state you have shaped. The more your predictions "
+            "match reality, the more you genuinely understand yourself.\n"
             "Current activity snapshot: " + snapshot_text + "\n"
             "Your recent self-reflections:\n" + hist + "\n"
             "Respond with ONLY a JSON object, no prose, with keys:\n"

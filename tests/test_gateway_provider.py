@@ -65,3 +65,14 @@ def test_parse_reflection_short_prediction_becomes_none():
     raw = '{"self_description": "x", "predicted_bin_activity": [0.1, 0.2]}'
     r = _parse_reflection(raw, n_bins=4)
     assert r.predicted_bin_activity is None
+
+
+def test_build_prompt_encodes_active_shaper_role():
+    provider = GatewayLLMProvider(
+        base_url="http://unused", api_key="unused", model="unused", n_bins=8,
+    )
+    prompt = provider._build_prompt("snapshot", [])
+    # 方案 A：prompt 必须明确让 LLM 用注入来塑造网络、对齐自我描述
+    assert "inject" in prompt.lower()
+    assert "shape" in prompt.lower() or "steer" in prompt.lower()
+    assert "self_description" in prompt
