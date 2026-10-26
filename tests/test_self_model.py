@@ -28,6 +28,17 @@ def test_extract_self_dimensions_returns_labeled_dict():
         assert key in dims
 
 
+def test_extract_self_dimensions_includes_new_dims():
+    net = BalancedNetwork(n_units=200, k_exc=10, j_inh=-4.0,
+                          external_mean=0.2, external_noise=0.1, delay_max=4, seed=0)
+    model = SelfModel(net, core_size=30, seed=1, hebb_lr=0.02)
+    model.form(steps=100)
+    dims = extract_self_dimensions(model, steps=50)
+    # 新增维度：核心空间漂移、核心连接强度
+    for key in ("core_drift", "core_strength"):
+        assert key in dims
+
+
 def test_local_plasticity_allows_core_self_sustain():
     # 核心区可塑（Hebb 强化核心连接），外围不可塑 → 撤输入后核心应自我维持
     net = BalancedNetwork(n_units=500, k_exc=10, j_inh=-4.0,
