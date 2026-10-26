@@ -1,0 +1,37 @@
+{
+  "generated_at": "2026-10-26T15:54:44.886178",
+  "model": "deepseek-v4-flash",
+  "n_rounds": 3,
+  "steps": 150,
+  "observe_every": 10,
+  "per_round": [
+    {
+      "seed": 100,
+      "a_identity_mean": 0.9373333333333334,
+      "b_identity_mean": 0.8160000000000002,
+      "a_coherent": true,
+      "b_coherent": false
+    },
+    {
+      "seed": 101,
+      "a_identity_mean": 0.8973333333333334,
+      "b_identity_mean": 0.866,
+      "a_coherent": true,
+      "b_coherent": true
+    },
+    {
+      "seed": 102,
+      "a_identity_mean": 0.8893333333333333,
+      "b_identity_mean": 0.6213333333333334,
+      "a_coherent": false,
+      "b_coherent": false
+    }
+  ],
+  "paired_sign_test": {
+    "mean_diff": 0.14022222222222216,
+    "wins": 3,
+    "n": 3,
+    "p_value": 0.12410653949496178,
+    "significant": false
+  }
+}
