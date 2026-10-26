@@ -76,3 +76,24 @@ def test_build_prompt_encodes_active_shaper_role():
     assert "inject" in prompt.lower()
     assert "shape" in prompt.lower() or "steer" in prompt.lower()
     assert "self_description" in prompt
+
+
+def test_parse_reflection_identity_continuity():
+    raw = '{"self_description": "I am the same observer", "identity_continuity": 0.9}'
+    r = _parse_reflection(raw, n_bins=8)
+    assert r.identity_continuity == 0.9
+
+
+def test_parse_reflection_missing_identity_continuity_defaults_none():
+    raw = '{"self_description": "x"}'
+    r = _parse_reflection(raw, n_bins=8)
+    assert r.identity_continuity is None
+
+
+def test_build_prompt_requests_identity_continuity():
+    provider = GatewayLLMProvider(
+        base_url="http://unused", api_key="unused", model="unused", n_bins=8,
+    )
+    prompt = provider._build_prompt("snapshot", ["I am an observer"])
+    assert "identity_continuity" in prompt
+    assert "same observer" in prompt.lower() or "still myself" in prompt.lower()

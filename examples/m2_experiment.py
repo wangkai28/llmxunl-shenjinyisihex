@@ -59,18 +59,24 @@ def main():
             "errors": rw_llm.errors,
             "self_descriptions": rw_llm.self_descriptions,
             "convergence": rw_llm.convergence,
+            "identity_continuities": rw_llm.identity_continuities,
+            "narrative_coherence": rw_llm.narrative_coherence,
             "actions": rw_llm.actions,
         },
         "readwrite_error_driven": {
             "errors": rw_err.errors,
             "self_descriptions": rw_err.self_descriptions,
             "convergence": rw_err.convergence,
+            "identity_continuities": rw_err.identity_continuities,
+            "narrative_coherence": rw_err.narrative_coherence,
             "actions": rw_err.actions,
         },
         "readonly": {
             "errors": ro.errors,
             "self_descriptions": ro.self_descriptions,
             "convergence": ro.convergence,
+            "identity_continuities": ro.identity_continuities,
+            "narrative_coherence": ro.narrative_coherence,
             "actions": ro.actions,
         },
     }
@@ -87,6 +93,10 @@ def main():
     print(f"llm       : converged={rw_llm.convergence['converged']} slope={rw_llm.convergence['slope']:.4f}")
     print(f"err-driven: converged={rw_err.convergence['converged']} slope={rw_err.convergence['slope']:.4f}")
     print(f"readonly : converged={ro.convergence['converged']} slope={ro.convergence['slope']:.4f} errors={[round(e,3) if e is not None else None for e in ro.errors]}")
+    print("== narrative coherence (identity_continuity) ==")
+    print(f"llm       : coherent={rw_llm.narrative_coherence.get('coherent')} mean={rw_llm.narrative_coherence.get('mean')} std={rw_llm.narrative_coherence.get('std')}")
+    print(f"err-driven: coherent={rw_err.narrative_coherence.get('coherent')} mean={rw_err.narrative_coherence.get('mean')} std={rw_err.narrative_coherence.get('std')}")
+    print(f"readonly : coherent={ro.narrative_coherence.get('coherent')} mean={ro.narrative_coherence.get('mean')} std={ro.narrative_coherence.get('std')}")
     print(f"report -> {path}")
 
 

@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 from .llm_provider import LLMProvider
-from .metrics import bin_rate, convergence, prediction_error
+from .metrics import bin_rate, convergence, narrative_coherence, prediction_error
 from .observer import Observer
 from .snapshot import bin_bounds
 from .spiking import SpikingNetwork
@@ -14,7 +14,9 @@ class ExperimentResult:
     errors: list = field(default_factory=list)
     self_descriptions: list = field(default_factory=list)
     actions: list = field(default_factory=list)
+    identity_continuities: list = field(default_factory=list)
     convergence: dict = field(default_factory=dict)
+    narrative_coherence: dict = field(default_factory=dict)
 
 
 def run_experiment(
@@ -47,6 +49,7 @@ def run_experiment(
             result.errors.append(err)
             observer.feedback_error(err)
         result.self_descriptions.append(reflection.self_description)
+        result.identity_continuities.append(reflection.identity_continuity)
         result.actions.append({
             "type": reflection.action_type,
             "region": reflection.region,
@@ -54,4 +57,5 @@ def run_experiment(
         })
         pending_prediction = reflection.predicted_bin_activity
     result.convergence = convergence(result.errors)
+    result.narrative_coherence = narrative_coherence(result.identity_continuities)
     return result

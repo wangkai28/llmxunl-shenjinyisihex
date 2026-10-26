@@ -1,6 +1,7 @@
 import numpy as np
 
 from bioelectric.metrics import bin_rate, convergence, prediction_error
+from bioelectric.metrics import narrative_coherence
 from bioelectric.snapshot import bin_bounds
 from bioelectric.spiking import SpikingNetwork
 
@@ -60,3 +61,21 @@ def test_convergence_deterministic_given_seed():
     a = convergence(errors, seed=42)
     b = convergence(errors, seed=42)
     assert a["p_value"] == b["p_value"]
+
+
+def test_narrative_coherence_high_and_stable():
+    # 身份连续性始终高且稳定 → 高叙事一致性
+    result = narrative_coherence([0.95, 0.92, 0.94, 0.93, 0.95])
+    assert result["mean"] > 0.9
+    assert result["std"] < 0.1
+
+
+def test_narrative_coherence_low_or_fluctuating():
+    # 身份连续性低、或剧烈波动 → 低叙事一致性
+    result = narrative_coherence([0.3, 0.8, 0.2, 0.9, 0.4])
+    assert result["mean"] < 0.9
+
+
+def test_narrative_coherence_ignores_none():
+    result = narrative_coherence([0.9, None, 0.91, None, 0.92])
+    assert result["mean"] > 0.9

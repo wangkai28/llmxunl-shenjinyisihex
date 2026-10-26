@@ -74,3 +74,19 @@ def _least_squares_slope(x: np.ndarray, y: np.ndarray) -> float:
     if denominator == 0.0:
         return 0.0
     return float(((x - x_mean) * (y - y_mean)).sum() / denominator)
+
+
+def narrative_coherence(identity_continuities: list[float | None]) -> dict:
+    """度量「自我叙事一致性」：观察者身份连续性的均值与稳定性。
+
+    identity_continuity 是 LLM 每次反思时自评的「我还是不是同一个我」，
+    范围 [0,1]。均值高且标准差小 → 观察者始终认为自己是同一个我（高一致性）。
+    """
+    valid = [float(v) for v in identity_continuities if v is not None]
+    if not valid:
+        return {"mean": float("nan"), "std": float("nan"), "coherent": False}
+    mean = float(np.mean(valid))
+    std = float(np.std(valid))
+    # 一致性 = 均值高（始终是同一个我）且波动小（身份稳定）
+    coherent = bool(mean >= 0.8 and std <= 0.15)
+    return {"mean": mean, "std": std, "coherent": coherent}

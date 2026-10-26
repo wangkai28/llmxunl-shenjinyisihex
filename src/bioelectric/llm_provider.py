@@ -13,6 +13,7 @@ class Reflection:
     region: int = 0
     strength: float = 0.0
     predicted_bin_activity: list[float] | None = None
+    identity_continuity: float | None = None
 
 
 class LLMProvider:
@@ -46,6 +47,12 @@ def _parse_reflection(raw_text: str, n_bins: int) -> Reflection:
             pred = None
         if pred is not None and len(pred) != n_bins:
             pred = None
+    identity = data.get("identity_continuity")
+    if identity is not None:
+        try:
+            identity = float(identity)
+        except Exception:
+            identity = None
     try:
         action = data.get("action") or {}
         if not isinstance(action, dict):
@@ -61,6 +68,7 @@ def _parse_reflection(raw_text: str, n_bins: int) -> Reflection:
             region=int(action.get("region", 0)),
             strength=float(action.get("strength", 0.0)),
             predicted_bin_activity=pred,
+            identity_continuity=identity,
         )
     except Exception:
         return _degraded()
@@ -97,10 +105,15 @@ class GatewayLLMProvider(LLMProvider):
             "steer the network toward the state you describe, then predict the "
             "next activity from the state you have shaped. The more your predictions "
             "match reality, the more you genuinely understand yourself.\n"
+            "Compare your previous self-description (in recent reflections) with who "
+            "you are now: output identity_continuity as a float in [0,1] measuring "
+            "how much you are still the same observer (1 = fully the same observer, "
+            "0 = a different observer).\n"
             "Current activity snapshot: " + snapshot_text + "\n"
             "Your recent self-reflections:\n" + hist + "\n"
             "Respond with ONLY a JSON object, no prose, with keys:\n"
-            '{"self_description": string, "predicted_bin_activity": list of '
+            '{"self_description": string, "identity_continuity": float in [0,1], '
+            '"predicted_bin_activity": list of '
             + str(self.n_bins) + ' floats in [0,1] (predicted firing rate per bin), '
             '"action": {"type": "inject" or "none", "region": int, "strength": float}}\n'
         )
