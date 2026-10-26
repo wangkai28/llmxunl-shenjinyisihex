@@ -4,6 +4,7 @@ from bioelectric.llm_provider import (
     GatewayLLMProvider,
     _parse_reflection,
     Reflection,
+    load_aigw_config,
 )
 
 
@@ -97,3 +98,26 @@ def test_build_prompt_requests_identity_continuity():
     prompt = provider._build_prompt("snapshot", ["I am an observer"])
     assert "identity_continuity" in prompt
     assert "same observer" in prompt.lower() or "still myself" in prompt.lower()
+
+
+def test_load_aigw_config_from_toml(tmp_path):
+    import tomllib
+    # 写一个最小的 config.toml 供测试
+    toml_path = tmp_path / "config.toml"
+    toml_path.write_text(
+        'model = "deepseek-v4-pro"\n'
+        '[model_providers.aigw]\n'
+        'base_url = "https://aigw.example.com/v1"\n'
+        'experimental_bearer_token = "sk-test-token"\n',
+        encoding="utf-8",
+    )
+    cfg = load_aigw_config(str(toml_path))
+    assert cfg["base_url"] == "https://aigw.example.com/v1"
+    assert cfg["token"] == "sk-test-token"
+
+
+def test_load_aigw_config_missing_raises(tmp_path):
+    toml_path = tmp_path / "config.toml"
+    toml_path.write_text('model = "x"\n', encoding="utf-8")
+    with pytest.raises(KeyError):
+        load_aigw_config(str(toml_path))

@@ -4,7 +4,7 @@ import os
 from datetime import datetime
 
 from bioelectric.experiment import run_experiment
-from bioelectric.llm_provider import GatewayLLMProvider
+from bioelectric.llm_provider import GatewayLLMProvider, load_aigw_config
 from bioelectric.metrics import paired_sign_test
 from bioelectric.spiking import SpikingNetwork
 
@@ -20,11 +20,16 @@ def _sanitize_non_finite(value):
 
 
 def main():
-    base_url = os.environ.get("OPENAI_BASE_URL", "")
-    api_key = os.environ.get("OPENAI_API_KEY", "")
-    model = os.environ.get("OPENAI_MODEL", "qwen3.8-flash")
-    if not base_url or not api_key:
-        raise SystemExit("OPENAI_BASE_URL / OPENAI_API_KEY not configured")
+    # 优先使用 Codex 的 AIGW 网关（公司网关，token 不落地）。
+    # 可通过环境变量 AIGW_MODEL 覆盖模型名。
+    config_toml = os.environ.get(
+        "CODEX_CONFIG_TOML",
+        os.path.expanduser("~/.codex/config.toml"),
+    )
+    aigw = load_aigw_config(config_toml)
+    model = os.environ.get("AIGW_MODEL", "qwen3.7-plus")
+    base_url = aigw["base_url"]
+    api_key = aigw["token"]
 
     n_rounds = int(os.environ.get("N_ROUNDS", "5"))
     steps = 200

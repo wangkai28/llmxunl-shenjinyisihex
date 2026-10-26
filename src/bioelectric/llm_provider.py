@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+import tomllib
 
 from dataclasses import dataclass
 
@@ -19,6 +20,18 @@ class Reflection:
 class LLMProvider:
     def reflect(self, snapshot_text: str, history: list[str]) -> Reflection:
         raise NotImplementedError
+
+
+def load_aigw_config(config_toml_path: str) -> dict:
+    """从 Codex 的 config.toml 读取 AIGW 网关配置。
+
+    返回 {"base_url": str, "token": str}。token 只由调用方持有，
+    不写入任何文件、不进入日志。
+    """
+    with open(config_toml_path, "rb") as f:
+        cfg = tomllib.load(f)
+    aigw = cfg["model_providers"]["aigw"]
+    return {"base_url": aigw["base_url"], "token": aigw["experimental_bearer_token"]}
 
 
 def _parse_reflection(raw_text: str, n_bins: int) -> Reflection:
