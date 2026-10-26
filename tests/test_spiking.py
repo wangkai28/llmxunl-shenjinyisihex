@@ -33,10 +33,14 @@ def test_hebb_strengthens_coactive_pair():
         n_units=2, connectivity=0.0, threshold=0.5, refractory=0,
         leak=0.0, dt=1.0, hebb_lr=0.1, weight_decay=0.0, weight_max=2.0, seed=0,
     )
-    before = net.W.copy()
+    # 先手动建立两条边，Hebb 应在已存在的边上增强
+    net.W[0, 1] = 0.5
+    net.W[1, 0] = 0.5
+    before01 = net.W[0, 1]
+    before10 = net.W[1, 0]
     net.step(external_input=np.array([10.0, 10.0]))
-    assert net.W[0, 1] > before[0, 1]
-    assert net.W[1, 0] > before[1, 0]
+    assert net.W[0, 1] > before01
+    assert net.W[1, 0] > before10
 
 
 def test_refractory_clamps_membrane_potential():
@@ -127,3 +131,18 @@ def test_background_is_deterministic_given_seed():
             trace.append(net.step().sum())
         return trace
     assert run() == run()  # 同 seed 背景序列可复现
+
+
+def test_larger_network_runs_fast_enough():
+    import time
+    net = SpikingNetwork(
+        n_units=20000, connectivity=0.02, threshold=1.0, leak=0.1, dt=1.0,
+        background_rate=0.02, background_strength=0.6, seed=0,
+    )
+    t0 = time.time()
+    for _ in range(20):
+        net.step()
+    dt = time.time() - t0
+    # 20000 单元、20 步，应远快于 O(N²)（旧实现约 90 秒）。
+    # 稀疏优化后约 6 秒（800 万条边），阈值取 15 秒留余量。
+    assert dt < 15.0, f"too slow: {dt:.2f}s for 20 steps at n=20000"

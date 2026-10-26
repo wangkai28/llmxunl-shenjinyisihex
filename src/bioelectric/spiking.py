@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import numpy as np
 
+from .sparse import SparseMatrix
+
 
 class SpikingNetwork:
     def __init__(
@@ -35,23 +37,34 @@ class SpikingNetwork:
         self.inhibitory_fraction = float(inhibitory_fraction)
         self.background_rate = float(background_rate)
         self.background_strength = float(background_strength)
+
         # Dale 法则：每个单元要么纯兴奋(+)、要么纯抑制(-)。
-        # is_inhibitory[i] 表示单元 i 作为 presynaptic 时，其输出连接为负。
         n_inhib = int(round(self.n_units * self.inhibitory_fraction))
         self.is_inhibitory = np.zeros(self.n_units, dtype=bool)
         if n_inhib > 0:
             self.is_inhibitory[:n_inhib] = True
             rng.shuffle(self.is_inhibitory)
-        # 符号矩阵：sign[i, j] = 连接 j→i 的符号，取决于 presynaptic 单元 j 的类型。
-        # 抑制单元 j：所有输出连接为负；兴奋单元 j：所有输出连接为正。
-        self._sign = np.where(self.is_inhibitory[None, :], -1.0, 1.0)
-        self._sign = np.tile(self._sign, (self.n_units, 1))
-        self.W = np.zeros((self.n_units, self.n_units), dtype=float)
+        # 连接 j→i 的符号取决于 presynaptic 单元 j 是否抑制。
+        self._presynaptic_sign = np.where(self.is_inhibitory, -1.0, 1.0)
+
+        # 稀疏突触：仅存非零连接（pre→post）。W[i,j] 表示 j→i（post 行, pre 列）。
+        self.W = SparseMatrix(self.n_units, self.n_units)
         if connectivity > 0:
-            mask = rng.random((self.n_units, self.n_units)) < connectivity
-            magnitude = np.abs(rng.normal(0.0, weight_scale, size=int(mask.sum())))
-            self.W[mask] = magnitude * self._sign[mask]
-        np.fill_diagonal(self.W, 0.0)
+            # 先按边采样：每个 (post, pre) 以 connectivity 概率存在。
+            n_possible = self.n_units * self.n_units
+            # 用确定性的采样：先抽边数，再抽位置，避免生成 N×N 稠密掩码。
+            n_edges = rng.binomial(n_possible, connectivity)
+            flat_idx = rng.choice(n_possible, size=n_edges, replace=False)
+            post = flat_idx // self.n_units
+            pre = flat_idx % self.n_units
+            # 去掉自连接
+            keep = post != pre
+            post = post[keep]
+            pre = pre[keep]
+            magnitude = np.abs(rng.normal(0.0, weight_scale, size=len(post)))
+            data = magnitude * self._presynaptic_sign[pre]
+            self.W.set_coo(post, pre, data)
+
         self.V = rng.uniform(0.0, self.threshold, size=self.n_units)
         self.refrac = np.zeros(self.n_units, dtype=int)
         self.spikes = np.zeros(self.n_units, dtype=bool)
@@ -63,7 +76,7 @@ class SpikingNetwork:
             else np.asarray(external_input, dtype=float)
         )
         was_refractory = self.refrac > 0
-        synaptic = self.W @ self.spikes.astype(float)
+        synaptic = self.W.dot(self.spikes.astype(float))
         background = self._sample_background()
         integrating = ~was_refractory
         self.V[integrating] = (
@@ -84,18 +97,26 @@ class SpikingNetwork:
     def _sample_background(self):
         if self.background_rate <= 0.0:
             return np.zeros(self.n_units)
-        # 泊松背景发放：每个单元以 background_rate 的概率收到一个
-        # background_strength 的兴奋脉冲。用 self.rng 保证同 seed 可复现。
         spikes = self.rng.random(self.n_units) < self.background_rate
         return spikes.astype(float) * self.background_strength
 
     def _hebb_update(self, fired):
-        co = np.outer(fired.astype(float), fired.astype(float))
-        np.fill_diagonal(co, 0.0)
-        # 只调 magnitude，不吞符号：把 W 拆成 sign * |W|，对 |W| 做增强/衰减/上限。
-        magnitude = np.abs(self.W)
-        magnitude = magnitude + self.hebb_lr * co * (self.weight_max - magnitude)
-        magnitude = magnitude - self.weight_decay * magnitude
-        magnitude = np.clip(magnitude, 0.0, self.weight_max)
-        self.W = magnitude * self._sign
-        np.fill_diagonal(self.W, 0.0)
+        """稀疏 Hebb：仅更新「已存在」的边，且只对同时发放的边增强。
+
+        符号跟随每条边自己的 data（可正可负），Hebb 只调幅值、不吞符号。
+        """
+        rows, cols, data = self.W.coo_arrays()
+        if len(data) == 0:
+            return
+        # 边 post←pre 的 post 和 pre 是否同时发放
+        both = fired[rows] & fired[cols]
+        # 分离符号与幅值
+        sign = np.sign(data)
+        mag = np.abs(data)
+        # 对所有边做衰减
+        mag = mag - self.weight_decay * mag
+        # 对同时发放的边做增强：mag += hebb_lr * (weight_max - mag)
+        mag[both] = mag[both] + self.hebb_lr * (self.weight_max - mag[both])
+        mag = np.clip(mag, 0.0, self.weight_max)
+        new_data = mag * sign
+        self.W.set_coo(rows, cols, new_data)
