@@ -27,7 +27,7 @@ def main():
         os.path.expanduser("~/.codex/config.toml"),
     )
     aigw = load_aigw_config(config_toml)
-    model = os.environ.get("AIGW_MODEL", "qwen3.7-plus")
+    model = os.environ.get("AIGW_MODEL", "deepseek-v4-flash")
     base_url = aigw["base_url"]
     api_key = aigw["token"]
 
