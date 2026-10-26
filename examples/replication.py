@@ -33,6 +33,7 @@ def main():
 
     n_rounds = int(os.environ.get("N_ROUNDS", "3"))
     steps = int(os.environ.get("STEPS", "150"))
+    seed_start = int(os.environ.get("SEED_START", "100"))
     observe_every = 10
     n_bins = 8
 
@@ -43,7 +44,7 @@ def main():
     per_round = []
 
     for r in range(n_rounds):
-        seed = 100 + r
+        seed = seed_start + r
         net_kwargs = dict(
             n_units=64, seed=seed,
             background_rate=0.05, background_strength=0.6,
