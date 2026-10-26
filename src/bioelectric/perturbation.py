@@ -72,3 +72,29 @@ def perturbation_sweep(
                     **dims,
                 })
     return dataset
+
+
+def factor_effects(dataset: list[dict]) -> dict:
+    """计算每个干扰因素对每个认知维度的边际效应。
+
+    边际效应 = 该因素从最低档升到最高档时，认知维度的平均变化量。
+    返回 {factor_name: {dimension: effect}}。
+    """
+    factors = ("noise_scale", "prune_fraction", "lesion_fraction")
+    dimensions = [k for k in dataset[0].keys() if k not in factors] if dataset else []
+
+    effects = {}
+    for factor in factors:
+        levels = sorted({d[factor] for d in dataset})
+        if len(levels) < 2:
+            continue
+        low, high = levels[0], levels[-1]
+        factor_effects = {}
+        for dim in dimensions:
+            low_vals = [d[dim] for d in dataset if d[factor] == low]
+            high_vals = [d[dim] for d in dataset if d[factor] == high]
+            # 控制其他因素：只对「其他因素取值相同」的配对求差，更严谨
+            effect = float(np.mean(high_vals) - np.mean(low_vals))
+            factor_effects[dim] = effect
+        effects[factor] = factor_effects
+    return effects

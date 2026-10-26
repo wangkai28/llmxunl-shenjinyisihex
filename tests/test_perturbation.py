@@ -6,6 +6,7 @@ from bioelectric.perturbation import (
     apply_prune,
     apply_lesion,
     perturbation_sweep,
+    factor_effects,
 )
 from bioelectric.self_model import SelfModel, extract_self_dimensions
 
@@ -59,3 +60,15 @@ def test_perturbation_sweep_returns_dataset():
     for key in ("noise_scale", "prune_fraction", "lesion_fraction",
                 "core_activity_rate", "core_focus", "sync_index"):
         assert key in first
+
+
+def test_factor_effects_computes_marginal_effects():
+    # 构造一个简单数据集：lesion 越大 core_activity_rate 越低
+    dataset = [
+        {"noise_scale": 1.0, "prune_fraction": 0.0, "lesion_fraction": 0.0,
+         "core_activity_rate": 0.3, "core_focus": 1.2, "sync_index": 1.0},
+        {"noise_scale": 1.0, "prune_fraction": 0.0, "lesion_fraction": 0.5,
+         "core_activity_rate": 0.2, "core_focus": 1.2, "sync_index": 1.0},
+    ]
+    effects = factor_effects(dataset)
+    assert effects["lesion_fraction"]["core_activity_rate"] < 0  # 失活降低核心活动率
