@@ -24,6 +24,21 @@ def apply_lesion(model: SelfModel, fraction: float):
     net.lesioned[idx] = True
 
 
+def apply_pulse(model: SelfModel, strength: float, duration: int):
+    """瞬时强刺激：给全网一个短暂强脉冲（duration 步），随后撤掉。"""
+    net = model.network
+    inp = np.full(net.n_units, strength, dtype=float)
+    for _ in range(duration):
+        net.step(external_input=inp)
+
+
+def apply_offset_input(model: SelfModel, offset: float, steps: int):
+    """输入位置扰动：把维系自我的输入偏移到别处，注入 steps 步。"""
+    net = model.network
+    for _ in range(steps):
+        net.step(external_input=model.offset_input(offset))
+
+
 def perturbation_sweep(
     *,
     n_units: int,

@@ -8,6 +8,8 @@ from bioelectric.perturbation import (
     perturbation_sweep,
     factor_effects,
     recovery_test,
+    apply_pulse,
+    apply_offset_input,
 )
 from bioelectric.self_model import SelfModel, extract_self_dimensions
 
@@ -85,3 +87,32 @@ def test_recovery_test_returns_recovery_metrics():
         assert key in result
     # 恢复率应在 [0, 1] 区间（恢复到基线程度的比例）
     assert 0.0 <= result["recovery_fraction"] <= 1.0
+
+
+def test_apply_pulse_is_transient():
+    # 瞬时强刺激：施加后应立即改变活动，但不应造成永久损伤
+    from bioelectric.self_model import SelfModel, extract_self_dimensions
+    net = BalancedNetwork(n_units=300, k_exc=10, j_inh=-4.0,
+                          external_mean=0.15, external_noise=0.08, delay_max=4, seed=0)
+    model = SelfModel(net, core_size=40, seed=1, hebb_lr=0.02)
+    model.form(steps=200)
+    base = extract_self_dimensions(model, steps=50)
+    apply_pulse(model, strength=10.0, duration=5)
+    during = extract_self_dimensions(model, steps=50)
+    # 瞬时脉冲后（已结束），核心活动率应基本回到基线（无永久损伤）
+    assert abs(during["core_activity_rate"] - base["core_activity_rate"]) < 0.15
+
+
+def test_apply_offset_input_shifts_identity():
+    # 输入位置扰动：已固化的自我（吸引子）不依赖外部输入位置，
+    # 因此偏移输入不应使核心活动崩溃（自我锚定于内部结构，而非外部资源）
+    from bioelectric.self_model import SelfModel, extract_self_dimensions
+    net = BalancedNetwork(n_units=300, k_exc=10, j_inh=-4.0,
+                          external_mean=0.15, external_noise=0.08, delay_max=4, seed=0)
+    model = SelfModel(net, core_size=40, seed=1, hebb_lr=0.02)
+    model.form(steps=200)
+    base = extract_self_dimensions(model, steps=50)
+    apply_offset_input(model, offset=0.3, steps=100)
+    perturbed = extract_self_dimensions(model, steps=50)
+    # 核心活动率保持（不因输入被挪走而崩溃）
+    assert perturbed["core_activity_rate"] > base["core_activity_rate"] * 0.7

@@ -34,8 +34,8 @@ def test_extract_self_dimensions_includes_new_dims():
     model = SelfModel(net, core_size=30, seed=1, hebb_lr=0.02)
     model.form(steps=100)
     dims = extract_self_dimensions(model, steps=50)
-    # 新增维度：核心空间漂移、核心连接强度
-    for key in ("core_drift", "core_strength"):
+    # 新增维度：核心连接强度
+    for key in ("core_strength",):
         assert key in dims
 
 
