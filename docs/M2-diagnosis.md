@@ -32,3 +32,34 @@
 
 - 先修问题 1（身体活起来），再重跑实验看效果；
 - 问题 2（判据稳健性）随后单独处理。
+
+## 5. 进展记录
+
+### 5.1 身体活起来（已完成，commit 069f05c）
+
+给 `SpikingNetwork` 加泊松背景自发活动（`background_rate` / `background_strength`），
+用 `self.rng` 保证同 seed 可复现。参数扫描后选 `rate=0.05, strength=0.6`
+（自发放电率约 5.6%，健康区间）。
+
+重跑 60 步实验：网络活了，观察者开始「回头看自己之前的说法并修正」
+（self_descriptions 出现 contradicting my prior claim / resolving earlier
+inconsistent claims），但两组都未收敛（误差点仅 5 个，噪声主导）。
+
+### 5.2 判据升级（已完成，commit a0cc800）
+
+`convergence` 从「斜率正负号 + 头尾均值」升级为 bootstrap 显著性：
+
+- 配对重采样（x、y 用同一 idx 采样），避免破坏 x-y 配对；
+- 输出单侧 p 值（重采样斜率 >= 0 的比例）与 95% 置信区间；
+- 收敛判定 = p < 0.05 且尾段均值 < 头段均值；
+- 用闭式解算斜率（`_least_squares_slope`），消除 polyfit 病态警告。
+
+### 5.3 加长实验 + 落盘 action（已完成，commit 56b807d）
+
+- `ExperimentResult` 增加 `actions` 字段，记录每次 reflection 的 type/region/strength；
+- M2 脚本 steps 60 → 300（30 个误差点），以便统计判定可信。
+
+### 5.4 待办
+
+- 写回「更实」：当前写回只喂给下一个时间步、强度靠 LLM 自报且偏弱，
+  需诊断写回是否真正改变了网络，再决定是否改为持续/更强的扰动。
