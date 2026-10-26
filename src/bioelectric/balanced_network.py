@@ -115,6 +115,7 @@ class BalancedNetwork:
         self.V = rng.uniform(0.0, self.threshold, size=self.n_units)
         self.refrac = np.zeros(self.n_units, dtype=int)
         self.spikes = np.zeros(self.n_units, dtype=bool)
+        self.lesioned = np.zeros(self.n_units, dtype=bool)
 
     def step(self, external_input=None) -> np.ndarray:
         ext = (
@@ -156,7 +157,7 @@ class BalancedNetwork:
                - self.leak * self.V[integrating]) * self.dt
         )
         self.V[was_refractory] = 0.0
-        fired = (self.V >= self.threshold) & integrating
+        fired = (self.V >= self.threshold) & integrating & ~self.lesioned
         self.spikes = fired
         self.V[fired] = 0.0
         self.refrac[fired] = self.refractory
@@ -196,3 +197,17 @@ class BalancedNetwork:
     def mark_plastic_edges(self, mask):
         """标记哪些边可塑（由 SelfModel 调用，标记核心区内部的边）。"""
         self._plastic = np.asarray(mask, dtype=bool)
+
+    def prune_edges(self, fraction: float):
+        """随机剪除 fraction 比例的边（模拟遗忘/损伤）。"""
+        if fraction <= 0.0 or self._edge_w.size == 0:
+            return
+        n_keep = int(self._edge_w.size * (1.0 - fraction))
+        keep_idx = self.rng.choice(self._edge_w.size, size=n_keep, replace=False)
+        keep_idx.sort()
+        self._edge_post = self._edge_post[keep_idx]
+        self._edge_pre = self._edge_pre[keep_idx]
+        self._edge_w = self._edge_w[keep_idx]
+        self._edge_delay = self._edge_delay[keep_idx]
+        self._plastic = self._plastic[keep_idx]
+        self.W.set_coo(self._edge_post, self._edge_pre, self._edge_w)
