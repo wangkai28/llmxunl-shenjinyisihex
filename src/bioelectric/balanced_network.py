@@ -29,6 +29,7 @@ class BalancedNetwork:
         refractory=2,
         leak=0.1,
         dt=1.0,
+        hebb_lr=0.0,
         seed=0,
     ):
         rng = np.random.default_rng(seed)
@@ -40,6 +41,7 @@ class BalancedNetwork:
         self.refractory = int(refractory)
         self.leak = float(leak)
         self.dt = float(dt)
+        self.hebb_lr = float(hebb_lr)
         self.external_mean = float(external_mean)
         self.external_noise = float(external_noise)
         self.delay_max = int(delay_max)
@@ -104,6 +106,8 @@ class BalancedNetwork:
         self._edge_pre = pre
         self._edge_w = data
         self._edge_delay = edge_delay
+        # 可塑性掩码：默认全部不可塑（平衡网络），由 SelfModel 标记核心区可塑。
+        self._plastic = np.zeros(len(post), dtype=bool)
         self.W.set_coo(post, pre, data)
         # 延迟缓冲：delay_buf[t] 存「t 步后要送达各单元的突触输入」
         self._delay_buf = np.zeros((max_delay, self.n_units), dtype=float)
@@ -158,9 +162,37 @@ class BalancedNetwork:
         self.refrac[fired] = self.refractory
         not_fired = ~fired
         self.refrac[not_fired] = np.maximum(self.refrac[not_fired] - 1, 0)
+        self._hebb_update(fired)
         return fired.copy()
 
     def _sample_background(self):
         # 大量弱外部输入的净效应：每个单元每步收到一个
         # 均值 external_mean、标准差 external_noise 的高斯涨落。
         return self.rng.normal(self.external_mean, self.external_noise, size=self.n_units)
+
+    def _hebb_update(self, fired):
+        """局部 Hebb：只强化「可塑」的、且两端同时发放的边。"""
+        if self.hebb_lr <= 0.0 or not self._plastic.any():
+            return
+        post = self._edge_post
+        pre = self._edge_pre
+        w = self._edge_w
+        # 可塑且两端同时发放的边
+        both = self._plastic & fired[post] & fired[pre]
+        if not both.any():
+            return
+        # 对可塑边做增强：w += hebb_lr * (w_max - w)，其中 w_max 取当前最大幅值的若干倍
+        w_max = np.abs(self._edge_w).max() * 5.0
+        # 只增强兴奋的可塑边（抑制边不可塑，保持平衡）
+        exc_plastic = both & (self._edge_w > 0)
+        if exc_plastic.any():
+            self._edge_w[exc_plastic] = np.clip(
+                self._edge_w[exc_plastic] + self.hebb_lr * (w_max - self._edge_w[exc_plastic]),
+                0.0, w_max,
+            )
+            # 同步更新 W（稀疏矩阵）以保持一致
+            self.W.set_coo(self._edge_post, self._edge_pre, self._edge_w)
+
+    def mark_plastic_edges(self, mask):
+        """标记哪些边可塑（由 SelfModel 调用，标记核心区内部的边）。"""
+        self._plastic = np.asarray(mask, dtype=bool)
