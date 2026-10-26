@@ -75,6 +75,36 @@ def measure_persona_dimensions(
     # 稳定性 = 1 / (1 + std)，std 越小越稳定
     stability = 1.0 / (1.0 + std)
 
+    # 抑制控制：核心区内部抑制突触的平均幅值（越高越自律）
+    post = network._edge_post
+    pre = network._edge_pre
+    core_edges = model.core_mask[post] & model.core_mask[pre]
+    inh_edges = core_edges & (network._edge_w < 0)
+    inhibitory_control = (
+        float(np.abs(network._edge_w[inh_edges]).mean())
+        if inh_edges.any() else 0.0
+    )
+
+    # 恢复力：施加瞬时全局脉冲后，核心活动率恢复到脉冲前的程度
+    before_rates = []
+    for _ in range(20):
+        network.step(external_input=None)
+        before_rates.append(network.spikes[model.core_mask].mean())
+    before = float(np.mean(before_rates))
+    # 施加瞬时强脉冲
+    pulse = np.full(network.n_units, 3.0, dtype=float)
+    for _ in range(5):
+        network.step(external_input=pulse)
+    # 恢复期
+    recovered_rates = []
+    for _ in range(30):
+        network.step(external_input=None)
+        recovered_rates.append(network.spikes[model.core_mask].mean())
+    after = float(np.mean(recovered_rates))
+    # 恢复力 = 1 - 恢复后偏离基线的程度
+    resilience = 1.0 - abs(after - before) / (before + 1e-9)
+    resilience = float(np.clip(resilience, 0.0, 1.0))
+
     # 冲动性 = 核心活动率
     impulsivity = dims["core_activity_rate"]
     # 克制性 = 核心聚焦度（清晰自我边界）
@@ -88,4 +118,6 @@ def measure_persona_dimensions(
         "restraint": restraint,
         "adaptability": adaptability,
         "stability": stability,
+        "resilience": resilience,
+        "inhibitory_control": inhibitory_control,
     }
