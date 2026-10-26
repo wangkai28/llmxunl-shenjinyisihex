@@ -15,7 +15,7 @@ EVENT_TO_CONTEXT = {
     "danger": {"id": 3.0, "superego": 0.2, "tao": 0.2},
     "moral": {"id": 0.2, "superego": 3.0, "tao": 0.2},
     "calm": {"id": 0.2, "superego": 0.2, "tao": 3.0},
-    "praise": {"id": 1.5, "superego": 1.2, "tao": 1.5},
+    "praise": {"id": 1.6, "superego": 1.2, "tao": 1.4},
     "criticism": {"id": 1.8, "superego": 2.2, "tao": 1.0},
     "threat": {"id": 3.0, "superego": 0.5, "tao": 0.5},
 }
@@ -25,7 +25,13 @@ def encode_event(event: Event) -> dict:
     if event.type not in EVENT_TO_CONTEXT:
         raise ValueError(f"unknown event type {event.type!r}")
     base = dict(EVENT_TO_CONTEXT[event.type])
-    # 主导自我（值最大者）的偏置随 intensity 缩放
+    # 零强度表示不改变原始排序（保持主导自我不变）
+    if event.intensity <= 0:
+        return base
+    # 主导自我（值最大者）的偏置随 intensity 缩放，
+    # 但始终保持严格大于第二大值，保证 argmax 不翻转。
     dominant = max(base, key=base.get)
-    base[dominant] = base[dominant] * max(0.0, min(1.0, event.intensity))
+    second = sorted(base.values())[-2]
+    clamped = max(0.0, min(1.0, event.intensity))
+    base[dominant] = second + (base[dominant] - second) * clamped
     return base
