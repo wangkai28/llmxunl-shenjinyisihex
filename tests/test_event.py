@@ -42,3 +42,11 @@ def test_praise_has_strict_dominant():
     half = encode_event(Event(type="praise", intensity=0.5))
     assert max(full, key=full.get) == "id"
     assert max(half, key=half.get) == "id"
+
+
+def test_dominant_invariant_to_tiny_intensity():
+    # 极小 intensity 下 dominant 也不应翻转（浮点舍入边界）
+    for event_type in EVENT_TO_CONTEXT:
+        full = encode_event(Event(type=event_type, intensity=1.0))
+        tiny = encode_event(Event(type=event_type, intensity=1e-18))
+        assert max(tiny, key=tiny.get) == max(full, key=full.get)

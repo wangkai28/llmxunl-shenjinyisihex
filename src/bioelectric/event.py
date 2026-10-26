@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 
 
@@ -33,5 +34,8 @@ def encode_event(event: Event) -> dict:
     dominant = max(base, key=base.get)
     second = sorted(base.values())[-2]
     clamped = max(0.0, min(1.0, event.intensity))
-    base[dominant] = second + (base[dominant] - second) * clamped
+    span = base[dominant] - second
+    scaled = second + span * clamped
+    # 用 float 的「下一个可表示值」保证严格大于 second，避免舍入到并列。
+    base[dominant] = scaled if scaled > second else math.nextafter(second, math.inf)
     return base
