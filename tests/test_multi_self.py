@@ -4,6 +4,7 @@ from bioelectric.balanced_network import BalancedNetwork
 from bioelectric.multi_self import MultiSelf, measure_multi_self
 from bioelectric.multi_self import lesion_one_self
 from bioelectric.multi_self import set_context, dominant_self
+from bioelectric.multi_self import transition_trace
 
 
 def _make_network(seed=0):
@@ -98,3 +99,23 @@ def test_context_switches_dominant_self():
     # 道德情境：超我主导
     set_context(ms, {"id": 0.2, "superego": 3.0, "tao": 0.2})
     assert dominant_self(ms, steps=50) == "superego"
+
+
+def test_transition_trace_returns_activity_over_time():
+    net = _make_network()
+    ms = MultiSelf(net, core_specs={
+        "id": {"size": 50, "bias": 3.0},
+        "superego": {"size": 50, "bias": 0.5},
+        "tao": {"size": 50, "bias": 1.5},
+    }, seed=1, hebb_lr=0.02, cross_inhibition=3.0)
+    ms.form(steps=200)
+    trace = transition_trace(
+        ms,
+        from_context={"id": 3.0, "superego": 0.2, "tao": 0.2},
+        to_context={"id": 0.2, "superego": 3.0, "tao": 0.2},
+        settle_steps=50, trace_steps=100, sample_every=10,
+    )
+    # trace 应包含每个采样点的三个自我活动率
+    assert len(trace) == 10  # 100/10 = 10 个采样点
+    for key in ("id", "superego", "tao"):
+        assert key in trace[0]

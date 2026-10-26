@@ -170,15 +170,59 @@ def dominant_self(ms: MultiSelf, steps: int) -> str:
     # 找出当前情境的主导自我（bias 最高者），对其余自我施加额外抑制
     dominant = max(names, key=lambda n: ms.context_bias[n])
     for _ in range(steps):
-        # 用情境偏置驱动各自我核心区
-        inp = np.zeros(net.n_units, dtype=float)
-        for n in names:
-            inp[ms.core_masks[n]] = ms.context_bias[n]
-            if n != dominant:
-                # 非主导自我被额外抑制，模拟情境下的「让位」
-                inp[ms.core_masks[n]] -= 3.0
-        net.step(external_input=inp)
+        _drive(ms, dominant)
         for n in names:
             activity_sums[n] += int(net.spikes[ms.core_masks[n]].sum())
     best = max(names, key=lambda n: activity_sums[n])
     return best
+
+
+def _drive(ms: MultiSelf, dominant: str):
+    """按当前情境驱动一步：主导自我正常激活，其余被额外抑制。"""
+    net = ms.network
+    names = list(ms.core_masks.keys())
+    inp = np.zeros(net.n_units, dtype=float)
+    for n in names:
+        inp[ms.core_masks[n]] = ms.context_bias[n]
+        if n != dominant:
+            inp[ms.core_masks[n]] -= 3.0
+    net.step(external_input=inp)
+
+
+def transition_trace(
+    ms: MultiSelf,
+    *,
+    from_context: dict,
+    to_context: dict,
+    settle_steps: int,
+    trace_steps: int,
+    sample_every: int = 10,
+) -> list[dict]:
+    """记录从一个情境切换到另一个情境时，各自我的活动率轨迹。
+
+    先稳定在 from_context，再瞬间切到 to_context，逐步采样各自我活动率。
+    """
+    names = list(ms.core_masks.keys())
+
+    def _dominant(ctx):
+        return max(names, key=lambda n: ctx[n])
+
+    # 稳定在 from_context
+    set_context(ms, from_context)
+    for _ in range(settle_steps):
+        _drive(ms, _dominant(from_context))
+
+    # 瞬间切换
+    set_context(ms, to_context)
+    to_dominant = _dominant(to_context)
+
+    trace = []
+    for step in range(1, trace_steps + 1):
+        _drive(ms, to_dominant)
+        if step % sample_every == 0:
+            point = {
+                n: float(ms.network.spikes[ms.core_masks[n]].mean())
+                for n in names
+            }
+            trace.append(point)
+    return trace
