@@ -95,3 +95,27 @@ def test_writeback_gain_scales_strength():
     observer.tick()  # 观察并注入
     observer.tick()  # 下一时间步注入生效
     assert net.spikes[0] or net.spikes[1]
+
+
+def test_error_driven_policy_writes_back_only_when_error_large():
+    net = SpikingNetwork(
+        n_units=4, connectivity=0.0, threshold=0.5, leak=0.0, dt=1.0, seed=0,
+    )
+    provider = MockLLMProvider(
+        description="x", action_type="inject", region=0, strength=0.4,
+    )
+    observer = Observer(
+        net, provider, observe_every=1, n_bins=2, mode="readwrite",
+        writeback_gain=2.0, writeback_duration=1,
+        writeback_policy="error-driven", error_threshold=0.1,
+    )
+    # 误差小 → 不写回
+    observer.feedback_error(0.01)
+    observer.tick()
+    observer.tick()
+    assert not (net.spikes[0] or net.spikes[1])
+    # 误差大 → 写回
+    observer.feedback_error(0.5)
+    observer.tick()
+    observer.tick()
+    assert net.spikes[0] or net.spikes[1]

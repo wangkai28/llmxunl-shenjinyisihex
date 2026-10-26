@@ -26,10 +26,13 @@ def run_experiment(
     observe_every: int,
     n_bins: int,
     writeback_gain: float = 1.0,
+    writeback_policy: str = "llm",
+    error_threshold: float = 0.1,
 ) -> ExperimentResult:
     observer = Observer(
         network, provider, observe_every=observe_every,
         n_bins=n_bins, mode=mode, writeback_gain=writeback_gain,
+        writeback_policy=writeback_policy, error_threshold=error_threshold,
     )
     bounds = bin_bounds(network.n_units, n_bins)
     result = ExperimentResult()
@@ -40,7 +43,9 @@ def run_experiment(
             continue
         actual = bin_rate(network, bounds)
         if pending_prediction is not None:
-            result.errors.append(prediction_error(pending_prediction, actual))
+            err = prediction_error(pending_prediction, actual)
+            result.errors.append(err)
+            observer.feedback_error(err)
         result.self_descriptions.append(reflection.self_description)
         result.actions.append({
             "type": reflection.action_type,

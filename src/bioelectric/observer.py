@@ -21,6 +21,8 @@ class Observer:
         history_window: int = 5,
         writeback_duration: int | None = None,
         writeback_gain: float = 1.0,
+        writeback_policy: str = "llm",
+        error_threshold: float = 0.1,
     ):
         if observe_every < 1:
             raise ValueError("observe_every must be >= 1")
@@ -32,6 +34,11 @@ class Observer:
             raise ValueError("writeback_duration must be >= 1")
         if writeback_gain <= 0.0:
             raise ValueError("writeback_gain must be > 0")
+        if writeback_policy not in ("llm", "error-driven"):
+            raise ValueError(
+                f"invalid writeback_policy {writeback_policy!r}; "
+                "expected 'llm' or 'error-driven'"
+            )
         self.network = network
         self.provider = provider
         self.memory = memory if memory is not None else ReflectionMemory()
@@ -43,6 +50,9 @@ class Observer:
             observe_every if writeback_duration is None else writeback_duration
         )
         self.writeback_gain = writeback_gain
+        self.writeback_policy = writeback_policy
+        self.error_threshold = error_threshold
+        self._last_error = None
         self.step_count = 0
         self._active_input = np.zeros(network.n_units, dtype=float)
         self._active_remaining = 0
@@ -73,8 +83,12 @@ class Observer:
         history = self.memory.recent(self.history_window)
         reflection = self.provider.reflect(text, history)
         self.memory.add(reflection.self_description)
-        if self.mode == "readwrite" and reflection.action_type == "inject":
-            self._writeback(reflection)
+        if self.mode == "readwrite":
+            if self.writeback_policy == "error-driven":
+                if self._last_error is not None and self._last_error > self.error_threshold:
+                    self._writeback(reflection)
+            elif reflection.action_type == "inject":
+                self._writeback(reflection)
         return reflection
 
     def _writeback(self, reflection: Reflection) -> None:
@@ -83,3 +97,7 @@ class Observer:
             start, end = self.bounds[region]
             self._active_input[start:end] += reflection.strength * self.writeback_gain
             self._active_remaining = self.writeback_duration
+
+    def feedback_error(self, error: float | None) -> None:
+        """由上层（experiment）在算出预测误差后喂回，供 error-driven 策略使用。"""
+        self._last_error = error
