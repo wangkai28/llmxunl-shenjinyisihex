@@ -183,3 +183,18 @@ error-driven 策略：误差 > threshold 才写回，写回强度用 LLM 报的 
 - `examples/replication.py`：跑 N 轮（默认 5），每轮不同 seed（100+r），
   A（llm 主动塑造）vs 对照组（readonly）配对比较，输出 identity_continuity 均值。
 - 每轮 steps=200（20 个观察点），平衡时间与统计功效。
+
+### 5.14 网关切换与速度标定（commit 773c9b4 / 86a15e1）
+
+百炼 qwen3.8-flash 免费额度耗尽（403 AllocationQuota.FreeTierOnly），
+切换到 Codex 当前的 AIGW 公司网关（https://aigw.phigent.cn/v1）：
+
+- `load_aigw_config()`：从 `~/.codex/config.toml` 读 aigw 的 base_url + token，
+  token 不落地、不进仓库。
+- 模型速度标定（完整 reflect 单次）：
+  deepseek-v4-flash 7.8s、deepseek/deepseek-flash 8.8s、
+  glm-5.3-flash 29.7s、qwen3.6-plus 36.2s、qwen3.7-plus ~48s。
+- 选 `deepseek-v4-flash`（最快，且是 Codex 自身的 agent 模型系）。
+- 单轮冒烟：A=0.945 vs 对照=0.879（diff +0.066），方向一致、不再 NaN。
+
+注意：aigw 连续调用有排队/限流，实测吞吐低于单次标定（约 14s/次）。
