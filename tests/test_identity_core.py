@@ -91,3 +91,22 @@ def test_save_load_roundtrip_dominant(tmp_path):
     core2 = IdentityCore(persona="tao", state_dir=str(tmp_path / "id"), seed=0)
     core2.load()
     assert core2.query()["dominant"] == "superego"
+
+
+def test_significant_event_evolves_persona(tmp_path):
+    core = IdentityCore(persona="tao", state_dir=str(tmp_path / "id"), seed=0)
+    before = core._persona_cfg["external_mean"]
+    # 多次危险重大事件 → 本我倾向更强（external_mean 上升）
+    for _ in range(5):
+        core.process_event(Event(type="danger", intensity=1.0))
+    assert core._persona_cfg["external_mean"] > before
+
+
+def test_persona_evolution_persists(tmp_path):
+    core = IdentityCore(persona="tao", state_dir=str(tmp_path / "id"), seed=0)
+    for _ in range(5):
+        core.process_event(Event(type="danger", intensity=1.0))
+    core.save()
+    core2 = IdentityCore(persona="tao", state_dir=str(tmp_path / "id"), seed=0)
+    core2.load()
+    assert core2._persona_cfg["external_mean"] == core._persona_cfg["external_mean"]

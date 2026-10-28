@@ -7,6 +7,7 @@ from .continuity import save_snapshot, load_snapshot, append_autobiography, quer
 from .event import Event, encode_event
 from .multi_self import MultiSelf, set_context, _drive
 from .persona import PERSONAS
+from .persona_evolution import evolve_persona
 
 
 def _query_state(ms: MultiSelf, steps: int):
@@ -37,9 +38,11 @@ class IdentityCore:
         cfg = PERSONAS.get(persona)
         if cfg is None:
             raise ValueError(f"unknown persona {persona!r}")
+        self._persona_cfg = dict(cfg)
         self._network = BalancedNetwork(
-            n_units=600, k_exc=10, j_inh=cfg["j_inh"],
-            external_mean=cfg["external_mean"], external_noise=cfg["external_noise"],
+            n_units=600, k_exc=10, j_inh=self._persona_cfg["j_inh"],
+            external_mean=self._persona_cfg["external_mean"],
+            external_noise=self._persona_cfg["external_noise"],
             delay_max=4, seed=seed,
         )
         self._ms = MultiSelf(
@@ -69,6 +72,8 @@ class IdentityCore:
              "content": event.content, "dominant": state["dominant"],
              "significant": significant},
         )
+        if significant:
+            self._persona_cfg = evolve_persona(self._persona_cfg, event.type)
         return state
 
     def query(self) -> dict:
@@ -86,6 +91,7 @@ class IdentityCore:
             "dominant": state["dominant"],
             "context_bias": dict(self._ms.context_bias),
             "activities": {k: state[k] for k in self._ms.core_masks.keys()},
+            "persona_cfg": self._persona_cfg,
         }
         save_snapshot(snapshot, os.path.join(self.state_dir, "snapshot.json"))
 
@@ -98,3 +104,5 @@ class IdentityCore:
         if not ctx:
             return
         set_context(self._ms, ctx)
+        if snap.get("persona_cfg"):
+            self._persona_cfg = snap["persona_cfg"]
