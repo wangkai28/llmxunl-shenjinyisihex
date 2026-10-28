@@ -8,6 +8,7 @@ from .event import Event, encode_event
 from .multi_self import MultiSelf, set_context, _drive
 from .persona import PERSONAS
 from .persona_evolution import evolve_persona
+from .persona_evolution import evolve_persona
 
 
 def _query_state(ms: MultiSelf, steps: int):
@@ -66,15 +67,22 @@ class IdentityCore:
             _drive(self._ms, dominant)
         state = self.query()
         significant = event.intensity >= self.significant_threshold
+        if significant:
+            self._persona_cfg = evolve_persona(self._persona_cfg, event.type)
+            self._apply_persona_to_network()
         append_autobiography(
             os.path.join(self.state_dir, "autobiography.jsonl"),
             {"event": event.type, "intensity": event.intensity,
              "content": event.content, "dominant": state["dominant"],
              "significant": significant},
         )
-        if significant:
-            self._persona_cfg = evolve_persona(self._persona_cfg, event.type)
         return state
+
+    def _apply_persona_to_network(self):
+        """把演化的性格参数即时应用到活网络（不丢 Hebb 状态）。"""
+        self._network.external_mean = self._persona_cfg["external_mean"]
+        self._network.external_noise = self._persona_cfg["external_noise"]
+        self._network.set_j_inh(self._persona_cfg["j_inh"])
 
     def query(self) -> dict:
         dominant, activity = _query_state(self._ms, steps=50)

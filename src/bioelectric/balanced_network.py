@@ -42,6 +42,8 @@ class BalancedNetwork:
         self.leak = float(leak)
         self.dt = float(dt)
         self.hebb_lr = float(hebb_lr)
+        self.j_inh = float(j_inh)
+        self.j_exc = float(j_exc)
         self.external_mean = float(external_mean)
         self.external_noise = float(external_noise)
         self.delay_max = int(delay_max)
@@ -106,6 +108,8 @@ class BalancedNetwork:
         self._edge_pre = pre
         self._edge_w = data
         self._edge_delay = edge_delay
+        # 标记「初始平衡抑制边」（由 j_inh 控制），区别于后来追加的交叉抑制边。
+        self._base_inh_edge_mask = is_inh_edge
         # 可塑性掩码：默认全部不可塑（平衡网络），由 SelfModel 标记核心区可塑。
         self._plastic = np.zeros(len(post), dtype=bool)
         self.W.set_coo(post, pre, data)
@@ -227,4 +231,21 @@ class BalancedNetwork:
         self._edge_w = np.concatenate([self._edge_w, w])
         self._edge_delay = np.concatenate([self._edge_delay, delay])
         self._plastic = np.concatenate([self._plastic, plastic])
+        # 追加的交叉抑制边不属于「初始平衡抑制边」，不受 set_j_inh 重缩放。
+        self._base_inh_edge_mask = np.concatenate([self._base_inh_edge_mask, np.zeros(n, dtype=bool)])
         self.W.set_coo(self._edge_post, self._edge_pre, self._edge_w)
+
+    def set_j_inh(self, new_j_inh: float):
+        """动态调整抑制强度：按比例重缩放「初始平衡抑制边」，不丢状态。
+
+        兴奋边与交叉抑制边不受影响。用于人格演化中 j_inh 的即时生效。
+        """
+        old_j_inh = self.j_inh
+        if old_j_inh == 0.0:
+            return
+        ratio = float(new_j_inh) / old_j_inh
+        mask = self._base_inh_edge_mask
+        if mask.any():
+            self._edge_w[mask] = self._edge_w[mask] * ratio
+            self.W.set_coo(self._edge_post, self._edge_pre, self._edge_w)
+        self.j_inh = float(new_j_inh)

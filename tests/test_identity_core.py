@@ -110,3 +110,14 @@ def test_persona_evolution_persists(tmp_path):
     core2 = IdentityCore(persona="tao", state_dir=str(tmp_path / "id"), seed=0)
     core2.load()
     assert core2._persona_cfg["external_mean"] == core._persona_cfg["external_mean"]
+
+
+def test_evolution_applies_to_live_network(tmp_path):
+    # 演化后的参数应真正作用到网络（j_inh 通过 set_j_inh 生效）
+    core = IdentityCore(persona="tao", state_dir=str(tmp_path / "id"), seed=0)
+    before_j_inh = core._network.j_inh
+    for _ in range(5):
+        core.process_event(Event(type="danger", intensity=1.0))
+    # danger 演化使 j_inh 弱化（朝 0 靠近），网络 j_inh 应随之变化
+    assert core._network.j_inh != before_j_inh
+    assert core._network.j_inh == core._persona_cfg["j_inh"]
