@@ -8,6 +8,7 @@ from .event import Event, encode_event
 from .multi_self import MultiSelf, set_context, _drive
 from .ocean import PERSONA_OCEAN, ocean_to_params, evolve_ocean
 from .codec import encode_input, decode_state
+from .self_reflection import render_self_reflection
 
 
 def _query_state(ms: MultiSelf, steps: int):
@@ -84,6 +85,12 @@ class IdentityCore:
         event = encode_input(raw)
         state = self.process_event(event)
         return decode_state(state)
+
+    def self_reflect(self) -> str:
+        """自我审视：读取自身状态、人格底色、近期经历，生成一段文字自述。"""
+        state = self.query()
+        history = self.history()
+        return render_self_reflection(state, self._ocean, history)
 
     def _apply_persona_to_network(self):
         """把演化的性格参数即时应用到活网络（不丢 Hebb 状态）。"""
