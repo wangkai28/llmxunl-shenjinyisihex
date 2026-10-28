@@ -109,7 +109,7 @@ class IdentityCore:
         self._balance_self(state["dominant"])
 
         # C：定向演化——按主导情绪触发极缓慢 OCEAN 演化
-        self._ocean = evolve_ocean(self._ocean, self._self_to_event(state["dominant"]), lr=0.002)
+        self._ocean = evolve_ocean(self._ocean, self._self_to_reflection_event(state["dominant"]), lr=0.002)
         self._persona_cfg = ocean_to_params(self._ocean)
         self._apply_persona_to_network()
 
@@ -125,12 +125,12 @@ class IdentityCore:
                 self._ms.context_bias[name] = min(3.0, self._ms.context_bias[name] + step * 0.5)
 
     @staticmethod
-    def _self_to_event(self_name: str) -> str:
-        """主导自我 → 对应的演化方向（事件语义）。"""
+    def _self_to_reflection_event(self_name: str) -> str:
+        """主导自我 → 反思的演化方向（逆着失衡、回归平衡）。"""
         return {
-            "id": "danger",       # 本我主导 → 冲动方向
-            "superego": "moral",  # 超我主导 → 克制方向
-            "tao": "calm",        # 道家主导 → 平静方向
+            "id": "calm",         # 本我主导（亢奋）→ 反思让它平静（降 N）
+            "superego": "praise", # 超我主导（过度克制）→ 反思让它放松（降 N、升 E）
+            "tao": "calm",        # 道家主导 → 保持平静
         }.get(self_name, "calm")
 
     def _apply_persona_to_network(self):
