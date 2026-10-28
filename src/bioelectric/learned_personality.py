@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from .personality_data import encode_text
+from .personality_data import encode_text, build_feature_matrix
 
 
 class EmotionMLP:
@@ -15,6 +15,7 @@ class EmotionMLP:
         rng = np.random.default_rng(0)
         self.input_dim = input_dim
         self.hidden = hidden
+        self.vocab = None  # 词表（predict 时编码用）
         self.W1 = rng.normal(0.0, 0.5, size=(input_dim, hidden))
         self.b1 = np.zeros(hidden)
         self.W2 = rng.normal(0.0, 0.5, size=(hidden, 2))
@@ -30,6 +31,16 @@ class EmotionMLP:
     def predict(self, x: np.ndarray) -> np.ndarray:
         _, out = self._forward(x)
         return out
+
+    def predict_text(self, text: str) -> np.ndarray:
+        """预测一句文本的情绪坐标（用模型持有的词表编码）。"""
+        if self.vocab is None:
+            raise RuntimeError("model has no vocab; it must be trained first")
+        vec = np.zeros(len(self.vocab), dtype=float)
+        for g, c in encode_text(text).items():
+            if g in self.vocab:
+                vec[self.vocab[g]] = c
+        return self.predict(vec)
 
     def train_step(self, x: np.ndarray, y: np.ndarray, lr: float) -> float:
         a1, a2 = self._forward(x)
@@ -52,8 +63,10 @@ class EmotionMLP:
         return float(np.mean(error ** 2))
 
     def save(self, path: str):
+        vocab = self.vocab if self.vocab is not None else {}
         np.savez(path, W1=self.W1, b1=self.b1, W2=self.W2, b2=self.b2,
-                 input_dim=self.input_dim, hidden=self.hidden)
+                 input_dim=self.input_dim, hidden=self.hidden,
+                 vocab_keys=list(vocab.keys()), vocab_vals=list(vocab.values()))
 
     @classmethod
     def load(cls, path: str) -> "EmotionMLP":
@@ -63,14 +76,17 @@ class EmotionMLP:
         model.b1 = data["b1"]
         model.W2 = data["W2"]
         model.b2 = data["b2"]
+        if "vocab_keys" in data:
+            model.vocab = {k: int(v) for k, v in zip(data["vocab_keys"], data["vocab_vals"])}
         return model
 
 
 def train_emotion_mlp(texts, labels, *, epochs=200, hidden=16, lr=0.05):
     """训练 EmotionMLP：texts 是语句列表，labels 是 (valence, arousal) 数组。"""
-    X = np.array([encode_text(t) for t in texts], dtype=float)
+    X, vocab = build_feature_matrix(texts)
     Y = np.asarray(labels, dtype=float)
     model = EmotionMLP(input_dim=X.shape[1], hidden=hidden)
+    model.vocab = vocab
     for _ in range(epochs):
         for i in range(X.shape[0]):
             model.train_step(X[i], Y[i], lr)
