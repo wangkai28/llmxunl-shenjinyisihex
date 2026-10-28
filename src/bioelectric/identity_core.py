@@ -52,7 +52,7 @@ class IdentityCore:
                 "superego": {"size": 50, "bias": 0.5},
                 "tao": {"size": 50, "bias": 1.5},
             },
-            seed=1, hebb_lr=0.02, cross_inhibition=3.0,
+            seed=1, hebb_lr=0.02, cross_inhibition=0.1,
         )
         self._ms.form(steps=200)
 

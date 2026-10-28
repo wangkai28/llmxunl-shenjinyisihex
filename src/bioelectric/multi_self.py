@@ -163,29 +163,33 @@ def set_context(ms: MultiSelf, bias_overrides: dict):
 
 
 def dominant_self(ms: MultiSelf, steps: int) -> str:
-    """在当前情境下跑 steps 步，返回活动率最高的自我。"""
+    """返回当前情境下的主导自我（bias 最高者）。
+
+    主导由情境 bias 决定（context_bias 的 argmax），而非活动率最高——
+    去掉硬抑制后，各自我靠 bias 共存，主导是「权重最高」而非「通吃」。
+    """
     net = ms.network
     names = [n for n in ms.core_masks.keys()]
-    activity_sums = {n: 0 for n in names}
-    # 找出当前情境的主导自我（bias 最高者），对其余自我施加额外抑制
     dominant = max(names, key=lambda n: ms.context_bias[n])
+    activity_sums = {n: 0 for n in names}
     for _ in range(steps):
         _drive(ms, dominant)
         for n in names:
             activity_sums[n] += int(net.spikes[ms.core_masks[n]].sum())
-    best = max(names, key=lambda n: activity_sums[n])
-    return best
+    return dominant
 
 
 def _drive(ms: MultiSelf, dominant: str):
-    """按当前情境驱动一步：主导自我正常激活，其余被额外抑制。"""
+    """按当前情境驱动一步：各自我按各自 bias 激活，靠交叉抑制自然干涉。
+
+    不对非主导自我施加额外的硬抑制——各自我靠 bias 差异 + 弱交叉抑制
+    自然产生「主导略高、其余仍在场」的共存，而非 winner-take-all。
+    """
     net = ms.network
     names = list(ms.core_masks.keys())
     inp = np.zeros(net.n_units, dtype=float)
     for n in names:
         inp[ms.core_masks[n]] = ms.context_bias[n]
-        if n != dominant:
-            inp[ms.core_masks[n]] -= 3.0
     net.step(external_input=inp)
 
 
