@@ -159,3 +159,9 @@ def test_persona_ocean_preset_mapping(tmp_path):
     superego = IdentityCore(persona="superego", state_dir=str(tmp_path / "a"), seed=0)
     id_core = IdentityCore(persona="id", state_dir=str(tmp_path / "b"), seed=0)
     assert superego._ocean["C"] > id_core._ocean["C"]  # 超我比本我更尽责
+
+
+def test_unknown_persona_raises(tmp_path):
+    import pytest
+    with pytest.raises(ValueError):
+        IdentityCore(persona="bogus", state_dir=str(tmp_path / "id"), seed=0)

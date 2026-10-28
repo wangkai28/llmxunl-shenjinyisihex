@@ -6,7 +6,7 @@ from .balanced_network import BalancedNetwork
 from .continuity import save_snapshot, load_snapshot, append_autobiography, query_history
 from .event import Event, encode_event
 from .multi_self import MultiSelf, set_context, _drive
-from .ocean import DEFAULT_OCEAN, PERSONA_OCEAN, ocean_to_params, evolve_ocean
+from .ocean import PERSONA_OCEAN, ocean_to_params, evolve_ocean
 
 
 def _query_state(ms: MultiSelf, steps: int):
@@ -35,7 +35,9 @@ class IdentityCore:
         self.seed = seed
         self.significant_threshold = significant_threshold
         # 性格参数初始值由 OCEAN 派生（覆盖 PERSONAS 的硬编码）
-        self._ocean = dict(PERSONA_OCEAN.get(persona, DEFAULT_OCEAN))
+        if persona not in PERSONA_OCEAN:
+            raise ValueError(f"unknown persona {persona!r}")
+        self._ocean = dict(PERSONA_OCEAN[persona])
         self._persona_cfg = ocean_to_params(self._ocean)
         self._network = BalancedNetwork(
             n_units=600, k_exc=10, j_inh=self._persona_cfg["j_inh"],
@@ -116,4 +118,6 @@ class IdentityCore:
             self._ocean = dict(snap["ocean"])
         if snap.get("persona_cfg"):
             self._persona_cfg = snap["persona_cfg"]
-            self._apply_persona_to_network()
+        else:
+            self._persona_cfg = ocean_to_params(self._ocean)
+        self._apply_persona_to_network()
