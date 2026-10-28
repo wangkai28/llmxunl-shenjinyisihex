@@ -7,7 +7,7 @@ from .continuity import save_snapshot, load_snapshot, append_autobiography, quer
 from .event import Event, encode_event
 from .multi_self import MultiSelf, set_context, _drive
 from .ocean import PERSONA_OCEAN, ocean_to_params, evolve_ocean
-from .codec import encode_input, decode_state
+from .codec import encode_input, decode_state, emotion_to_context
 from .self_reflection import render_self_reflection
 
 
@@ -31,11 +31,12 @@ def _query_state(ms: MultiSelf, steps: int):
 
 class IdentityCore:
     def __init__(self, *, persona: str, state_dir: str, seed: int = 0,
-                 significant_threshold: float = 0.8):
+                 significant_threshold: float = 0.8, emotion_model=None):
         self.persona = persona
         self.state_dir = state_dir
         self.seed = seed
         self.significant_threshold = significant_threshold
+        self.emotion_model = emotion_model
         # 性格参数初始值由 OCEAN 派生（覆盖 PERSONAS 的硬编码）
         if persona not in PERSONA_OCEAN:
             raise ValueError(f"unknown persona {persona!r}")
@@ -82,6 +83,13 @@ class IdentityCore:
 
     def interact(self, raw) -> dict:
         """交互端口：输入外界信息（文本/事件/信号），输出解码后的意识状态。"""
+        # 文本 + 学习情绪模型：走语义理解路径（情绪坐标 → 情境）
+        if isinstance(raw, str) and self.emotion_model is not None:
+            valence, arousal = self.emotion_model.predict_text(raw)
+            ctx = emotion_to_context(valence, arousal)
+            set_context(self._ms, ctx)
+            state = self.query()
+            return decode_state(state)
         event = encode_input(raw)
         state = self.process_event(event)
         return decode_state(state)

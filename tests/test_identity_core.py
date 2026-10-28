@@ -178,3 +178,15 @@ def test_interact_returns_decoded_state(tmp_path):
     state = core.interact({"type": "calm", "intensity": 1.0})
     assert "dominant" in state
     assert "ocean" in state
+
+
+def test_interact_text_with_emotion_model(tmp_path):
+    from bioelectric.learned_personality import train_emotion_mlp
+    from bioelectric.personality_data import build_training_data
+    texts, labels = build_training_data()
+    model = train_emotion_mlp(texts, labels, epochs=200, hidden=16, lr=0.05)
+    core = IdentityCore(persona="tao", state_dir=str(tmp_path / "id"), seed=0,
+                        emotion_model=model)
+    # 愤怒语句 → 本我主导（走学习情绪路径，而非关键词）
+    state = core.interact("我真的很愤怒")
+    assert state["dominant"] == "id"
