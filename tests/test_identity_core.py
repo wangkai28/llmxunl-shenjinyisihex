@@ -165,3 +165,16 @@ def test_unknown_persona_raises(tmp_path):
     import pytest
     with pytest.raises(ValueError):
         IdentityCore(persona="bogus", state_dir=str(tmp_path / "id"), seed=0)
+
+
+def test_interact_with_text(tmp_path):
+    core = IdentityCore(persona="tao", state_dir=str(tmp_path / "id"), seed=0)
+    state = core.interact("危险！有威胁")
+    assert state["dominant"] == "id"  # 危险 → 本我
+
+
+def test_interact_returns_decoded_state(tmp_path):
+    core = IdentityCore(persona="tao", state_dir=str(tmp_path / "id"), seed=0)
+    state = core.interact({"type": "calm", "intensity": 1.0})
+    assert "dominant" in state
+    assert "ocean" in state

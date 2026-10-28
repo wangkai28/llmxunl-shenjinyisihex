@@ -7,6 +7,7 @@ from .continuity import save_snapshot, load_snapshot, append_autobiography, quer
 from .event import Event, encode_event
 from .multi_self import MultiSelf, set_context, _drive
 from .ocean import PERSONA_OCEAN, ocean_to_params, evolve_ocean
+from .codec import encode_input, decode_state
 
 
 def _query_state(ms: MultiSelf, steps: int):
@@ -77,6 +78,12 @@ class IdentityCore:
              "significant": significant},
         )
         return state
+
+    def interact(self, raw) -> dict:
+        """交互端口：输入外界信息（文本/事件/信号），输出解码后的意识状态。"""
+        event = encode_input(raw)
+        state = self.process_event(event)
+        return decode_state(state)
 
     def _apply_persona_to_network(self):
         """把演化的性格参数即时应用到活网络（不丢 Hebb 状态）。"""
