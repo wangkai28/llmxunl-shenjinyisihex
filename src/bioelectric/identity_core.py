@@ -92,6 +92,47 @@ class IdentityCore:
         history = self.history()
         return render_self_reflection(state, self._ocean, history)
 
+    def reflect_and_integrate(self) -> str:
+        """反思闭环：审视自身 → 记录反思 → 自我平衡 → 定向演化。"""
+        state = self.query()
+        text = render_self_reflection(state, self._ocean, self.history())
+
+        # B：反思成为经历，写入自传
+        append_autobiography(
+            os.path.join(self.state_dir, "autobiography.jsonl"),
+            {"event": "reflection", "intensity": 0.5,
+             "content": text, "dominant": state["dominant"],
+             "significant": False},
+        )
+
+        # A：自我平衡——主导自我 bias 略降、非主导略升
+        self._balance_self(state["dominant"])
+
+        # C：定向演化——按主导情绪触发极缓慢 OCEAN 演化
+        self._ocean = evolve_ocean(self._ocean, self._self_to_event(state["dominant"]), lr=0.002)
+        self._persona_cfg = ocean_to_params(self._ocean)
+        self._apply_persona_to_network()
+
+        return text
+
+    def _balance_self(self, dominant: str):
+        """自我平衡：让主导自我的 bias 略降、其他略升，缓解失衡。"""
+        step = 0.2
+        for name in self._ms.context_bias:
+            if name == dominant:
+                self._ms.context_bias[name] = max(0.2, self._ms.context_bias[name] - step)
+            else:
+                self._ms.context_bias[name] = min(3.0, self._ms.context_bias[name] + step * 0.5)
+
+    @staticmethod
+    def _self_to_event(self_name: str) -> str:
+        """主导自我 → 对应的演化方向（事件语义）。"""
+        return {
+            "id": "danger",       # 本我主导 → 冲动方向
+            "superego": "moral",  # 超我主导 → 克制方向
+            "tao": "calm",        # 道家主导 → 平静方向
+        }.get(self_name, "calm")
+
     def _apply_persona_to_network(self):
         """把演化的性格参数即时应用到活网络（不丢 Hebb 状态）。"""
         self._network.external_mean = self._persona_cfg["external_mean"]
