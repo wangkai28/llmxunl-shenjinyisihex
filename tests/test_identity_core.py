@@ -121,3 +121,13 @@ def test_evolution_applies_to_live_network(tmp_path):
     # danger 演化使 j_inh 弱化（朝 0 靠近），网络 j_inh 应随之变化
     assert core._network.j_inh != before_j_inh
     assert core._network.j_inh == core._persona_cfg["j_inh"]
+
+
+def test_load_reapplies_persona_to_network(tmp_path):
+    core = IdentityCore(persona="tao", state_dir=str(tmp_path / "id"), seed=0)
+    for _ in range(5):
+        core.process_event(Event(type="danger", intensity=1.0))
+    core.save()
+    core2 = IdentityCore(persona="tao", state_dir=str(tmp_path / "id"), seed=0)
+    core2.load()
+    assert core2._network.j_inh == core2._persona_cfg["j_inh"]

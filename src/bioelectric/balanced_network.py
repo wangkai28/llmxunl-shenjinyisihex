@@ -214,6 +214,7 @@ class BalancedNetwork:
         self._edge_w = self._edge_w[keep_idx]
         self._edge_delay = self._edge_delay[keep_idx]
         self._plastic = self._plastic[keep_idx]
+        self._base_inh_edge_mask = self._base_inh_edge_mask[keep_idx]
         self.W.set_coo(self._edge_post, self._edge_pre, self._edge_w)
 
     def add_inhibitory_edges(self, post, pre, strength: float):

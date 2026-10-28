@@ -31,3 +31,11 @@ def test_set_j_inh_updates_attribute():
     net = BalancedNetwork(n_units=100, k_exc=10, j_inh=-4.0, seed=0)
     net.set_j_inh(-5.0)
     assert net.j_inh == -5.0
+
+
+def test_prune_then_set_j_inh_no_error():
+    net = BalancedNetwork(n_units=200, k_exc=10, j_inh=-4.0,
+                          external_mean=0.15, external_noise=0.08, delay_max=4, seed=0)
+    net.prune_edges(0.3)
+    net.set_j_inh(-6.0)  # 不应抛 IndexError
+    assert net.j_inh == -6.0

@@ -8,7 +8,6 @@ from .event import Event, encode_event
 from .multi_self import MultiSelf, set_context, _drive
 from .persona import PERSONAS
 from .persona_evolution import evolve_persona
-from .persona_evolution import evolve_persona
 
 
 def _query_state(ms: MultiSelf, steps: int):
@@ -114,3 +113,4 @@ class IdentityCore:
         set_context(self._ms, ctx)
         if snap.get("persona_cfg"):
             self._persona_cfg = snap["persona_cfg"]
+            self._apply_persona_to_network()
