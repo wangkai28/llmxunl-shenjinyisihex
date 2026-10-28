@@ -10,6 +10,14 @@ DEFAULT_OCEAN = {
 }
 
 
+# persona → OCEAN 预设（spec §0.1：persona 统一为 OCEAN 预设）
+PERSONA_OCEAN = {
+    "id":       {"O": 0.4, "E": 0.8, "C": 0.2, "A": 0.4, "N": 0.8},
+    "superego": {"O": 0.4, "E": 0.2, "C": 0.9, "A": 0.6, "N": 0.2},
+    "tao":      {"O": 0.8, "E": 0.5, "C": 0.5, "A": 0.7, "N": 0.2},
+}
+
+
 def ocean_to_params(ocean: dict) -> dict:
     E = float(ocean.get("E", 0.5))
     N = float(ocean.get("N", 0.5))

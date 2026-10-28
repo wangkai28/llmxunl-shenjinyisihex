@@ -6,8 +6,7 @@ from .balanced_network import BalancedNetwork
 from .continuity import save_snapshot, load_snapshot, append_autobiography, query_history
 from .event import Event, encode_event
 from .multi_self import MultiSelf, set_context, _drive
-from .persona import PERSONAS
-from .persona_evolution import evolve_persona
+from .ocean import DEFAULT_OCEAN, PERSONA_OCEAN, ocean_to_params, evolve_ocean
 
 
 def _query_state(ms: MultiSelf, steps: int):
@@ -35,10 +34,9 @@ class IdentityCore:
         self.state_dir = state_dir
         self.seed = seed
         self.significant_threshold = significant_threshold
-        cfg = PERSONAS.get(persona)
-        if cfg is None:
-            raise ValueError(f"unknown persona {persona!r}")
-        self._persona_cfg = dict(cfg)
+        # 性格参数初始值由 OCEAN 派生（覆盖 PERSONAS 的硬编码）
+        self._ocean = dict(PERSONA_OCEAN.get(persona, DEFAULT_OCEAN))
+        self._persona_cfg = ocean_to_params(self._ocean)
         self._network = BalancedNetwork(
             n_units=600, k_exc=10, j_inh=self._persona_cfg["j_inh"],
             external_mean=self._persona_cfg["external_mean"],
@@ -67,7 +65,8 @@ class IdentityCore:
         state = self.query()
         significant = event.intensity >= self.significant_threshold
         if significant:
-            self._persona_cfg = evolve_persona(self._persona_cfg, event.type)
+            self._ocean = evolve_ocean(self._ocean, event.type)
+            self._persona_cfg = ocean_to_params(self._ocean)
             self._apply_persona_to_network()
         append_autobiography(
             os.path.join(self.state_dir, "autobiography.jsonl"),
@@ -87,6 +86,7 @@ class IdentityCore:
         dominant, activity = _query_state(self._ms, steps=50)
         result = {"dominant": dominant}
         result.update(activity)
+        result["ocean"] = dict(self._ocean)
         return result
 
     def history(self, limit=None):
@@ -99,6 +99,7 @@ class IdentityCore:
             "context_bias": dict(self._ms.context_bias),
             "activities": {k: state[k] for k in self._ms.core_masks.keys()},
             "persona_cfg": self._persona_cfg,
+            "ocean": self._ocean,
         }
         save_snapshot(snapshot, os.path.join(self.state_dir, "snapshot.json"))
 
@@ -111,6 +112,8 @@ class IdentityCore:
         if not ctx:
             return
         set_context(self._ms, ctx)
+        if snap.get("ocean"):
+            self._ocean = dict(snap["ocean"])
         if snap.get("persona_cfg"):
             self._persona_cfg = snap["persona_cfg"]
             self._apply_persona_to_network()

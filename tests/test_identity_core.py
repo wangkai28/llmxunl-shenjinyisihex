@@ -131,3 +131,31 @@ def test_load_reapplies_persona_to_network(tmp_path):
     core2 = IdentityCore(persona="tao", state_dir=str(tmp_path / "id"), seed=0)
     core2.load()
     assert core2._network.j_inh == core2._persona_cfg["j_inh"]
+
+
+def test_ocean_derives_initial_persona_params(tmp_path):
+    core = IdentityCore(persona="tao", state_dir=str(tmp_path / "id"), seed=0)
+    assert hasattr(core, "_ocean")
+    assert set(core._ocean.keys()) == {"O", "E", "C", "A", "N"}
+
+
+def test_query_includes_ocean(tmp_path):
+    core = IdentityCore(persona="tao", state_dir=str(tmp_path / "id"), seed=0)
+    core.process_event(Event(type="calm", intensity=1.0))
+    state = core.query()
+    assert "ocean" in state
+    assert "O" in state["ocean"]
+
+
+def test_ocean_evolves_slowly(tmp_path):
+    core = IdentityCore(persona="tao", state_dir=str(tmp_path / "id"), seed=0)
+    before_n = core._ocean["N"]
+    for _ in range(20):
+        core.process_event(Event(type="danger", intensity=1.0))
+    assert core._ocean["N"] > before_n  # 神经质缓慢上升
+
+
+def test_persona_ocean_preset_mapping(tmp_path):
+    superego = IdentityCore(persona="superego", state_dir=str(tmp_path / "a"), seed=0)
+    id_core = IdentityCore(persona="id", state_dir=str(tmp_path / "b"), seed=0)
+    assert superego._ocean["C"] > id_core._ocean["C"]  # 超我比本我更尽责
