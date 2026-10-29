@@ -2,7 +2,7 @@ import numpy as np
 
 from bioelectric.balanced_network import BalancedNetwork
 from bioelectric.multi_self import MultiSelf
-from bioelectric.emergent_personality import read_personality
+from bioelectric.emergent_personality import read_personality, emotion_experience
 
 
 def _make_ms():
@@ -38,3 +38,24 @@ def test_experience_changes_read_personality():
     after = read_personality(net, ms)
     # 经历后，本我的冲动性（核心兴奋边强度）应上升
     assert after["impulsivity"] > before["impulsivity"]
+
+
+def test_emotion_experience_closes_loop():
+    # 情绪坐标驱动核心学习，进而改变读出的人格
+    net, ms = _make_ms()
+    before = read_personality(net, ms)
+    # 愤怒情绪（负效价 + 高唤醒）→ 强化本我 → 冲动性上升
+    emotion_experience(net, ms, valence=-0.8, arousal=0.9, steps=300)
+    after = read_personality(net, ms)
+    assert after["impulsivity"] > before["impulsivity"]
+
+
+def test_calm_emotion_reduces_impulsivity():
+    net, ms = _make_ms()
+    # 先愤怒让冲动性上升
+    emotion_experience(net, ms, valence=-0.8, arousal=0.9, steps=200)
+    angry = read_personality(net, ms)
+    # 再平静让冲动性回落
+    emotion_experience(net, ms, valence=0.6, arousal=-0.7, steps=400)
+    calm = read_personality(net, ms)
+    assert calm["impulsivity"] < angry["impulsivity"]

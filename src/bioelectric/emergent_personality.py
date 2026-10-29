@@ -4,6 +4,7 @@ import numpy as np
 
 from .balanced_network import BalancedNetwork
 from .multi_self import MultiSelf
+from .codec import emotion_to_context
 
 
 def _core_exc_strength(net: BalancedNetwork, mask: np.ndarray) -> float:
@@ -44,3 +45,25 @@ def read_personality(net: BalancedNetwork, ms: MultiSelf) -> dict:
         "activity": activity,
         "stability": stability,
     }
+
+
+def emotion_experience(
+    net: BalancedNetwork,
+    ms: MultiSelf,
+    *,
+    valence: float,
+    arousal: float,
+    steps: int = 200,
+):
+    """用情绪坐标驱动网络学习：情绪 → 主导自我核心 → Hebb 固化。
+
+    形成「情绪经历 → 学习 → 人格变化」的闭环。情绪坐标决定哪个核心
+    被激活（复用 emotion_to_context 的映射），激活驱动 Hebb 学习。
+    """
+    ctx = emotion_to_context(valence, arousal)
+    dominant = max(ctx, key=ctx.get)
+    # 只激活主导自我核心，让 Hebb 固化该回路
+    for _ in range(steps):
+        inp = np.zeros(net.n_units, dtype=float)
+        inp[ms.core_masks[dominant]] = ctx[dominant]
+        net.step(external_input=inp)
