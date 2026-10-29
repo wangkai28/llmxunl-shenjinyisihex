@@ -2,3 +2,9 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 work/
+tmp_review_check/
+data/_dbg*/
+data/_demo*/
+data/_final_demo*/
+data/_loop_demo*/
+data/_reflect_*/

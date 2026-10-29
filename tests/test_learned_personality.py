@@ -1,7 +1,7 @@
 import numpy as np
 
 from bioelectric.learned_personality import EmotionMLP, train_emotion_mlp
-from bioelectric.personality_data import build_training_data, encode_text
+from bioelectric.personality_data import build_training_data, encode_text, build_feature_matrix
 
 
 def test_build_training_data_returns_texts_and_labels():
@@ -17,8 +17,7 @@ def test_build_training_data_returns_texts_and_labels():
 
 def test_encode_text_returns_fixed_dim_vector():
     x = encode_text("今天很开心")
-    assert isinstance(x, np.ndarray)
-    assert x.ndim == 1
+    assert isinstance(x, dict)
     assert len(x) > 0
 
 
@@ -32,7 +31,7 @@ def test_train_emotion_mlp_learns_mapping():
             happy_idx = i
             break
     if happy_idx is not None:
-        pred = model.predict(encode_text(texts[happy_idx]))
+        pred = model.predict_text(texts[happy_idx])
         assert pred[0] > 0.0  # valence 应为正（愉快）
 
 
@@ -43,5 +42,5 @@ def test_model_save_load(tmp_path):
     model.save(path)
     loaded = EmotionMLP.load(path)
     # 同输入应给出相近输出
-    x = encode_text("今天很开心")
-    assert np.allclose(model.predict(x), loaded.predict(x), atol=1e-6)
+    assert np.allclose(model.predict_text("今天很开心"),
+                       loaded.predict_text("今天很开心"), atol=1e-6)
