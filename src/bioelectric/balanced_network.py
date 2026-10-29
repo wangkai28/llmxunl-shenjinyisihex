@@ -30,6 +30,8 @@ class BalancedNetwork:
         leak=0.1,
         dt=1.0,
         hebb_lr=0.0,
+        weight_max=2.0,
+        weight_decay=0.0,
         seed=0,
     ):
         rng = np.random.default_rng(seed)
@@ -42,6 +44,8 @@ class BalancedNetwork:
         self.leak = float(leak)
         self.dt = float(dt)
         self.hebb_lr = float(hebb_lr)
+        self.weight_max = float(weight_max)
+        self.weight_decay = float(weight_decay)
         self.j_inh = float(j_inh)
         self.j_exc = float(j_exc)
         self.external_mean = float(external_mean)
@@ -181,22 +185,20 @@ class BalancedNetwork:
             return
         post = self._edge_post
         pre = self._edge_pre
-        w = self._edge_w
-        # 可塑且两端同时发放的边
-        both = self._plastic & fired[post] & fired[pre]
-        if not both.any():
+        plastic = self._plastic
+        # 只增强可塑的兴奋边（抑制边不可塑，保持平衡）
+        exc_plastic = plastic & (self._edge_w > 0)
+        if not exc_plastic.any():
             return
-        # 对可塑边做增强：w += hebb_lr * (w_max - w)，其中 w_max 取当前最大幅值的若干倍
-        w_max = np.abs(self._edge_w).max() * 5.0
-        # 只增强兴奋的可塑边（抑制边不可塑，保持平衡）
-        exc_plastic = both & (self._edge_w > 0)
-        if exc_plastic.any():
-            self._edge_w[exc_plastic] = np.clip(
-                self._edge_w[exc_plastic] + self.hebb_lr * (w_max - self._edge_w[exc_plastic]),
-                0.0, w_max,
-            )
-            # 同步更新 W（稀疏矩阵）以保持一致
-            self.W.set_coo(self._edge_post, self._edge_pre, self._edge_w)
+        both = exc_plastic & fired[post] & fired[pre]
+        w = self._edge_w
+        # 增强：只对「同时发放」的可塑兴奋边，趋向绝对上限 weight_max
+        w[both] = w[both] + self.hebb_lr * (self.weight_max - w[both])
+        # 遗忘：所有可塑兴奋边按 decay 衰减（有进有出）
+        w[exc_plastic] = w[exc_plastic] - self.weight_decay * w[exc_plastic]
+        w[exc_plastic] = np.clip(w[exc_plastic], 0.0, self.weight_max)
+        # 同步更新 W（稀疏矩阵）以保持一致
+        self.W.set_coo(self._edge_post, self._edge_pre, self._edge_w)
 
     def mark_plastic_edges(self, mask):
         """标记哪些边可塑（由 SelfModel 调用，标记核心区内部的边）。"""
