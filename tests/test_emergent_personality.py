@@ -59,3 +59,16 @@ def test_calm_emotion_reduces_impulsivity():
     emotion_experience(net, ms, valence=0.6, arousal=-0.7, steps=400)
     calm = read_personality(net, ms)
     assert calm["impulsivity"] < angry["impulsivity"]
+
+
+def test_moral_experience_raises_restraint():
+    # 道德/克制经历应让「克制」维度上升（抑制边增强）
+    net, ms = _make_ms()
+    before = read_personality(net, ms)
+    # 持续激活超我核心（道德/克制）
+    for _ in range(300):
+        inp = np.zeros(600)
+        inp[ms.core_masks["superego"]] = 3.0
+        net.step(external_input=inp)
+    after = read_personality(net, ms)
+    assert after["restraint"] > before["restraint"]

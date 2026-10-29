@@ -50,12 +50,15 @@ class MultiSelf:
             self._add_cross_inhibition(cross_inhibition)
 
     def _mark_all_core_plastic(self):
-        """标记所有自我核心区内部的兴奋边为可塑。"""
+        """标记所有自我核心区内部的兴奋边 + 指向核心区的抑制边为可塑。"""
         post = self.network._edge_post
         pre = self.network._edge_pre
         plastic = np.zeros(len(post), dtype=bool)
         for mask in self.core_masks.values():
             plastic |= mask[post] & mask[pre] & (self.network._edge_w > 0)
+            # 指向核心区的抑制边（post 在核心区，pre 是抑制单元）也塑，
+            # 使「克制」维度能随道德经历增强。
+            plastic |= mask[post] & (self.network._edge_w < 0)
         self.network.mark_plastic_edges(plastic)
 
     def _add_cross_inhibition(self, strength: float):

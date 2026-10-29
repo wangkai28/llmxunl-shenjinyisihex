@@ -180,23 +180,35 @@ class BalancedNetwork:
         return self.rng.normal(self.external_mean, self.external_noise, size=self.n_units)
 
     def _hebb_update(self, fired):
-        """局部 Hebb：只强化「可塑」的、且两端同时发放的边。"""
+        """局部 Hebb：强化「可塑」的、且两端同时发放的边。
+
+        兴奋边增强（趋向 +weight_max），抑制边也增强（趋向 -weight_max，
+        即更负、抑制更强）。都受绝对上限与遗忘约束，不发散。
+        """
         if self.hebb_lr <= 0.0 or not self._plastic.any():
             return
         post = self._edge_post
         pre = self._edge_pre
         plastic = self._plastic
-        # 只增强可塑的兴奋边（抑制边不可塑，保持平衡）
-        exc_plastic = plastic & (self._edge_w > 0)
-        if not exc_plastic.any():
+        if not plastic.any():
             return
-        both = exc_plastic & fired[post] & fired[pre]
+        coactive = plastic & (fired[post] & fired[pre])  # 共同发放（增强）
+        exc_plastic = coactive & (self._edge_w > 0)
+        inh_plastic = coactive & (self._edge_w < 0)
         w = self._edge_w
-        # 增强：只对「同时发放」的可塑兴奋边，趋向绝对上限 weight_max
-        w[both] = w[both] + self.hebb_lr * (self.weight_max - w[both])
-        # 遗忘：所有可塑兴奋边按 decay 衰减（有进有出）
-        w[exc_plastic] = w[exc_plastic] - self.weight_decay * w[exc_plastic]
-        w[exc_plastic] = np.clip(w[exc_plastic], 0.0, self.weight_max)
+        # 兴奋边增强：趋向 +weight_max
+        if exc_plastic.any():
+            w[exc_plastic] = w[exc_plastic] + self.hebb_lr * (self.weight_max - w[exc_plastic])
+        # 抑制边增强：趋向 -weight_max（更负）
+        if inh_plastic.any():
+            w[inh_plastic] = w[inh_plastic] + self.hebb_lr * (-self.weight_max - w[inh_plastic])
+        # 遗忘：所有可塑边按 decay 朝 0 衰减（有进有出，不共同发放的边会消退）
+        w[plastic] = w[plastic] - self.weight_decay * w[plastic]
+        # 绝对上限（分正负）
+        pos = plastic & (w > 0)
+        neg = plastic & (w < 0)
+        w[pos] = np.clip(w[pos], 0.0, self.weight_max)
+        w[neg] = np.clip(w[neg], -self.weight_max, 0.0)
         # 同步更新 W（稀疏矩阵）以保持一致
         self.W.set_coo(self._edge_post, self._edge_pre, self._edge_w)
 

@@ -27,7 +27,9 @@ def test_reflection_reduces_dominant_imbalance(tmp_path):
     # 制造一个强烈的主导（危险）
     core.process_event(Event(type="danger", intensity=1.0))
     before = core.query()["id"]
-    core.reflect_and_integrate()
+    # 人格固化后，反思调节变慢，需要多次反思才能让主导回落
+    for _ in range(10):
+        core.reflect_and_integrate()
     after = core.query()["id"]
     # 反思后，主导自我的活动应有所回落（自我平衡）
     assert after < before
