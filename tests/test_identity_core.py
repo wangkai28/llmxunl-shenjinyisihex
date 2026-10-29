@@ -190,3 +190,19 @@ def test_interact_text_with_emotion_model(tmp_path):
     # 愤怒语句 → 本我主导（走学习情绪路径，而非关键词）
     state = core.interact("我真的很愤怒")
     assert state["dominant"] == "id"
+
+
+def test_interact_with_unified_model(tmp_path):
+    import os
+    from bioelectric.unified_personality import UnifiedPersonalityMLP
+    model_path = "data/unified_personality_model.npz"
+    if not os.path.exists(model_path):
+        import pytest
+        pytest.skip("unified model not trained yet")
+    model = UnifiedPersonalityMLP.load(model_path)
+    core = IdentityCore(persona="tao", state_dir=str(tmp_path / "id"), seed=0,
+                        unified_model=model)
+    state = core.interact("我真的很愤怒")
+    # 统一模型应输出意识维度
+    assert "self_clarity" in state or "agency" in state
+    assert "dominant" in state

@@ -31,12 +31,14 @@ def _query_state(ms: MultiSelf, steps: int):
 
 class IdentityCore:
     def __init__(self, *, persona: str, state_dir: str, seed: int = 0,
-                 significant_threshold: float = 0.8, emotion_model=None):
+                 significant_threshold: float = 0.8, emotion_model=None,
+                 unified_model=None):
         self.persona = persona
         self.state_dir = state_dir
         self.seed = seed
         self.significant_threshold = significant_threshold
         self.emotion_model = emotion_model
+        self.unified_model = unified_model
         # 性格参数初始值由 OCEAN 派生（覆盖 PERSONAS 的硬编码）
         if persona not in PERSONA_OCEAN:
             raise ValueError(f"unknown persona {persona!r}")
@@ -83,6 +85,24 @@ class IdentityCore:
 
     def interact(self, raw) -> dict:
         """交互端口：输入外界信息（文本/事件/信号），输出解码后的意识状态。"""
+        # 统一 9 维模型路径：情绪驱动情境 + 性格派生物理量 + 意识进输出
+        if isinstance(raw, str) and self.unified_model is not None:
+            out = self.unified_model.predict_text(raw)
+            valence, arousal = out[0], out[1]
+            ocean = {
+                "O": out[2], "E": out[3], "C": out[4],
+                "A": out[5], "N": out[6],
+            }
+            self_clarity, agency = out[7], out[8]
+            ctx = emotion_to_context(valence, arousal)
+            set_context(self._ms, ctx)
+            # 性格派生物理量并应用
+            self._persona_cfg = ocean_to_params(ocean)
+            self._apply_persona_to_network()
+            state = self.query()
+            state["self_clarity"] = float(self_clarity)
+            state["agency"] = float(agency)
+            return decode_state(state)
         # 文本 + 学习情绪模型：走语义理解路径（情绪坐标 → 情境）
         if isinstance(raw, str) and self.emotion_model is not None:
             valence, arousal = self.emotion_model.predict_text(raw)
