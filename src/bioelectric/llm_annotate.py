@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 import tomllib
 
@@ -18,9 +19,25 @@ _PROMPT_TEMPLATE = (
 
 
 def _load_aigw():
-    cfg = tomllib.load(open("~/.codex/config.toml", "rb"))
-    aigw = cfg["model_providers"]["aigw"]
-    return aigw["base_url"], aigw["experimental_bearer_token"]
+    """从环境变量或可选 config.toml 读取 AIGW 网关配置。
+
+    优先环境变量 AIGW_BASE_URL / AIGW_API_KEY；否则读 CODEX_CONFIG_TOML
+    指向的 config.toml（不写死本机路径）。
+    """
+    base_url = os.environ.get("AIGW_BASE_URL")
+    api_key = os.environ.get("AIGW_API_KEY")
+    if base_url and api_key:
+        return base_url, api_key
+    config_path = os.environ.get("CODEX_CONFIG_TOML")
+    if config_path and os.path.exists(config_path):
+        cfg = tomllib.load(open(config_path, "rb"))
+        aigw = cfg.get("model_providers", {}).get("aigw", {})
+        if aigw.get("base_url") and aigw.get("experimental_bearer_token"):
+            return aigw["base_url"], aigw["experimental_bearer_token"]
+    raise RuntimeError(
+        "AIGW 网关未配置：请设置 AIGW_BASE_URL/AIGW_API_KEY，"
+        "或 CODEX_CONFIG_TOML 指向包含 aigw 配置的 config.toml"
+    )
 
 
 class LLMAnnotator:
